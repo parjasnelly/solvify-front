@@ -1,17 +1,15 @@
 @import "../../../styles.sass"
 
 .topnav
-  display: flex
-  flex-direction: row
-  align-items: center
+  @include row-orient-div
   justify-content: space-between
   padding: 0px 16px 0px 16px
   width: 100%
-  height: 50px
+  height: 60px
   background-color: map-get($primary-color, "green-100")
 
   a
-    font-family: Bookman, URW Bookman L, serif
+    font-family: $standard-font-family
     font-size: 36px
     font-weight: 300
     color: map-get($primary-color, "primary-light")

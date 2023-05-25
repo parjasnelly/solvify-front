@@ -7,6 +7,7 @@ declare namespace Problem {
   }
 
   export interface Entity {
+    id: string;
     userId: string;
     subjectId: string;
     topicId: string;
