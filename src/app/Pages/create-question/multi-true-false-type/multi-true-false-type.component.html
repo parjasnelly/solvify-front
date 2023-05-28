@@ -1,0 +1,66 @@
+<div class="trueFalse-main-container" [formGroup]="parentForm">
+  <h5 class="section-title-text">Enunciados:</h5>
+
+  <div
+    style="display: flex; flex-direction: column; gap: 10px; width: 100%"
+    formArrayName="optionFields"
+  >
+    <div
+      *ngFor="let option of optionFields.controls; let i = index"
+      class="trueFalse-item-container"
+    >
+      <div
+        class="trueFalse-item-container"
+        style="width: 100%"
+        [formGroupName]="i"
+      >
+        <input
+          type="text"
+          pInputText
+          class="p-inputtext-sm"
+          formControlName="statement"
+          style="padding: 8px; height: 40px"
+        />
+        <div
+          style="
+            display: flex;
+            flex-direction: row;
+            gap: 15px;
+            align-items: center;
+          "
+        >
+          <p-inputSwitch formControlName="answer"></p-inputSwitch>
+          <label
+            [ngClass]="{
+              switchtr: option.value.answer === true,
+              switchfls: option.value.answer === false
+            }"
+            >{{ option.value.answer ? "V" : "F" }}</label
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    style="
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 2px;
+    "
+  >
+    <p-button
+      *ngIf="optionFields.controls.length < 5"
+      label="+ Adicionar Opção"
+      styleClass="p-button-text"
+      (click)="addOption()"
+    ></p-button>
+    <p-button
+      *ngIf="optionFields.controls.length > 2"
+      label="- Remover Opção"
+      styleClass="p-button-danger p-button-text"
+      (click)="removeOption()"
+    ></p-button>
+  </div>
+</div>
