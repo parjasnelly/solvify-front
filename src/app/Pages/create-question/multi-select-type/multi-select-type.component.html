@@ -1,43 +1,32 @@
-<div class="trueFalse-main-container" [formGroup]="parentForm">
-  <h5 class="section-title-text">Enunciados:</h5>
+<div class="multichoice-main-container" [formGroup]="parentForm">
+  <h5 class="section-title-text">Opções (Marque as corretas):</h5>
 
   <div
-    style="display: flex; flex-direction: column; gap: 10px; width: 100%"
+    style="
+      display: grid;
+      grid-template-columns: 50% 50%;
+      grid-gap: 10px;
+      width: 100%;
+    "
     formArrayName="optionFields"
   >
     <div
       *ngFor="let option of optionFields.controls; let i = index"
-      class="trueFalse-item-container"
+      class="multichoice-item-container"
     >
       <div
-        class="trueFalse-item-container"
-        style="width: 100%"
+        class="multichoice-item-container"
+        style="width: 100%; align-items: center"
         [formGroupName]="i"
       >
         <input
           type="text"
           pInputText
           class="p-inputtext-sm"
-          formControlName="statement"
+          formControlName="label"
           style="padding: 8px; height: 40px"
         />
-        <div
-          style="
-            display: flex;
-            flex-direction: row;
-            gap: 15px;
-            align-items: center;
-          "
-        >
-          <p-inputSwitch formControlName="answer"></p-inputSwitch>
-          <label
-            [ngClass]="{
-              switchtr: option.value.answer === true,
-              switchfls: option.value.answer === false
-            }"
-            >{{ option.value.answer ? "V" : "F" }}</label
-          >
-        </div>
+        <p-inputSwitch formControlName="isCorrect"></p-inputSwitch>
       </div>
     </div>
   </div>
@@ -51,7 +40,7 @@
     "
   >
     <p-button
-      *ngIf="optionFields.controls.length < 5"
+      *ngIf="optionFields.controls.length < 6"
       label="Adicionar Opção"
       icon="pi pi-plus"
       styleClass="p-button-text"

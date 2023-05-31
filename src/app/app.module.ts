@@ -20,6 +20,9 @@ import { NoQuestionTypeComponent } from './Pages/create-question/no-question-typ
 import { TrueFalseTypeComponent } from './Pages/create-question/true-false-type/true-false-type.component';
 import { MultiTrueFalseTypeComponent } from './Pages/create-question/multi-true-false-type/multi-true-false-type.component';
 import { ButtonModule } from 'primeng/button';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { MultiChoiceTypeComponent } from './Pages/create-question/multi-choice-type/multi-choice-type.component';
+import { MultiSelectTypeComponent } from './Pages/create-question/multi-select-type/multi-select-type.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +35,8 @@ import { ButtonModule } from 'primeng/button';
     NoQuestionTypeComponent,
     TrueFalseTypeComponent,
     MultiTrueFalseTypeComponent,
+    MultiChoiceTypeComponent,
+    MultiSelectTypeComponent,
   ],
   imports: [
     BrowserModule,
@@ -44,6 +49,7 @@ import { ButtonModule } from 'primeng/button';
     InputSwitchModule,
     InputTextareaModule,
     ButtonModule,
+    RadioButtonModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

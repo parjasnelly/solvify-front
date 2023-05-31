@@ -69,8 +69,22 @@
           [parentForm]="questionForm"
           [optionFields]="questionForm.controls.optionFields"
         ></app-multi-true-false-type>
+        <app-multi-choice-type
+          *ngIf="getSelectedQuestionType() === questionTypeOptions[0].value"
+          (optionFieldsEdited)="onOptionFieldsEdited($event)"
+          [parentForm]="questionForm"
+          [optionFields]="questionForm.controls.optionFields"
+        ></app-multi-choice-type>
+        <app-multi-select-type
+          *ngIf="getSelectedQuestionType() === questionTypeOptions[1].value"
+          (optionFieldsEdited)="onOptionFieldsEdited($event)"
+          [parentForm]="questionForm"
+          [optionFields]="questionForm.controls.optionFields"
+        ></app-multi-select-type>
 
-        <div style="width: 50%">
+        <div
+          style="display: flex; width: 50%; flex-direction: column; gap: 10px"
+        >
           <label for="exp" class="explanation-label"><b>Explicação:</b></label>
           <textarea
             id="exp"
@@ -79,7 +93,32 @@
             pInputTextarea
             style="margin-top: 10px"
             formControlName="explanation"
+            [autoResize]="true"
+            placeholder="Explicação da resposta correta"
           ></textarea>
+          <label for="files" class="files-label"
+            ><b>{{
+              getCurrentFileCount() === 0
+                ? "+ Selecione Arquivos Relacionados"
+                : getCurrentFileCount() + " Arquivo(s) Selecionado(s)"
+            }}</b></label
+          >
+          <input
+            id="files"
+            type="file"
+            style="display: none"
+            (change)="onFileSelect($event)"
+            multiple
+          />
+          <div style="display: flex; justify-content: end; width: 100%">
+            <p-button
+              label="Enviar"
+              icon="pi pi-check"
+              styleClass="p-button p-button-raised"
+              [disabled]="!questionForm.valid"
+              (click)="onSubmit()"
+            ></p-button>
+          </div>
         </div>
       </div>
     </form>
