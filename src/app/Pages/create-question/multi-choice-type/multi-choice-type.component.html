@@ -1,0 +1,60 @@
+<div class="multichoice-main-container" [formGroup]="parentForm">
+  <h5 class="section-title-text">Opções (Marque a correta):</h5>
+
+  <div
+    style="
+      display: grid;
+      grid-template-columns: 50% 50%;
+      grid-gap: 10px;
+      width: 100%;
+    "
+    formArrayName="optionFields"
+  >
+    <div
+      *ngFor="let option of optionFields.controls; let i = index"
+      class="multichoice-item-container"
+    >
+      <div
+        class="multichoice-item-container"
+        style="width: 100%; align-items: center"
+        [formGroupName]="i"
+      >
+        <input
+          type="text"
+          pInputText
+          class="p-inputtext-sm"
+          formControlName="label"
+          style="padding: 8px; height: 40px"
+        />
+        <p-inputSwitch
+          (onChange)="onOptionClick(i)"
+          formControlName="isCorrect"
+        ></p-inputSwitch>
+      </div>
+    </div>
+  </div>
+  <div
+    style="
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 2px;
+    "
+  >
+    <p-button
+      *ngIf="optionFields.controls.length < 6"
+      label="Adicionar Opção"
+      icon="pi pi-plus"
+      styleClass="p-button-text"
+      (click)="addOption()"
+    ></p-button>
+    <p-button
+      *ngIf="optionFields.controls.length > 2"
+      label="Remover Opção"
+      icon="pi pi-minus"
+      styleClass="p-button-danger p-button-text"
+      (click)="removeOption()"
+    ></p-button>
+  </div>
+</div>

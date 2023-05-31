@@ -1,2 +1,126 @@
 <app-header></app-header>
-<p>create-question works!</p>
+<div style="margin: 5px">
+  <div class="header-div">
+    <h2 class="section-title">Nova Questão</h2>
+
+    <form [formGroup]="questionForm">
+      <div class="question-data-container">
+        <div class="question-title-container">
+          <h4>Titulo:</h4>
+          <input
+            type="text"
+            placeholder="Titulo da Questão"
+            pInputText
+            formControlName="title"
+          />
+        </div>
+        <div class="question-type-container">
+          <h5>Tipo da Questão:</h5>
+          <select formControlName="type">
+            <option value="" disabled selected>Selecione um tipo</option>
+            <option
+              *ngFor="let option of questionTypeOptions"
+              [value]="option.value"
+            >
+              {{ option.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <app-no-question-type
+        *ngIf="questionForm.controls.type.value === null"
+      ></app-no-question-type>
+
+      <div
+        class="question-info"
+        *ngIf="questionForm.controls.type.value !== null"
+      >
+        <label for="desc"><b>Descrição:</b></label>
+        <input
+          id="desc"
+          type="text"
+          placeholder="Instruções para solucionar a questão"
+          pInputText
+          formControlName="description"
+        />
+
+        <label for="quest"><b>Pergunta:</b></label>
+        <input id="quest" type="text" pInputText formControlName="question" />
+      </div>
+
+      <div
+        style="
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          gap: 15px;
+          margin-top: 10px;
+        "
+        *ngIf="questionForm.controls.type.value !== null"
+      >
+        <app-true-false-type
+          *ngIf="getSelectedQuestionType() === questionTypeOptions[2].value"
+          [parentForm]="questionForm"
+          [optionFields]="questionForm.controls.optionFields"
+        ></app-true-false-type>
+        <app-multi-true-false-type
+          *ngIf="getSelectedQuestionType() === questionTypeOptions[3].value"
+          [parentForm]="questionForm"
+          [optionFields]="questionForm.controls.optionFields"
+        ></app-multi-true-false-type>
+        <app-multi-choice-type
+          *ngIf="getSelectedQuestionType() === questionTypeOptions[0].value"
+          (optionFieldsEdited)="onOptionFieldsEdited($event)"
+          [parentForm]="questionForm"
+          [optionFields]="questionForm.controls.optionFields"
+        ></app-multi-choice-type>
+        <app-multi-select-type
+          *ngIf="getSelectedQuestionType() === questionTypeOptions[1].value"
+          (optionFieldsEdited)="onOptionFieldsEdited($event)"
+          [parentForm]="questionForm"
+          [optionFields]="questionForm.controls.optionFields"
+        ></app-multi-select-type>
+
+        <div
+          style="display: flex; width: 50%; flex-direction: column; gap: 10px"
+        >
+          <label for="exp" class="explanation-label"><b>Explicação:</b></label>
+          <textarea
+            id="exp"
+            rows="5"
+            cols="30"
+            pInputTextarea
+            style="margin-top: 10px"
+            formControlName="explanation"
+            [autoResize]="true"
+            placeholder="Explicação da resposta correta"
+          ></textarea>
+          <label for="files" class="files-label"
+            ><b>{{
+              getCurrentFileCount() === 0
+                ? "+ Selecione Arquivos Relacionados"
+                : getCurrentFileCount() + " Arquivo(s) Selecionado(s)"
+            }}</b></label
+          >
+          <input
+            id="files"
+            type="file"
+            style="display: none"
+            (change)="onFileSelect($event)"
+            multiple
+          />
+          <div style="display: flex; justify-content: end; width: 100%">
+            <p-button
+              label="Enviar"
+              icon="pi pi-check"
+              styleClass="p-button p-button-raised"
+              [disabled]="!questionForm.valid"
+              (click)="onSubmit()"
+            ></p-button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

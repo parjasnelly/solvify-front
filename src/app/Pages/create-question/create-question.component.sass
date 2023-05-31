@@ -1,0 +1,91 @@
+@import "../../../styles.sass"
+@import "primeicons/primeicons.css"
+
+form
+  width: 100%
+
+.header-div
+  display: flex
+  flex-direction: column
+  width: 100%
+  align-items: flex-start
+  justify-content: flex-start
+  padding: 8px 16px
+  gap: 10px
+
+.section-title
+  @include title-text($font-size: 28px)
+  margin: 0px
+
+.question-data-container
+  @include bordered-row-div($border-color: map-get($primary-color, "green-100"))
+  width: 100%
+  height: fit-content
+  justify-content: space-between
+  gap: 10px
+  padding: 12px
+
+  h4
+    @include title-text($font-size: 26px)
+    margin: 0px
+    margin-right: 10px
+
+  h5
+    @include title-text($font-size: 18px)
+    margin: 0px
+    margin-right: 10px
+
+.question-type-container
+  width: 35%
+  @include row-orient-div
+  gap: 10px
+
+.question-title-container
+  width: 65%
+  @include row-orient-div
+
+.p-inputtext
+  border-radius: 6px
+  width: 100%
+  padding: 12px
+
+select
+  width: 65%
+  height: 42px
+  border-radius: 6px
+  border-color: rgba(0, 0, 0, 0.38)
+  font-family: Roboto, Helvetica Neue Light, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif
+
+  &:focus-visible
+    outline: 0
+    border-color: map-get($primary-color, "green-100")
+
+  &:focus
+    border-color: map-get($primary-color, "green-100")
+
+.question-info
+  display: flex
+  flex-direction: column
+  align-items: flex-start
+  justify-content: center
+  gap: 10px
+  width: 100%
+  padding-top: 10px
+
+  label
+    @include title-text($font-size: 16px)
+
+.explanation-label
+  @include title-text($font-size: 16px)
+
+.files-label
+  font-family: $standard-font-family
+  font-size: 16px
+  font-weight: 500
+  color: map-get($primary-color, "green-100")
+
+  &:hover
+    cursor: pointer
+
+.p-button
+  width: 200px

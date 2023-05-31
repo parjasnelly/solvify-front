@@ -1,0 +1,40 @@
+<div class="trueFalse-main-container" [formGroup]="parentForm">
+  <h5 class="section-title-text">Enunciado:</h5>
+
+  <div style="width: 100%" formArrayName="optionFields">
+    <div
+      *ngFor="let option of optionFields.controls; let i = index"
+      class="trueFalse-item-container"
+    >
+      <div
+        class="trueFalse-item-container"
+        style="width: 100%"
+        [formGroupName]="i"
+      >
+        <input
+          type="text"
+          pInputText
+          class="p-inputtext-sm"
+          formControlName="statement"
+        />
+        <div
+          style="
+            display: flex;
+            flex-direction: row;
+            gap: 15px;
+            align-items: center;
+          "
+        >
+          <p-inputSwitch formControlName="answer"></p-inputSwitch>
+          <label
+            [ngClass]="{
+              switchtr: option.value.answer === true,
+              switchfls: option.value.answer === false
+            }"
+            >{{ option.value.answer ? "Verdadeiro" : "Falso" }}</label
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
