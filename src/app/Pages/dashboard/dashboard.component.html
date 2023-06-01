@@ -1,1 +1,132 @@
-<p>dashboard works!</p>
+<app-header></app-header>
+<div class="main-wrapper">
+
+    <div class="left-col">
+        <!--left column-->
+
+        <div class="left-col-label-cat">Categorias</div>
+        <div class="subjects-container">
+            <!--Buttons for subjects-->
+            <div>
+                <div class="subjects-card-history"></div>
+                <div class="subjects-card-math"></div>
+                <div class="subjects-card-chemestry"></div>
+            </div>
+            <div>
+                <div class="subjects-card-geography"></div>
+                <div class="subjects-card-physics"></div>
+                <div class="subjects-card-biology"></div>
+            </div>
+        </div>
+
+        <div class="best-of-the-week-container">
+            <div class="left-col-label-best">Melhores da Semana</div>
+            <div class="best-of-the-week"></div>
+        </div>
+
+    </div>
+
+    <div class="col-separator"></div>
+
+    <div class="right-col">
+        <!--right column-->
+
+        <input class="search" type="text" placeholder="Pesquise Questões">
+
+
+        <div class="right-col-label">Questões Destacadas</div>
+        <div class="question-card-container">
+            <!--Cards for questions-->
+
+            <div class="question-card">
+                <div class="question-card-header">
+                    <div class="math-icon"></div>
+                    Funções Exponenciais
+                </div>
+                <div class="question-card-content">
+                    Dada a função f(x) = 2^(x+3) + 10, o valor de x para que f(x) = 42 é de:
+                </div>
+                <div class="question-card-footer">
+                    Autor: Marcelo Silva
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-card-header">
+                    <div class="geography-icon"></div>
+                    Capitais do Mundo
+                </div>
+                <div class="question-card-content"></div>
+                <div class="question-card-footer"></div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-card-header">
+                    <div class="chemestry-icon"></div>
+                    Reações Balanceadas
+                </div>
+                <div class="question-card-content"></div>
+                <div class="question-card-footer"></div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-card-header">
+                    <div class="biology-icon"></div>
+                    Anatomia
+                </div>
+                <div class="question-card-content"></div>
+                <div class="question-card-footer"></div>
+            </div>
+
+        </div>
+
+        <div class="right-col-label">Questões Para Você</div>
+        <div class="question-card-container">
+            <!--Cards for questions-->
+
+            <div class="question-card">
+                <div class="question-card-header">
+                    <div class="math-icon"></div>
+                </div>
+                <div class="question-card-content"></div>
+                <div class="question-card-footer"></div>
+            </div>
+            
+            <div class="question-card">
+                <div class="question-card-header">
+                    <div class="physics-icon"></div>
+                </div>
+                <div class="question-card-content"></div>
+                <div class="question-card-footer"></div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-card-header">
+                    <div class="physics-icon"></div>
+                </div>
+                <div class="question-card-content"></div>
+                <div class="question-card-footer"></div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-card-header">
+                    <div class="math-icon"></div>
+                </div>
+                <div class="question-card-content"></div>
+                <div class="question-card-footer"></div>
+            </div>
+
+        </div>
+
+        <div class="right-col-label">Pacotes Salvos</div>
+
+        <div class="saved-packs">
+            <div style="width: 90%"></div>
+            <div>
+                <div style="height: 60%"></div>
+                <div class="add-question-button" routerLink="/create-question">+</div>
+            </div>
+        </div>
+
+    </div>
+</div>
