@@ -25,6 +25,7 @@ import { ButtonModule } from 'primeng/button';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { MultiChoiceTypeComponent } from './Pages/create-question/multi-choice-type/multi-choice-type.component';
 import { MultiSelectTypeComponent } from './Pages/create-question/multi-select-type/multi-select-type.component';
+import {AvatarModule} from "primeng/avatar";
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { MultiSelectTypeComponent } from './Pages/create-question/multi-select-t
     ButtonModule,
     RadioButtonModule,
     SocialLoginModule,
-    GoogleSigninButtonModule
+    GoogleSigninButtonModule,
+    AvatarModule
   ],
   providers: [{
     provide: 'SocialAuthServiceConfig',
@@ -63,8 +65,9 @@ import { MultiSelectTypeComponent } from './Pages/create-question/multi-select-t
         {
           id: GoogleLoginProvider.PROVIDER_ID,
           provider: new GoogleLoginProvider(
-            '814334065115-sk0m67fdt5jq2shd3jv6qgb5ed88k469.apps.googleusercontent.com'
-          )
+            '814334065115-sk0m67fdt5jq2shd3jv6qgb5ed88k469.apps.googleusercontent.com', {
+              oneTapEnabled: false
+            })
         }
       ],
       onError: (err) => {

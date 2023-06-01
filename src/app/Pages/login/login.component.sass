@@ -1,0 +1,32 @@
+@import "../../../styles.sass"
+.login-container
+  @include row-orient-div
+  justify-content: space-between
+  height: 100vh
+  h1
+    font-family: $standard-font-family
+    font-size: 50px
+    font-weight: 3000
+    color: map-get($primary-color, "primary-light")
+    text-decoration: none
+  h3
+    font-family: $standard-font-family
+    font-size: 36px
+    font-weight: 300
+    color: map-get($primary-color, "primary-light")
+    text-decoration: none
+.login-left
+  align-content: center
+  padding-top: 40vh
+  padding-left: 10vw
+  width: 50%
+  height: 100vh
+  background-color: map-get($primary-color, "green-100")
+
+.login-right
+  align-content: center
+  padding-top: 40vh
+  padding-left: 10vw
+  width: 50%
+  height: 100vh
+  background-color: map-get($primary-color, "green-100")
