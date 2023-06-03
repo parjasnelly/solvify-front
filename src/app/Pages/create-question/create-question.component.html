@@ -36,17 +36,65 @@
         class="question-info"
         *ngIf="questionForm.controls.type.value !== null"
       >
-        <label for="desc"><b>Descrição:</b></label>
-        <input
-          id="desc"
-          type="text"
-          placeholder="Instruções para solucionar a questão"
-          pInputText
-          formControlName="description"
-        />
+        <div style="display: flex; align-items: center; gap: 10px; width: 100%">
+          <select formControlName="language">
+            <option value="" disabled selected>Selecione uma Linguagem</option>
+            <option
+              *ngFor="let option of languageOptions"
+              [value]="option.value"
+            >
+              {{ option.name }}
+            </option>
+          </select>
+          <select formControlName="levelOfEducation">
+            <option value="" disabled selected>
+              Selecione um nivel de educação
+            </option>
+            <option
+              *ngFor="let option of levelOfEducationOptions"
+              [value]="option.value"
+            >
+              {{ option.name }}
+            </option>
+          </select>
+          <select formControlName="subject">
+            <option value="" disabled selected>Selecione uma Disciplina</option>
+            <option
+              *ngFor="let option of subjectOptions"
+              [value]="option.value"
+            >
+              {{ option.name }}
+            </option>
+          </select>
+          <select *ngIf="getSelectedSubject() !== -1" formControlName="topic">
+            <option value="" disabled selected>
+              {{
+                getSelectedSubject() === -1
+                  ? "Selecione uma Disciplina Primeiro"
+                  : "Selecione um Topico"
+              }}
+            </option>
+            <option
+              *ngFor="let option of topicOptions[getSelectedSubject()]"
+              [value]="option.value"
+            >
+              {{ option.name }}
+            </option>
+          </select>
+        </div>
 
-        <label for="quest"><b>Pergunta:</b></label>
-        <input id="quest" type="text" pInputText formControlName="question" />
+        <label
+          *ngIf="getSelectedQuestionType() !== questionTypeOptions[2].value"
+          for="quest"
+          ><b>Pergunta:</b></label
+        >
+        <input
+          *ngIf="getSelectedQuestionType() !== questionTypeOptions[2].value"
+          id="quest"
+          type="text"
+          pInputText
+          formControlName="statement"
+        />
       </div>
 
       <div
@@ -92,11 +140,13 @@
             cols="30"
             pInputTextarea
             style="margin-top: 10px"
-            formControlName="explanation"
+            formControlName="feedback"
             [autoResize]="true"
             placeholder="Explicação da resposta correta"
           ></textarea>
-          <label for="files" class="files-label"
+
+          <!-- future attachment feature -->
+          <!-- <label for="files" class="files-label"
             ><b>{{
               getCurrentFileCount() === 0
                 ? "+ Selecione Arquivos Relacionados"
@@ -109,7 +159,8 @@
             style="display: none"
             (change)="onFileSelect($event)"
             multiple
-          />
+          /> -->
+
           <div style="display: flex; justify-content: end; width: 100%">
             <p-button
               label="Enviar"

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import {AuthService} from "./services/auth.service";
-import {Router} from "@angular/router";
+import { AuthService } from './services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -8,12 +8,11 @@ import {Router} from "@angular/router";
   styleUrls: ['./app.component.sass'],
 })
 export class AppComponent {
-  constructor(authService: AuthService,private router: Router) {
+  constructor(authService: AuthService, private router: Router) {
     authService.isLogged.subscribe((isLoggedIn: boolean) => {
       if (!isLoggedIn) {
-        this.router.navigate(["/login"]);
+        this.router.navigate(['/login']);
       }
-    })
+    });
   }
-
 }
