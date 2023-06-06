@@ -6,7 +6,10 @@ import {
   FormArray,
   Validators,
 } from '@angular/forms';
-import { ProblemType } from 'src/app/Types/Problem';
+import { Router } from '@angular/router';
+import { ProblemService } from 'src/app/Services/question.service';
+import { ProblemFormData, ProblemType } from 'src/app/Types/Problem';
+import { AuthService } from 'src/app/services/auth.service';
 
 interface SelectOptions {
   name: string;
@@ -19,7 +22,14 @@ interface SelectOptions {
   styleUrls: ['./create-question.component.sass'],
 })
 export class CreateQuestionComponent implements OnInit {
-  constructor(private builder: FormBuilder) {}
+  constructor(
+    private builder: FormBuilder,
+    private authService: AuthService,
+    private problemService: ProblemService,
+    private router: Router
+  ) {}
+
+  loading: boolean = false;
 
   subjectOptions: SelectOptions[] = [
     { name: 'Matemática', value: 1 },
@@ -261,7 +271,54 @@ export class CreateQuestionComponent implements OnInit {
 
   onSubmit() {
     if (this.questionForm.valid) {
-      console.log(this.questionForm.value);
+      this.loading = true;
+
+      const formData: ProblemFormData = {
+        userId: this.authService.user.id,
+        statement: this.questionForm.value.statement!,
+        subjectId: this.questionForm.value.subject!,
+        topicId: this.questionForm.value.topic!,
+        subtopicId: '11111',
+        feedback: this.questionForm.value.feedback!,
+        language: this.questionForm.value.language!,
+        levelOfEducation: this.questionForm.value.levelOfEducation!,
+        optionFields: this.questionForm.value.optionFields!,
+        title: this.questionForm.value.title!,
+      };
+
+      switch (parseInt(this.questionForm.value.type!.toString())) {
+        case ProblemType.TRUEFALSE:
+          this.problemService.addTrueFalseProblem(formData).subscribe(() => {
+            this.loading = false;
+            this.router.navigate(['/']);
+          });
+          break;
+        case ProblemType.MULTITRUEFALSE:
+          this.problemService
+            .addMultiTrueFalseProblem(formData)
+            .subscribe(() => {
+              this.loading = false;
+              this.router.navigate(['/']);
+            });
+          break;
+        case ProblemType.MULTICHOICE:
+          this.problemService.addMultiChoiceProblem(formData).subscribe(() => {
+            this.loading = false;
+            this.router.navigate(['/']);
+          });
+          break;
+        case ProblemType.MULTISELECT:
+          this.problemService.addMultiSelectProblem(formData).subscribe(() => {
+            this.loading = false;
+            this.router.navigate(['/']);
+          });
+          break;
+        default:
+          this.loading = false;
+          break;
+      }
+    } else {
+      console.log('invalid');
     }
   }
 }
