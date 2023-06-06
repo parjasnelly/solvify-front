@@ -1,0 +1,206 @@
+@import "../../../styles.sass"
+
+/* colors */
+$primary: #42D885
+$secondary: #BEAAF9
+$terciary: #EDEEF0
+
+$history: #FCFAA3
+$geography: #9CDCFF
+$math: #F27A7D
+$physics: #FCC67C
+$chemestry: #D4B7F0
+$biology: #B4E76A
+
+$search: #BCC3CE
+$font: #4F5965
+
+
+.subjects-card-history
+    height: 135px
+    width: 130px
+    margin-top: 30px
+    margin-left: 30px
+    border-radius: 16px
+    background: $history
+.history-icon
+    height: 24px
+    width: 24px
+    border-radius: 12px
+    background: $history
+    margin-right: 10px
+
+
+.subjects-card-geography
+    height: 135px
+    width: 130px
+    margin-top: 30px
+    margin-left: 30px
+    border-radius: 16px
+    background: $geography
+.geography-icon
+    height: 24px
+    width: 24px
+    border-radius: 12px
+    background: $geography
+    margin-right: 10px
+
+
+.subjects-card-math
+    height: 135px
+    width: 130px
+    margin-top: 30px
+    margin-left: 30px
+    border-radius: 16px
+    background: $math
+.math-icon
+    height: 24px
+    width: 24px
+    border-radius: 12px
+    background: $math
+    margin-right: 10px
+
+
+.subjects-card-physics
+    height: 135px
+    width: 130px
+    margin-top: 30px
+    margin-left: 30px
+    border-radius: 16px
+    background: $physics
+.physics-icon
+    height: 24px
+    width: 24px
+    border-radius: 12px
+    background: $physics
+    margin-right: 10px
+
+
+.subjects-card-chemestry
+    height: 135px
+    width: 130px
+    margin-top: 30px
+    margin-left: 30px
+    border-radius: 16px
+    background: $chemestry
+.chemestry-icon
+    height: 24px
+    width: 24px
+    border-radius: 12px
+    background: $chemestry
+    margin-right: 10px
+    
+
+.subjects-card-biology
+    height: 135px
+    width: 130px
+    margin-top: 30px
+    margin-left: 30px
+    border-radius: 16px
+    background: $biology
+.biology-icon
+    height: 24px
+    width: 24px
+    border-radius: 12px
+    background: $biology
+    margin-right: 10px
+
+
+.main-wrapper
+    display: flex
+    width: 100%
+    height: 100%
+    .left-col
+        width: 23%
+        .left-col-label-cat
+            font-size: 40px
+            font-weight: bold
+            font-family: $standard-font-family
+            color: $font
+            margin-left: 20px
+            margin-top: 20px
+            text-align: center
+        .subjects-container
+            display: flex
+            height: 550px
+        .left-col-label-best
+            font-size: 28px
+            font-weight: bold
+            font-family: $standard-font-family
+            color: $font
+            text-align: center
+        .best-of-the-week
+            height: 400px
+            margin: 10px 30px 0px 30px
+            border: 2px solid $primary
+            border-radius: 16px
+
+
+
+    .col-separator
+        background: $secondary
+        width: 1px
+
+
+    .right-col
+        width: 77%
+        padding-top: 10px
+        .search
+            height: 50px
+            width: 90%
+            margin: 20px 20px 20px 40px
+            border-radius: 8px
+            border-color: $search
+            font-size: 18px
+            color: $search
+        .right-col-label
+            font-size: 30px
+            font-family: $standard-font-family
+            color: $font
+            margin-left: 40px
+        .question-card-container
+            display: flex
+            padding: 20px
+            height: 280px   
+            width: 100%
+            .question-card
+                width: 25%
+                height: 190px
+                background: $terciary
+                padding: 10px 10px 0px 10px
+                margin-right: 10px
+                border-radius: 16px
+                .question-card-header
+                    display: flex
+                    height: 20%
+                    font-size: 20px
+                    font-family: $standard-font-family
+                    color: $font
+                .question-card-content
+                    height: 54%
+                    margin-top: 2%
+                    font-size: 18px
+                    font-family: $standard-font-family
+                    color: $font
+                .question-card-footer
+                    height: 15%
+                    margin-top: 2%
+                    font-size: 17px
+                    font-family: $standard-font-family
+                    color: $font
+        .saved-packs
+            padding: 20px
+            height: 280px   
+            width: 100%
+            display: flex
+            .add-question-button
+                height: 140px
+                width: 140px
+                border-radius: 70px
+                background: $font
+                padding-top: 9px
+                text-align: center
+                font-size: 100px
+                font-family: $standard-font-family
+                color: white
+                cursor: pointer
