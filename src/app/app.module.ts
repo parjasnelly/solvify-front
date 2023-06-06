@@ -29,6 +29,9 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { MultiChoiceTypeComponent } from './Pages/create-question/multi-choice-type/multi-choice-type.component';
 import { MultiSelectTypeComponent } from './Pages/create-question/multi-select-type/multi-select-type.component';
 import { AvatarModule } from 'primeng/avatar';
+import { ProblemService } from './Services/question.service';
+import { HttpClientModule } from '@angular/common/http';
+import { LogService } from './Services/log.service';
 
 @NgModule({
   declarations: [
@@ -59,6 +62,7 @@ import { AvatarModule } from 'primeng/avatar';
     SocialLoginModule,
     GoogleSigninButtonModule,
     AvatarModule,
+    HttpClientModule,
   ],
   providers: [
     {
@@ -81,6 +85,8 @@ import { AvatarModule } from 'primeng/avatar';
         },
       } as SocialAuthServiceConfig,
     },
+    ProblemService,
+    LogService,
   ],
   bootstrap: [AppComponent],
 })

@@ -164,7 +164,8 @@
           <div style="display: flex; justify-content: end; width: 100%">
             <p-button
               label="Enviar"
-              icon="pi pi-check"
+              [icon]="loading ? 'pi pi-spinner' : 'pi pi-check'"
+              [loading]="loading"
               styleClass="p-button p-button-raised"
               [disabled]="!questionForm.valid"
               (click)="onSubmit()"
