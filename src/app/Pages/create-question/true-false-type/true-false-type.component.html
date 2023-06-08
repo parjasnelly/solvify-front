@@ -16,6 +16,7 @@
           pInputText
           class="p-inputtext-sm"
           formControlName="statement"
+          (input)="onOptionFieldsEdit()"
         />
         <div
           style="
@@ -25,7 +26,10 @@
             align-items: center;
           "
         >
-          <p-inputSwitch formControlName="answer"></p-inputSwitch>
+          <p-inputSwitch
+            (onChange)="onOptionFieldsEdit()"
+            formControlName="answer"
+          ></p-inputSwitch>
           <label
             [ngClass]="{
               switchtr: option.value.answer === true,

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -16,7 +16,15 @@ export class MultiTrueFalseTypeComponent {
   constructor(private builder: FormBuilder) {}
 
   @Input() parentForm!: FormGroup;
-  @Input() optionFields!: FormArray<FormGroup<any>>;
+  @Output() onFieldsUpdate = new EventEmitter<any[]>();
+
+  get optionFields() {
+    return this.parentForm.get('optionFields') as FormArray;
+  }
+
+  onOptionFieldsEdit = () => {
+    this.onFieldsUpdate.emit(this.optionFields.value);
+  };
 
   addOption() {
     const newOption = this.builder.group({
@@ -25,9 +33,11 @@ export class MultiTrueFalseTypeComponent {
     });
 
     this.optionFields.push(newOption);
+    this.onFieldsUpdate.emit(this.optionFields.value);
   }
 
   removeOption() {
     this.optionFields.removeAt(this.optionFields.length - 1);
+    this.onFieldsUpdate.emit(this.optionFields.value);
   }
 }

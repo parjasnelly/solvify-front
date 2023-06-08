@@ -16,9 +16,15 @@ export class MultiChoiceTypeComponent {
   constructor(private builder: FormBuilder) {}
 
   @Input() parentForm!: FormGroup;
-  @Input() optionFields!: FormArray<FormGroup<any>>;
+  @Output() onFieldsUpdate = new EventEmitter<any[]>();
 
-  @Output() optionFieldsEdited = new EventEmitter<FormArray>();
+  get optionFields() {
+    return this.parentForm.get('optionFields') as FormArray;
+  }
+
+  onOptionFieldsEdit = () => {
+    this.onFieldsUpdate.emit(this.optionFields.value);
+  };
 
   onOptionClick(index: number) {
     this.optionFields.controls.forEach((option, i) => {
@@ -28,7 +34,7 @@ export class MultiChoiceTypeComponent {
         option.patchValue({ isCorrect: false });
       }
     });
-    this.optionFieldsEdited.emit(this.optionFields);
+    this.onFieldsUpdate.emit(this.optionFields.value);
   }
 
   addOption() {
@@ -38,11 +44,11 @@ export class MultiChoiceTypeComponent {
     });
 
     this.optionFields.push(newOption);
-    this.optionFieldsEdited.emit(this.optionFields);
+    this.onFieldsUpdate.emit(this.optionFields.value);
   }
 
   removeOption() {
     this.optionFields.removeAt(this.optionFields.length - 1);
-    this.optionFieldsEdited.emit(this.optionFields);
+    this.onFieldsUpdate.emit(this.optionFields.value);
   }
 }
