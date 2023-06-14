@@ -25,6 +25,7 @@
           class="p-inputtext-sm"
           formControlName="label"
           style="padding: 8px; height: 40px"
+          (input)="onOptionFieldsEdit()"
         />
         <p-inputSwitch
           (onChange)="onOptionClick(i)"

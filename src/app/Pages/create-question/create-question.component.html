@@ -109,25 +109,23 @@
       >
         <app-true-false-type
           *ngIf="getSelectedQuestionType() === questionTypeOptions[2].value"
+          (onFieldsUpdate)="onOptionFieldsEdited($event)"
           [parentForm]="questionForm"
-          [optionFields]="questionForm.controls.optionFields"
         ></app-true-false-type>
         <app-multi-true-false-type
           *ngIf="getSelectedQuestionType() === questionTypeOptions[3].value"
+          (onFieldsUpdate)="onOptionFieldsEdited($event)"
           [parentForm]="questionForm"
-          [optionFields]="questionForm.controls.optionFields"
         ></app-multi-true-false-type>
         <app-multi-choice-type
           *ngIf="getSelectedQuestionType() === questionTypeOptions[0].value"
-          (optionFieldsEdited)="onOptionFieldsEdited($event)"
+          (onFieldsUpdate)="onOptionFieldsEdited($event)"
           [parentForm]="questionForm"
-          [optionFields]="questionForm.controls.optionFields"
         ></app-multi-choice-type>
         <app-multi-select-type
           *ngIf="getSelectedQuestionType() === questionTypeOptions[1].value"
-          (optionFieldsEdited)="onOptionFieldsEdited($event)"
+          (onFieldsUpdate)="onOptionFieldsEdited($event)"
           [parentForm]="questionForm"
-          [optionFields]="questionForm.controls.optionFields"
         ></app-multi-select-type>
 
         <div

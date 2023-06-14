@@ -16,6 +16,8 @@ interface SelectOptions {
   value: number | string;
 }
 
+const VALID_TEXT_PATTERN = /^\S[A-Za-z0-9.,!?'"()\[\]{}<>:;\-\s]*\S+$/;
+
 @Component({
   selector: 'app-create-question',
   templateUrl: './create-question.component.html',
@@ -128,11 +130,17 @@ export class CreateQuestionComponent implements OnInit {
   ];
 
   questionForm = this.builder.group({
-    title: ['', Validators.required],
+    title: ['', [Validators.required, Validators.pattern(VALID_TEXT_PATTERN)]],
     type: new FormControl<ProblemType | undefined>(undefined),
-    statement: ['', Validators.required],
+    statement: [
+      '',
+      [Validators.required, Validators.pattern(VALID_TEXT_PATTERN)],
+    ],
     optionFields: this.builder.array<FormGroup<any>>([]),
-    feedback: ['', Validators.required],
+    feedback: [
+      '',
+      [Validators.required, Validators.pattern(VALID_TEXT_PATTERN)],
+    ],
     levelOfEducation: ['', Validators.required],
     topic: ['', Validators.required],
     subtopic: new FormControl(''),
@@ -163,6 +171,10 @@ export class CreateQuestionComponent implements OnInit {
     return selectedSubject;
   }
 
+  getOptionFields() {
+    return this.questionForm.get('optionFields') as FormArray;
+  }
+
   // getCurrentFileCount() {
   //   return this.questionForm.get('files')!.value!.length;
   // }
@@ -173,9 +185,22 @@ export class CreateQuestionComponent implements OnInit {
     // this.questionForm.patchValue({ files: selectedFiles });
   }
 
-  onOptionFieldsEdited(optionFields: FormArray) {
-    this.questionForm.controls.optionFields = optionFields;
-    this.questionForm.value.optionFields = optionFields.value;
+  onOptionFieldsEdited(optionFields: any[]) {
+    this.questionForm.setValue(
+      {
+        title: this.questionForm.get('title')!.value,
+        feedback: this.questionForm.get('feedback')!.value,
+        levelOfEducation: this.questionForm.get('levelOfEducation')!.value,
+        topic: this.questionForm.get('topic')!.value,
+        subtopic: this.questionForm.get('subtopic')!.value,
+        subject: this.questionForm.get('subject')!.value,
+        language: this.questionForm.get('language')!.value,
+        type: this.questionForm.get('type')!.value,
+        statement: this.questionForm.get('statement')!.value,
+        optionFields: optionFields,
+      },
+      { emitEvent: false }
+    );
   }
 
   updateFormOnTypeChange() {
@@ -194,7 +219,10 @@ export class CreateQuestionComponent implements OnInit {
 
       const trueFalseFields = this.builder.array([
         this.builder.group({
-          statement: ['', Validators.required],
+          statement: [
+            '',
+            [Validators.required, Validators.pattern(VALID_TEXT_PATTERN)],
+          ],
           answer: new FormControl<boolean>(false),
         }),
       ]);
@@ -202,19 +230,29 @@ export class CreateQuestionComponent implements OnInit {
     } else if (type === ProblemType.MULTITRUEFALSE) {
       this.questionForm.controls.statement = new FormControl('', [
         Validators.required,
+        Validators.pattern(VALID_TEXT_PATTERN),
       ]);
 
       const trueFalseFields = this.builder.array([
         this.builder.group({
-          statement: ['', Validators.required],
+          statement: [
+            '',
+            [Validators.required, Validators.pattern(VALID_TEXT_PATTERN)],
+          ],
           answer: new FormControl<boolean>(true),
         }),
         this.builder.group({
-          statement: ['', Validators.required],
+          statement: [
+            '',
+            [Validators.required, Validators.pattern(VALID_TEXT_PATTERN)],
+          ],
           answer: new FormControl<boolean>(false),
         }),
         this.builder.group({
-          statement: ['', Validators.required],
+          statement: [
+            '',
+            [Validators.required, Validators.pattern(VALID_TEXT_PATTERN)],
+          ],
           answer: new FormControl<boolean>(false),
         }),
       ]);
@@ -223,19 +261,29 @@ export class CreateQuestionComponent implements OnInit {
     } else if (type === ProblemType.MULTICHOICE) {
       this.questionForm.controls.statement = new FormControl('', [
         Validators.required,
+        Validators.pattern(VALID_TEXT_PATTERN),
       ]);
 
       const multiChoiceFields = this.builder.array([
         this.builder.group({
-          label: ['', Validators.required],
+          label: [
+            '',
+            [Validators.required, Validators.pattern(VALID_TEXT_PATTERN)],
+          ],
           isCorrect: new FormControl<boolean>(true),
         }),
         this.builder.group({
-          label: ['', Validators.required],
+          label: [
+            '',
+            [Validators.required, Validators.pattern(VALID_TEXT_PATTERN)],
+          ],
           isCorrect: new FormControl<boolean>(false),
         }),
         this.builder.group({
-          label: ['', Validators.required],
+          label: [
+            '',
+            [Validators.required, Validators.pattern(VALID_TEXT_PATTERN)],
+          ],
           isCorrect: new FormControl<boolean>(false),
         }),
       ]);
@@ -248,19 +296,31 @@ export class CreateQuestionComponent implements OnInit {
 
       const multiSelectFields = this.builder.array([
         this.builder.group({
-          label: ['', Validators.required],
+          label: [
+            '',
+            [Validators.required, Validators.pattern(VALID_TEXT_PATTERN)],
+          ],
           isCorrect: new FormControl<boolean>(true),
         }),
         this.builder.group({
-          label: ['', Validators.required],
+          label: [
+            '',
+            [Validators.required, Validators.pattern(VALID_TEXT_PATTERN)],
+          ],
           isCorrect: new FormControl<boolean>(false),
         }),
         this.builder.group({
-          label: ['', Validators.required],
+          label: [
+            '',
+            [Validators.required, Validators.pattern(VALID_TEXT_PATTERN)],
+          ],
           isCorrect: new FormControl<boolean>(false),
         }),
         this.builder.group({
-          label: ['', Validators.required],
+          label: [
+            '',
+            [Validators.required, Validators.pattern(VALID_TEXT_PATTERN)],
+          ],
           isCorrect: new FormControl<boolean>(true),
         }),
       ]);
@@ -318,6 +378,11 @@ export class CreateQuestionComponent implements OnInit {
           break;
       }
     } else {
+      for (let el in this.questionForm.controls) {
+        if (this.questionForm.get(el)!.invalid) {
+          console.log(el);
+        }
+      }
       console.log('invalid');
     }
   }
