@@ -9,6 +9,7 @@ import {
   CreateTrueFalseProblemEntity,
   Problem,
   ProblemFormData,
+  ProblemRequestResponseObject,
 } from '../Types/Problem';
 import { LogService } from './log.service';
 
@@ -17,6 +18,26 @@ const STANDARD_URL = 'http://localhost:8080/api';
 @Injectable()
 export class ProblemService {
   constructor(private http: HttpClient, private logService: LogService) {}
+
+  getProblems(
+    pageNumber: number,
+    pageSize: number
+  ): Observable<ProblemRequestResponseObject[]> {
+    return this.http
+      .get<ProblemRequestResponseObject[]>(
+        `${STANDARD_URL}/problems?page_id=${pageNumber}&page_size=${pageSize}`
+      )
+      .pipe(
+        tap({
+          next: (data) => {
+            this.logService.writeLog('Problems fetched succesfully');
+          },
+          error: (error) => {
+            this.handleError(error);
+          },
+        })
+      );
+  }
 
   addTrueFalseProblem(problemData: ProblemFormData): Observable<Problem> {
     const trueFalseProblemdData: CreateTrueFalseProblemEntity = {
@@ -110,12 +131,7 @@ export class ProblemService {
       creator_id: problemData.userId,
       statement: problemData.statement!,
       items: problemData.optionFields.map((option) => option.label),
-      correct_items: problemData.optionFields.reduce((acc, item, index) => {
-        if (item.isCorrect) {
-          acc.push(index);
-        }
-        return acc;
-      }, []),
+      correct_items: problemData.optionFields.map((option) => option.isCorrect),
       feedback: problemData.feedback,
       language: problemData.language,
       level_of_education: problemData.levelOfEducation,
@@ -154,5 +170,34 @@ export class ProblemService {
     return throwError(
       () => new Error('Something bad happened; please try again later.')
     );
+  }
+
+  convertProblemResponseToProblem(
+    problemResponse: ProblemRequestResponseObject
+  ) {
+    const questionData: Problem = {
+      id: problemResponse._id,
+      accuracy: problemResponse.accuracy,
+      attempts: problemResponse.attempts,
+      correctAnswers: problemResponse.correct_answers,
+      creatorId: problemResponse.creator_id,
+      downvotes: problemResponse.downvotes,
+      feedback: problemResponse.feedback,
+      language: problemResponse.language,
+      levelOfEducation: problemResponse.level_of_education,
+      statement: problemResponse.statement,
+      subjectId: problemResponse.subject_id,
+      subtopicId: problemResponse.subtopic_id,
+      topicId: problemResponse.topic_id,
+      upvotes: problemResponse.upvotes,
+      problemType: problemResponse.problem_type,
+      boolAnswer: problemResponse.bool_answer,
+      items: problemResponse.items,
+      boolAnswers: problemResponse.bool_answers,
+      correctItem: problemResponse.correct_item,
+      correctItems: problemResponse.correct_items,
+    };
+
+    return questionData;
   }
 }

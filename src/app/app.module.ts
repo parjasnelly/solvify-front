@@ -31,6 +31,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { ProblemService } from './Services/question.service';
 import { HttpClientModule } from '@angular/common/http';
 import { LogService } from './Services/log.service';
+import { AnswerQuestionComponent } from './Pages/answer-question/answer-question.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { LogService } from './Services/log.service';
     MultiTrueFalseTypeComponent,
     MultiChoiceTypeComponent,
     MultiSelectTypeComponent,
+    AnswerQuestionComponent,
   ],
   imports: [
     BrowserModule,

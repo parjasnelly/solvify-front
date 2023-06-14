@@ -5,33 +5,50 @@ export enum ProblemType {
   MULTISELECT,
 }
 
+export interface ProblemRequestResponseObject {
+  _id: string;
+  problem_type: number;
+  attempts: number;
+  correct_answers: number;
+  accuracy: number;
+  upvotes: number;
+  downvotes: number;
+  feedback: string;
+  subject_id: string;
+  topic_id: string;
+  subtopic_id: string;
+  level_of_education: string;
+  language: string;
+  statement: string;
+  creator_id: string;
+  bool_answer?: boolean;
+  items?: Array<string>;
+  bool_answers?: Array<boolean>;
+  correct_item?: number;
+  correct_items?: Array<number>;
+}
+
 export interface Problem {
   id: string;
-  userId: string;
+  problemType: ProblemType;
+  attempts: number;
+  correctAnswers: number;
+  accuracy: number;
+  upvotes: number;
+  downvotes: number;
+  feedback: string;
   subjectId: string;
   topicId: string;
   subtopicId: string;
   levelOfEducation: string;
-  problemType: ProblemType;
-}
-
-export interface TrueFalse extends Problem {
-  boolAnswer: boolean;
-}
-
-export interface MultiTrueFalse extends Problem {
-  statements: Array<string>;
-  boolAnswers: Array<boolean>;
-}
-
-export interface MultiChoice extends Problem {
-  items: Array<string>;
-  correctItem: number;
-}
-
-export interface MultiSelection extends Problem {
-  items: Array<string>;
-  correctItem: Array<number>;
+  language: string;
+  statement: string;
+  creatorId: string;
+  boolAnswer?: boolean;
+  items?: Array<string>;
+  boolAnswers?: Array<boolean>;
+  correctItem?: number;
+  correctItems?: Array<number>;
 }
 
 export interface Attempt {
