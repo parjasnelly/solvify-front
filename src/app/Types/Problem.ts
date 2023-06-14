@@ -25,7 +25,7 @@ export interface ProblemRequestResponseObject {
   items?: Array<string>;
   bool_answers?: Array<boolean>;
   correct_item?: number;
-  correct_items?: Array<number>;
+  correct_items?: Array<boolean>;
 }
 
 export interface Problem {
@@ -48,7 +48,7 @@ export interface Problem {
   items?: Array<string>;
   boolAnswers?: Array<boolean>;
   correctItem?: number;
-  correctItems?: Array<number>;
+  correctItems?: Array<boolean>;
 }
 
 export interface ProblemAttemptResponseObject {
@@ -58,7 +58,7 @@ export interface ProblemAttemptResponseObject {
   bool_response?: boolean;
   bool_responses?: Array<boolean>;
   item_response?: number;
-  item_responses?: Array<number>;
+  item_responses?: Array<boolean>;
 }
 
 export interface ProblemAttempt {
@@ -67,15 +67,16 @@ export interface ProblemAttempt {
   bool_response?: boolean;
   bool_answer?: boolean;
   item_response?: number;
-  item_answer?: number;
+  correct_item?: number;
   bool_responses?: Array<boolean>;
   bool_answers?: Array<boolean>;
-  item_responses?: Array<number>;
-  item_answers?: Array<number>;
+  item_responses?: Array<boolean>;
+  correct_items?: Array<boolean>;
 }
 
 export interface ProblemFormData {
   userId: string;
+  userName: string;
   subjectId: string;
   topicId: string;
   subtopicId: string;
@@ -89,6 +90,7 @@ export interface ProblemFormData {
 
 export interface CreateTrueFalseProblemEntity {
   creator_id: string;
+  creator_username: string;
   statement: string;
   feedback: string;
   language: string;
@@ -101,6 +103,7 @@ export interface CreateTrueFalseProblemEntity {
 
 export interface CreateMultiTrueFalseProblemEntity {
   creator_id: string;
+  creator_username: string;
   statement: string;
   items: Array<string>;
   bool_answers: Array<boolean>;
@@ -114,6 +117,7 @@ export interface CreateMultiTrueFalseProblemEntity {
 
 export interface CreateMultiChoiceProblemEntity {
   creator_id: string;
+  creator_username: string;
   statement: string;
   items: Array<string>;
   correct_item: number;
@@ -127,9 +131,10 @@ export interface CreateMultiChoiceProblemEntity {
 
 export interface CreateMultiSelectionProblemEntity {
   creator_id: string;
+  creator_username: string;
   statement: string;
   items: Array<string>;
-  correct_items: Array<number>;
+  correct_items: Array<boolean>;
   feedback: string;
   language: string;
   level_of_education: string;

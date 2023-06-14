@@ -7,6 +7,8 @@ import {
   Validators,
 } from '@angular/forms';
 
+const VALID_TEXT_PATTERN = /^\S+[A-Za-zÀ-ÿ0-9.,!?'"()\[\]{}<>:;\-\s\+*=]*\S*$/;
+
 @Component({
   selector: 'app-multi-true-false-type',
   templateUrl: './multi-true-false-type.component.html',
@@ -28,7 +30,10 @@ export class MultiTrueFalseTypeComponent {
 
   addOption() {
     const newOption = this.builder.group({
-      statement: ['', Validators.required],
+      statement: [
+        '',
+        [Validators.required, Validators.pattern(VALID_TEXT_PATTERN)],
+      ],
       answer: new FormControl<boolean>(false),
     });
 

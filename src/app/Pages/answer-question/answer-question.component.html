@@ -1,5 +1,207 @@
 <app-header></app-header>
+<div class="main-page-container" *ngIf="!loadingQuestionDetails">
+  <div class="header-container">
+    <div style="display: flex; align-items: center">
+      <i
+        *ngIf="question.subjectId === '1'"
+        class="pi pi-percentage header-icon"
+      ></i>
+      <i
+        *ngIf="question.subjectId === '3'"
+        class="pi pi-hourglass header-icon"
+      ></i>
+      <i *ngIf="question.subjectId === '4'" class="pi pi-globe header-icon"></i>
+      <span
+        *ngIf="question.subjectId === getSubjectIdByName('Química')"
+        class="material-symbols-outlined"
+      >
+        science
+      </span>
+      <h4 class="subject-title">{{ getSubjectName(question.subjectId) }}</h4>
+    </div>
+  </div>
 
-<div>
-  {{ question.statement }}
+  <div
+    class="main-question-container"
+    [ngClass]="{
+      'answer-correct': answerResult === answerResultType.CORRECT,
+      'answer-warning': answerResult === answerResultType.HALF,
+      'answer-incorrect': answerResult === answerResultType.INCORRECT
+    }"
+  >
+    <div class="question-header">
+      <i
+        *ngIf="answerResult === null"
+        class="pi pi-question-circle question-icon"
+      ></i>
+      <i
+        *ngIf="answerResult === answerResultType.CORRECT"
+        class="pi pi-check-circle correct-icon"
+      ></i>
+      <i
+        *ngIf="answerResult === answerResultType.INCORRECT"
+        class="pi pi-times-circle incorrect-icon"
+      ></i>
+      <i
+        *ngIf="answerResult === answerResultType.HALF"
+        class="pi pi-exclamation-triangle warning-icon"
+      ></i>
+      <h5>{{ question.statement }}</h5>
+    </div>
+
+    <div class="question-options">
+      <div *ngIf="question.problemType === problemType.TRUEFALSE">
+        <div
+          style="
+            display: flex;
+            flex-direction: row;
+            gap: 17px;
+            align-items: center;
+            padding-left: 45px;
+          "
+        >
+          <p-inputSwitch [(ngModel)]="answer"></p-inputSwitch>
+          <label
+            style="margin-bottom: 7px"
+            [ngClass]="{
+              switchtr: answer === true,
+              switchfls: answer === false
+            }"
+            >{{ answer ? "Verdadeiro" : "Falso" }}</label
+          >
+        </div>
+      </div>
+
+      <div *ngIf="question.problemType === problemType.MULTICHOICE">
+        <div
+          style="
+            display: flex;
+            flex-direction: column;
+            gap: 17px;
+            align-items: flex-start;
+            justify-content: center;
+            padding-left: 45px;
+          "
+        >
+          <div
+            style="
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+              gap: 15px;
+            "
+            *ngFor="let item of question.items; let idx = index"
+          >
+            <p-radioButton
+              [value]="idx"
+              [(ngModel)]="answer"
+              [inputId]="item + '-' + idx"
+            ></p-radioButton>
+            <label [for]="item + '-' + idx" class="option-label">{{
+              item
+            }}</label>
+          </div>
+        </div>
+      </div>
+
+      <div
+        *ngIf="
+          question.problemType === problemType.MULTISELECT ||
+          question.problemType === problemType.MULTITRUEFALSE
+        "
+      >
+        <div
+          style="
+            display: flex;
+            flex-direction: column;
+            gap: 17px;
+            align-items: flex-start;
+            padding-left: 45px;
+          "
+          [formGroup]="answerFormGroup"
+        >
+          <div
+            style="
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+              gap: 15px;
+            "
+            *ngFor="let item of question.items; let idx = index"
+          >
+            <label class="item-container"
+              >{{ item }}
+              <input
+                type="checkbox"
+                formArrayName="itemAnswers"
+                [value]="idx"
+                (change)="onCheckboxChange($event, idx)"
+              />
+              <span class="checkmark"></span>
+            </label>
+            <!-- <input
+              type="checkbox"
+              formArrayName="itemAnswers"
+              [value]="idx"
+              (change)="onCheckboxChange($event, idx)"
+              class="checkbox-input"
+              [id]="item + '-' + idx"
+            />
+            <label [for]="item + '-' + idx" class="option-label">{{
+              item
+            }}</label> -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="question-footer">
+      <button
+        *ngIf="!isSubmitted"
+        pButton
+        label="Avaliar"
+        [icon]="isSubmissionLoading ? 'pi pi-spin pi-spinner' : 'pi pi-check'"
+        class="submit-button"
+        [disabled]="isSubmitEnabled() || isSubmissionLoading"
+        (click)="onSubmit()"
+      ></button>
+      <button
+        *ngIf="isSubmitted"
+        pButton
+        label="Avançar"
+        [icon]="'pi pi-chevron-right'"
+        class="submit-button"
+        routerLink="/"
+        iconPos="right"
+      ></button>
+    </div>
+  </div>
+
+  <div
+    style="
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      justify-content: space-between;
+    "
+  >
+    <div
+      [ngClass]="{
+        'explanation-container-answered': answerResult !== null,
+        'explanation-container-unanswered': answerResult === null
+      }"
+    >
+      <i
+        *ngIf="answerResult === null"
+        class="pi pi-lock"
+        style="font-size: 36px; color: #47525e"
+      ></i>
+      <h5 *ngIf="answerResult === null">
+        Avalie sua resposta para acessar a explicação
+      </h5>
+
+      <p *ngIf="answerResult !== null">{{ question.feedback }}</p>
+    </div>
+  </div>
+  <p-toast position="bottom-center"></p-toast>
 </div>

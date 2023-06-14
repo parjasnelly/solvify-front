@@ -63,6 +63,7 @@ export class ProblemService {
   addTrueFalseProblem(problemData: ProblemFormData): Observable<Problem> {
     const trueFalseProblemdData: CreateTrueFalseProblemEntity = {
       creator_id: problemData.userId,
+      creator_username: problemData.userName,
       statement: problemData.optionFields[0].statement,
       feedback: problemData.feedback,
       language: problemData.language,
@@ -90,6 +91,7 @@ export class ProblemService {
   addMultiTrueFalseProblem(problemData: ProblemFormData): Observable<Problem> {
     const multiTrueFalseProblemData: CreateMultiTrueFalseProblemEntity = {
       creator_id: problemData.userId,
+      creator_username: problemData.userName,
       statement: problemData.statement!,
       items: problemData.optionFields.map((option) => option.statement),
       bool_answers: problemData.optionFields.map((option) => option.answer),
@@ -120,6 +122,7 @@ export class ProblemService {
   addMultiChoiceProblem(problemData: ProblemFormData): Observable<Problem> {
     const multiChoiceProblemData: CreateMultiChoiceProblemEntity = {
       creator_id: problemData.userId,
+      creator_username: problemData.userName,
       statement: problemData.statement!,
       items: problemData.optionFields.map((option) => option.label),
       correct_item: problemData.optionFields.findIndex(
@@ -150,6 +153,7 @@ export class ProblemService {
   addMultiSelectProblem(problemData: ProblemFormData): Observable<Problem> {
     const multiSelectProblemData: CreateMultiSelectionProblemEntity = {
       creator_id: problemData.userId,
+      creator_username: problemData.userName,
       statement: problemData.statement!,
       items: problemData.optionFields.map((option) => option.label),
       correct_items: problemData.optionFields.map((option) => option.isCorrect),
@@ -193,8 +197,10 @@ export class ProblemService {
     return status;
   }
 
-  answerProblem(attempt: ProblemAttempt, problemType: ProblemType): number {
-    let answerStatus = -1;
+  answerProblem(
+    attempt: ProblemAttempt,
+    problemType: ProblemType
+  ): Observable<ProblemAttemptResponseObject> {
     let url = STANDARD_URL;
 
     switch (problemType) {
@@ -214,13 +220,9 @@ export class ProblemService {
         break;
     }
 
-    this.http
-      .post<ProblemAttemptResponseObject>(url, attempt)
-      .subscribe((data) => {
-        answerStatus = data.solution_accuracy;
-      });
+    console.log(attempt);
 
-    return answerStatus;
+    return this.http.post<ProblemAttemptResponseObject>(url, attempt);
   }
 
   voteProblem(userId: string, problemId: string, isUpvote: boolean): boolean {
