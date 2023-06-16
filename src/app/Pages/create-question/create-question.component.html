@@ -40,7 +40,7 @@
         *ngIf="questionForm.controls.type.value !== null"
       >
         <div style="display: flex; align-items: center; gap: 10px; width: 100%">
-          <select formControlName="language">
+          <!-- <select formControlName="language">
             <option value="" disabled selected>Selecione uma Linguagem</option>
             <option
               *ngFor="let option of languageOptions"
@@ -48,7 +48,7 @@
             >
               {{ option.name }}
             </option>
-          </select>
+          </select> -->
           <select formControlName="levelOfEducation">
             <option value="" disabled selected>
               Selecione um nivel de educação

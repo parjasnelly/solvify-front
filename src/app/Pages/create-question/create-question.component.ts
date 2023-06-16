@@ -80,7 +80,7 @@ export class CreateQuestionComponent implements OnInit {
     topic: new FormControl(''),
     subtopic: new FormControl(''),
     subject: ['', Validators.required],
-    language: ['', Validators.required],
+    language: ['pt', Validators.required],
     // files: new FormControl<File[]>([]),
   });
 
@@ -296,7 +296,7 @@ export class CreateQuestionComponent implements OnInit {
         statement: this.questionForm.value.statement!,
         subjectId: this.questionForm.value.subject!,
         topicId: this.questionForm.value.topic!,
-        subtopicId: '11111',
+        subtopicId: '',
         feedback: this.questionForm.value.feedback!,
         language: this.questionForm.value.language!,
         levelOfEducation: this.questionForm.value.levelOfEducation!,
