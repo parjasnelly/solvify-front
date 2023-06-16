@@ -179,22 +179,18 @@ export class ProblemService {
       );
   }
 
-  reportProblem(problemId: string, userId: string, reason: string): boolean {
-    let status = false;
-
+  reportProblem(
+    problemId: string,
+    userId: string,
+    reason: string
+  ): Observable<Object> {
     const problemReport = {
       problem_id: problemId,
       user_id: userId,
       reason: reason,
     };
 
-    this.http
-      .post(`${STANDARD_URL}/problems/report`, problemReport)
-      .subscribe((data) => {
-        status = true;
-      });
-
-    return status;
+    return this.http.post(`${STANDARD_URL}/problems/report`, problemReport);
   }
 
   answerProblem(

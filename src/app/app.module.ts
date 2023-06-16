@@ -35,6 +35,7 @@ import { AnswerQuestionComponent } from './Pages/answer-question/answer-question
 import { SubjectService } from './Services/subject.service';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { DialogModule } from 'primeng/dialog';
 
 @NgModule({
   declarations: [
@@ -67,6 +68,7 @@ import { MessageService } from 'primeng/api';
     AvatarModule,
     HttpClientModule,
     ToastModule,
+    DialogModule,
   ],
   providers: [
     {

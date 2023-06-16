@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { tap } from 'rxjs';
 import { ProblemService } from 'src/app/Services/question.service';
 import { SubjectService } from 'src/app/Services/subject.service';
 import {
@@ -10,6 +11,7 @@ import {
   ProblemAttemptResponseObject,
   ProblemType,
 } from 'src/app/Types/Problem';
+import { delay } from 'src/app/Utils/delay';
 import { AuthService } from 'src/app/services/auth.service';
 
 interface SelectOptions {
@@ -36,6 +38,9 @@ export class AnswerQuestionComponent {
   isSubmissionLoading = false;
   isSubmitted = false;
   loadingQuestionDetails = true;
+  sendingReport = false;
+  isReportModalVisible = false;
+  reportText = '';
 
   get problemType(): typeof ProblemType {
     return ProblemType;
@@ -82,6 +87,10 @@ export class AnswerQuestionComponent {
 
   get answerFormGroup() {
     return this.answer as FormGroup;
+  }
+
+  onReportButtonClick() {
+    this.isReportModalVisible = true;
   }
 
   getSubjectName(id: string) {
@@ -188,5 +197,41 @@ export class AnswerQuestionComponent {
       default:
         break;
     }
+  }
+
+  reportProblem() {
+    this.sendingReport = true;
+
+    this.problemService
+      .reportProblem(
+        this.question.id,
+        this.authService.user.id,
+        this.reportText
+      )
+      .subscribe({
+        next: () => {
+          this.sendingReport = false;
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Reportado com sucesso',
+            detail: 'Obrigado por nos ajudar a melhorar!',
+          });
+          delay(2000).then(() => {
+            this.router.navigate(['/']);
+          });
+        },
+        error: (error) => {
+          this.sendingReport = false;
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erro ao reportar',
+            detail:
+              'Ocorreu um erro ao reportar o problema, tente novamente mais tarde',
+          });
+          delay(2000).then(() => {
+            this.router.navigate(['/']);
+          });
+        },
+      });
   }
 }

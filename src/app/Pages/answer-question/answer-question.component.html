@@ -19,6 +19,14 @@
       </span>
       <h4 class="subject-title">{{ getSubjectName(question.subjectId) }}</h4>
     </div>
+    <button
+      pButton
+      label="Reportar Problema"
+      icon="pi pi-exclamation-circle"
+      class="report-button"
+      iconPos="left"
+      (click)="onReportButtonClick()"
+    ></button>
   </div>
 
   <div
@@ -204,4 +212,36 @@
     </div>
   </div>
   <p-toast position="bottom-center"></p-toast>
+  <p-dialog
+    header="Reportar Problema"
+    [(visible)]="isReportModalVisible"
+    [modal]="true"
+    [style]="{ width: '50vw' }"
+    [draggable]="false"
+    [resizable]="false"
+  >
+    <p class="report-text"></p>
+    <span class="p-float-label">
+      <textarea
+        id="float-input"
+        pInputTextarea
+        [autoResize]="true"
+        [(ngModel)]="reportText"
+        style="min-height: 152px !important; width: 100%"
+      ></textarea>
+      <label for="float-input"
+        >Faça uma breve descrição do problema encontrado nesta questão.</label
+      >
+    </span>
+
+    <ng-template pTemplate="footer">
+      <p-button
+        [icon]="!sendingReport ? 'pi pi-check' : 'pi pi-spin pi-spinner'"
+        (click)="reportProblem()"
+        [disabled]="sendingReport"
+        label="Reportar"
+        styleClass="p-button-text p-button-danger"
+      ></p-button>
+    </ng-template>
+  </p-dialog>
 </div>
