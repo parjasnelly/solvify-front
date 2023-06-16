@@ -8,20 +8,23 @@ const STANDARD_URL = 'http://localhost:8080/api';
 
 @Injectable()
 export class SubjectService {
+  private subjects: Subject[] = [];
   constructor(private http: HttpClient, private logService: LogService) {}
 
-  getSubjects(): Observable<Subject[]> {
-    return this.http
+  fetchSubjects() {
+    this.http
       .get<SubjectResponseObject[]>(`${STANDARD_URL}/subjects`)
-      .pipe(
-        map((data) => {
-          return data.map((subject) => ({
-            id: subject._id,
-            name: subject.name,
-            language: subject.language,
-          }));
-        })
-      );
+      .subscribe((data) => {
+        this.subjects = data.map((subject) => ({
+          id: subject._id,
+          name: subject.name,
+          language: subject.language,
+        }));
+      });
+  }
+
+  getSubjects(): Subject[] {
+    return this.subjects;
   }
 
   getSubjectTopics(subjectId: string): Observable<Topic[]> {

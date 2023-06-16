@@ -77,7 +77,7 @@ export class CreateQuestionComponent implements OnInit {
       [Validators.required, Validators.pattern(VALID_TEXT_PATTERN)],
     ],
     levelOfEducation: ['', Validators.required],
-    topic: ['', Validators.required],
+    topic: new FormControl(''),
     subtopic: new FormControl(''),
     subject: ['', Validators.required],
     language: ['', Validators.required],
@@ -89,13 +89,12 @@ export class CreateQuestionComponent implements OnInit {
       this.updateFormOnTypeChange();
     });
 
-    this.subjectService.getSubjects().subscribe(
-      (subjects) =>
-        (this.subjectOptions = subjects.map((subject) => ({
-          name: subject.name,
-          value: subject.id,
-        })))
-    );
+    console.log(this.subjectService.getSubjects());
+
+    this.subjectOptions = this.subjectService.getSubjects().map((subject) => ({
+      name: subject.name,
+      value: subject.id,
+    }));
 
     this.questionForm.get('subject')!.valueChanges.subscribe(() => {
       this.subjectService.getSubjectTopics(this.getSelectedSubject()).subscribe(

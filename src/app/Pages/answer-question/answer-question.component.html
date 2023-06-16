@@ -3,11 +3,11 @@
   <div class="header-container">
     <div style="display: flex; align-items: center">
       <i
-        *ngIf="question.subjectId === '1'"
+        *ngIf="question.subjectId === getSubjectIdByName('Matemática')"
         class="pi pi-percentage header-icon"
       ></i>
       <i
-        *ngIf="question.subjectId === '3'"
+        *ngIf="question.subjectId === getSubjectIdByName('Geografia')"
         class="pi pi-hourglass header-icon"
       ></i>
       <i *ngIf="question.subjectId === '4'" class="pi pi-globe header-icon"></i>

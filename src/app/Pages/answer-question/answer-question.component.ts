@@ -61,13 +61,9 @@ export class AnswerQuestionComponent {
 
   ngOnInit() {
     this.question = history.state;
-    this.subjectService.getSubjects().subscribe((subjects) => {
-      this.Subjects = subjects.map((subject) => ({
-        name: subject.name,
-        value: subject.id,
-      }));
-      this.loadingQuestionDetails = false;
-    });
+    this.Subjects = this.subjectService
+      .getSubjects()
+      .map((subject) => ({ name: subject.name, value: subject.id }));
 
     if (this.question.problemType === ProblemType.TRUEFALSE) {
       this.answer = false;
