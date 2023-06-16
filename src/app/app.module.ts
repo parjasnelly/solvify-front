@@ -33,6 +33,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { LogService } from './Services/log.service';
 import { AnswerQuestionComponent } from './Pages/answer-question/answer-question.component';
 import { SubjectService } from './Services/subject.service';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -64,6 +66,7 @@ import { SubjectService } from './Services/subject.service';
     GoogleSigninButtonModule,
     AvatarModule,
     HttpClientModule,
+    ToastModule,
   ],
   providers: [
     {
@@ -89,6 +92,7 @@ import { SubjectService } from './Services/subject.service';
     ProblemService,
     LogService,
     SubjectService,
+    MessageService,
   ],
   bootstrap: [AppComponent],
 })

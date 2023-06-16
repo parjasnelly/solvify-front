@@ -11,13 +11,15 @@ import { ProblemService } from 'src/app/Services/question.service';
 import { SubjectService } from 'src/app/Services/subject.service';
 import { ProblemFormData, ProblemType } from 'src/app/Types/Problem';
 import { AuthService } from 'src/app/services/auth.service';
+import { MessageService } from 'primeng/api';
+import { delay } from 'src/app/Utils/delay';
 
 interface SelectOptions {
   name: string;
   value: number | string;
 }
 
-const VALID_TEXT_PATTERN = /^\S[A-Za-z0-9.,!?'"()\[\]{}<>:;\-\s]*\S+$/;
+const VALID_TEXT_PATTERN = /^\S+[A-Za-zÀ-ÿ0-9.,!?'"()\[\]{}<>:;\-\s\+*=]*\S*$/;
 
 @Component({
   selector: 'app-create-question',
@@ -30,7 +32,8 @@ export class CreateQuestionComponent implements OnInit {
     private authService: AuthService,
     private problemService: ProblemService,
     private subjectService: SubjectService,
-    private router: Router
+    private router: Router,
+    private messageService: MessageService
   ) {}
 
   loading: boolean = false;
@@ -273,12 +276,24 @@ export class CreateQuestionComponent implements OnInit {
     }
   }
 
+  onSubmitSuccess = async () => {
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Sucesso',
+      detail: 'Questão Adicionada.',
+    });
+    await delay(1000);
+    this.loading = false;
+    this.router.navigate(['/']);
+  };
+
   onSubmit() {
     if (this.questionForm.valid) {
       this.loading = true;
 
       const formData: ProblemFormData = {
         userId: this.authService.user.id,
+        userName: this.authService.user.name,
         statement: this.questionForm.value.statement!,
         subjectId: this.questionForm.value.subject!,
         topicId: this.questionForm.value.topic!,
@@ -293,28 +308,24 @@ export class CreateQuestionComponent implements OnInit {
       switch (parseInt(this.questionForm.value.type!.toString())) {
         case ProblemType.TRUEFALSE:
           this.problemService.addTrueFalseProblem(formData).subscribe(() => {
-            this.loading = false;
-            this.router.navigate(['/']);
+            this.onSubmitSuccess();
           });
           break;
         case ProblemType.MULTITRUEFALSE:
           this.problemService
             .addMultiTrueFalseProblem(formData)
             .subscribe(() => {
-              this.loading = false;
-              this.router.navigate(['/']);
+              this.onSubmitSuccess();
             });
           break;
         case ProblemType.MULTICHOICE:
           this.problemService.addMultiChoiceProblem(formData).subscribe(() => {
-            this.loading = false;
-            this.router.navigate(['/']);
+            this.onSubmitSuccess();
           });
           break;
         case ProblemType.MULTISELECT:
           this.problemService.addMultiSelectProblem(formData).subscribe(() => {
-            this.loading = false;
-            this.router.navigate(['/']);
+            this.onSubmitSuccess();
           });
           break;
         default:
@@ -327,7 +338,12 @@ export class CreateQuestionComponent implements OnInit {
           console.log(el);
         }
       }
-      console.log('invalid');
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Campos Invalidos',
+        detail:
+          'Verifique se todos os campos estão preenchidos apropriadamente.',
+      });
     }
   }
 }

@@ -1,22 +1,38 @@
 <div class="topnav">
   <a routerLink="/">Solvify</a>
-  <div class="user-info">
-    <p-avatar
-      image="{{ this.authService.user.photoUrl }}"
-      styleClass="mr-2"
-      size="large"
-      shape="circle"
-    ></p-avatar>
-    <p-button
-      (click)="toggle()"
-      label="Olá, {{ this.authService.user.firstName }}"
-    ></p-button>
+  <div>
+    <div class="user-info" (click)="toggle()">
+      <p-avatar
+        image="{{ this.authService.user.photoUrl }}"
+        styleClass="mr-2"
+        size="large"
+        shape="circle"
+      ></p-avatar>
+      <button p-button-text iconPos="right" icon="pi pi-chevron-down">
+        Olá, {{ this.authService.user.firstName }}
+        <i *ngIf="!overlayVisible" class="pi pi-chevron-down"></i>
+        <i *ngIf="overlayVisible" class="pi pi-chevron-up"></i>
+      </button>
+    </div>
     <p-overlay [(visible)]="overlayVisible">
-      <p-button
-        (click)="this.authService.signOut()"
-        label="Sair"
-        styleClass="p-button-raised p-button-danger"
-      ></p-button>
+      <div class="header-dropdown">
+        <button
+          pButton
+          icon="pi pi-user"
+          routerLink="/create-question"
+          class="dropdown-button"
+        >
+          Perfil
+        </button>
+        <button
+          pButton
+          icon="pi pi-sign-out"
+          (click)="this.authService.signOut()"
+          class="dropdown-button"
+        >
+          Sair
+        </button>
+      </div>
     </p-overlay>
   </div>
 </div>

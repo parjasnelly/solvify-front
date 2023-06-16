@@ -1,5 +1,8 @@
 <app-header></app-header>
-<div style="margin: 5px">
+<div
+  style="display: flex; flex-direction: column; padding: 20px 26px 20px 26px"
+>
+  <p-toast position="bottom-center"></p-toast>
   <div class="header-div">
     <h2 class="section-title">Nova Questão</h2>
 
@@ -100,7 +103,7 @@
           flex-direction: row;
           justify-content: space-between;
           gap: 15px;
-          margin-top: 10px;
+          margin-top: 20px;
         "
         *ngIf="questionForm.controls.type.value !== null"
       >
@@ -159,7 +162,7 @@
           <div style="display: flex; justify-content: end; width: 100%">
             <p-button
               label="Enviar"
-              [icon]="loading ? 'pi pi-spinner' : 'pi pi-check'"
+              [icon]="loading ? '' : 'pi pi-check'"
               [loading]="loading"
               styleClass="p-button p-button-raised"
               [disabled]="!questionForm.valid"

@@ -16,7 +16,7 @@ export class DashboardComponent {
 
   ngOnInit() {
     this.problemService
-      .getProblems(this.currentQuestionPage, 10)
+      .getProblems(this.currentQuestionPage, 20)
       .subscribe((data) => {
         data.forEach((question) => {
           const questionData =
@@ -30,7 +30,7 @@ export class DashboardComponent {
 
   getMoreQuestions() {
     this.problemService
-      .getProblems(this.currentQuestionPage, 10)
+      .getProblems(this.currentQuestionPage, 20)
       .subscribe((data) => {
         data.forEach((question) => {
           const questionData =

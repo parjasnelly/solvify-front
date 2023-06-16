@@ -7,6 +7,8 @@ import {
   Validators,
 } from '@angular/forms';
 
+const VALID_TEXT_PATTERN = /^\S+[A-Za-zÀ-ÿ0-9.,!?'"()\[\]{}<>:;\-\s\+*=]*\S*$/;
+
 @Component({
   selector: 'app-multi-choice-type',
   templateUrl: './multi-choice-type.component.html',
@@ -39,7 +41,10 @@ export class MultiChoiceTypeComponent {
 
   addOption() {
     const newOption = this.builder.group({
-      label: ['', Validators.required],
+      label: [
+        '',
+        [Validators.required, Validators.pattern(VALID_TEXT_PATTERN)],
+      ],
       isCorrect: new FormControl<boolean>(false),
     });
 
