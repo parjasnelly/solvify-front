@@ -37,7 +37,6 @@ export class AnswerQuestionComponent {
   answerResult: ResultType | null = null;
   isSubmissionLoading = false;
   isSubmitted = false;
-  loadingQuestionDetails = true;
   sendingReport = false;
   isReportModalVisible = false;
   reportText = '';
