@@ -8,6 +8,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ProblemService } from 'src/app/Services/question.service';
+import { SubjectService } from 'src/app/Services/subject.service';
 import { ProblemFormData, ProblemType } from 'src/app/Types/Problem';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -28,88 +29,19 @@ export class CreateQuestionComponent implements OnInit {
     private builder: FormBuilder,
     private authService: AuthService,
     private problemService: ProblemService,
+    private subjectService: SubjectService,
     private router: Router
   ) {}
 
   loading: boolean = false;
-
-  subjectOptions: SelectOptions[] = [
-    { name: 'Matemática', value: 1 },
-    { name: 'Português', value: 2 },
-    { name: 'História', value: 3 },
-    { name: 'Geografia', value: 4 },
-    { name: 'Biologia', value: 5 },
-    { name: 'Física', value: 6 },
-    { name: 'Química', value: 7 },
-    { name: 'Filosofia', value: 8 },
-    { name: 'Sociologia', value: 9 },
-    { name: 'Inglês', value: 10 },
-    { name: 'Espanhol', value: 11 },
-  ];
+  subjectOptions: SelectOptions[] = [];
+  topicOptions: SelectOptions[] = [];
 
   levelOfEducationOptions: SelectOptions[] = [
     { name: 'Ensino Fundamental', value: 'primary school' },
     { name: 'Ensino Médio', value: 'high school' },
     { name: 'Ensino Superior', value: 'college' },
   ];
-
-  topicOptions: Record<number, SelectOptions[]> = {
-    1: [
-      { name: 'Álgebra', value: 1 },
-      { name: 'Geometria', value: 2 },
-      { name: 'Trigonometria', value: 3 },
-    ],
-    2: [
-      { name: 'Gramática', value: 1 },
-      { name: 'Literatura', value: 2 },
-    ],
-    3: [
-      { name: 'História do Brasil', value: 1 },
-      { name: 'História da América', value: 2 },
-      { name: 'História da Europa', value: 3 },
-    ],
-    4: [
-      { name: 'Geografia do Brasil', value: 1 },
-      { name: 'Geografia da América', value: 2 },
-      { name: 'Geografia da Europa', value: 3 },
-    ],
-    5: [
-      { name: 'Biologia Celular', value: 1 },
-      { name: 'Biologia Molecular', value: 2 },
-      { name: 'Biologia Animal', value: 3 },
-      { name: 'Biologia Vegetal', value: 4 },
-    ],
-    6: [
-      { name: 'Física Clássica', value: 1 },
-      { name: 'Física Moderna', value: 2 },
-    ],
-    7: [
-      { name: 'Química Orgânica', value: 1 },
-      { name: 'Química Inorgânica', value: 2 },
-    ],
-    8: [
-      { name: 'Filosofia Antiga', value: 1 },
-      { name: 'Filosofia Medieval', value: 2 },
-      { name: 'Filosofia Moderna', value: 3 },
-      { name: 'Filosofia Contemporânea', value: 4 },
-    ],
-    9: [
-      { name: 'Sociologia Antiga', value: 1 },
-      { name: 'Sociologia Medieval', value: 2 },
-      { name: 'Sociologia Moderna', value: 3 },
-      { name: 'Sociologia Contemporânea', value: 4 },
-    ],
-    10: [
-      { name: 'Inglês Básico', value: 1 },
-      { name: 'Inglês Intermediário', value: 2 },
-      { name: 'Inglês Avançado', value: 3 },
-    ],
-    11: [
-      { name: 'Espanhol Básico', value: 1 },
-      { name: 'Espanhol Intermediário', value: 2 },
-      { name: 'Espanhol Avançado', value: 3 },
-    ],
-  };
 
   languageOptions: SelectOptions[] = [
     { name: 'Português', value: 'pt' },
@@ -153,6 +85,24 @@ export class CreateQuestionComponent implements OnInit {
     this.questionForm.get('type')!.valueChanges.subscribe(() => {
       this.updateFormOnTypeChange();
     });
+
+    this.subjectService.getSubjects().subscribe(
+      (subjects) =>
+        (this.subjectOptions = subjects.map((subject) => ({
+          name: subject.name,
+          value: subject.id,
+        })))
+    );
+
+    this.questionForm.get('subject')!.valueChanges.subscribe(() => {
+      this.subjectService.getSubjectTopics(this.getSelectedSubject()).subscribe(
+        (topics) =>
+          (this.topicOptions = topics.map((topic) => ({
+            name: topic.name,
+            value: topic.id,
+          })))
+      );
+    });
   }
 
   getSelectedQuestionType() {
@@ -160,13 +110,7 @@ export class CreateQuestionComponent implements OnInit {
   }
 
   getSelectedSubject() {
-    const selectedSubject = parseInt(
-      this.questionForm.get('subject')!.value!.toString()
-    );
-
-    if (isNaN(selectedSubject)) {
-      return -1;
-    }
+    const selectedSubject = this.questionForm.get('subject')!.value!.toString();
 
     return selectedSubject;
   }

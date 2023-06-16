@@ -66,18 +66,15 @@
               {{ option.name }}
             </option>
           </select>
-          <select *ngIf="getSelectedSubject() !== -1" formControlName="topic">
+          <select *ngIf="getSelectedSubject() !== ''" formControlName="topic">
             <option value="" disabled selected>
               {{
-                getSelectedSubject() === -1
+                getSelectedSubject() === ""
                   ? "Selecione uma Disciplina Primeiro"
                   : "Selecione um Topico"
               }}
             </option>
-            <option
-              *ngFor="let option of topicOptions[getSelectedSubject()]"
-              [value]="option.value"
-            >
+            <option *ngFor="let option of topicOptions" [value]="option.value">
               {{ option.name }}
             </option>
           </select>

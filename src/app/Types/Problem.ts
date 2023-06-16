@@ -51,9 +51,27 @@ export interface Problem {
   correctItems?: Array<number>;
 }
 
-export interface Attempt {
-  isCorrrect: boolean;
-  problemType: number;
+export interface ProblemAttemptResponseObject {
+  _id: string;
+  attempted_at: string;
+  solution_accuracy: number;
+  bool_response?: boolean;
+  bool_responses?: Array<boolean>;
+  item_response?: number;
+  item_responses?: Array<number>;
+}
+
+export interface ProblemAttempt {
+  user_id: string;
+  problem_id: string;
+  bool_response?: boolean;
+  bool_answer?: boolean;
+  item_response?: number;
+  item_answer?: number;
+  bool_responses?: Array<boolean>;
+  bool_answers?: Array<boolean>;
+  item_responses?: Array<number>;
+  item_answers?: Array<number>;
 }
 
 export interface ProblemFormData {

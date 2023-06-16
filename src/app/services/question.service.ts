@@ -8,8 +8,11 @@ import {
   CreateMultiTrueFalseProblemEntity,
   CreateTrueFalseProblemEntity,
   Problem,
+  ProblemAttempt,
+  ProblemAttemptResponseObject,
   ProblemFormData,
   ProblemRequestResponseObject,
+  ProblemType,
 } from '../Types/Problem';
 import { LogService } from './log.service';
 
@@ -21,11 +24,29 @@ export class ProblemService {
 
   getProblems(
     pageNumber: number,
-    pageSize: number
+    pageSize: number,
+    orderBy?: string,
+    desceding?: boolean,
+    subject_id?: string,
+    topic_id?: string,
+    subtopic_id?: string,
+    level_of_education?: string,
+    language?: string
   ): Observable<ProblemRequestResponseObject[]> {
+    const params = {
+      order_by: orderBy || 'created_at',
+      desceding: desceding || true,
+      subject_id: subject_id || '',
+      topic_id: topic_id || '',
+      subtopic_id: subtopic_id || '',
+      level_of_education: level_of_education || '',
+      language: language || 'pt',
+    };
+
     return this.http
-      .get<ProblemRequestResponseObject[]>(
-        `${STANDARD_URL}/problems?page_id=${pageNumber}&page_size=${pageSize}`
+      .post<ProblemRequestResponseObject[]>(
+        `${STANDARD_URL}/problems?page_id=${pageNumber}&page_size=${pageSize}`,
+        params
       )
       .pipe(
         tap({
@@ -152,6 +173,69 @@ export class ProblemService {
           },
         })
       );
+  }
+
+  reportProblem(problemId: string, userId: string, reason: string): boolean {
+    let status = false;
+
+    const problemReport = {
+      problem_id: problemId,
+      user_id: userId,
+      reason: reason,
+    };
+
+    this.http
+      .post(`${STANDARD_URL}/problems/report`, problemReport)
+      .subscribe((data) => {
+        status = true;
+      });
+
+    return status;
+  }
+
+  answerProblem(attempt: ProblemAttempt, problemType: ProblemType): number {
+    let answerStatus = -1;
+    let url = STANDARD_URL;
+
+    switch (problemType) {
+      case ProblemType.TRUEFALSE:
+        url += '/problems/solve-tf';
+        break;
+      case ProblemType.MULTITRUEFALSE:
+        url += '/problems/solve-mtf';
+        break;
+      case ProblemType.MULTICHOICE:
+        url += '/problems/solve-mc';
+        break;
+      case ProblemType.MULTISELECT:
+        url += '/problems/solve-ms';
+        break;
+      default:
+        break;
+    }
+
+    this.http
+      .post<ProblemAttemptResponseObject>(url, attempt)
+      .subscribe((data) => {
+        answerStatus = data.solution_accuracy;
+      });
+
+    return answerStatus;
+  }
+
+  voteProblem(userId: string, problemId: string, isUpvote: boolean): boolean {
+    let success = false;
+    const vote = {
+      user_id: userId,
+      problem_id: problemId,
+      vote_status: isUpvote ? 2 : 0,
+    };
+
+    this.http.post(`${STANDARD_URL}/problems/vote`, vote).subscribe((data) => {
+      success = true;
+    });
+
+    return success;
   }
 
   private handleError(error: HttpErrorResponse) {

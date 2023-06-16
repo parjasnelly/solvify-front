@@ -32,6 +32,7 @@ import { ProblemService } from './Services/question.service';
 import { HttpClientModule } from '@angular/common/http';
 import { LogService } from './Services/log.service';
 import { AnswerQuestionComponent } from './Pages/answer-question/answer-question.component';
+import { SubjectService } from './Services/subject.service';
 
 @NgModule({
   declarations: [
@@ -87,6 +88,7 @@ import { AnswerQuestionComponent } from './Pages/answer-question/answer-question
     },
     ProblemService,
     LogService,
+    SubjectService,
   ],
   bootstrap: [AppComponent],
 })
