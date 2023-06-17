@@ -3,13 +3,13 @@
   <div>
     <div class="user-info" (click)="toggle()">
       <p-avatar
-        image="{{ this.authService.user.photoUrl }}"
+        image="{{ this.authService.user?.photoUrl }}"
         styleClass="mr-2"
         size="large"
         shape="circle"
       ></p-avatar>
       <button p-button-text iconPos="right" icon="pi pi-chevron-down">
-        Olá, {{ this.authService.user.firstName }}
+        Olá, {{ this.authService.user?.firstName }}
         <i *ngIf="!overlayVisible" class="pi pi-chevron-down"></i>
         <i *ngIf="overlayVisible" class="pi pi-chevron-up"></i>
       </button>

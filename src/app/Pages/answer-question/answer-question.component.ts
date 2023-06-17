@@ -90,7 +90,7 @@ export class AnswerQuestionComponent {
 
   onVoteClick(upvote: boolean) {
     this.problemService
-      .voteProblem(this.authService.user.id, this.question.id, upvote)
+      .voteProblem(this.authService.userId, this.question.id, upvote)
       .subscribe({
         next: () => {
           this.messageService.add({
@@ -164,7 +164,7 @@ export class AnswerQuestionComponent {
 
     const submissionAttempt: ProblemAttempt = {
       problem_id: this.question.id,
-      user_id: this.authService.user.id,
+      user_id: this.authService.userId,
     };
 
     switch (this.question.problemType) {
@@ -221,7 +221,7 @@ export class AnswerQuestionComponent {
     this.problemService
       .reportProblem(
         this.question.id,
-        this.authService.user.id,
+        this.authService.userId,
         this.reportText
       )
       .subscribe({

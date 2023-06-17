@@ -14,7 +14,7 @@ import {
   ProblemRequestResponseObject,
   ProblemType,
 } from '../Types/Problem';
-import { LogService } from './log.service';
+import {LogService} from "./log.service";
 
 interface ProblemFilterArgs {
   orderBy?: string;

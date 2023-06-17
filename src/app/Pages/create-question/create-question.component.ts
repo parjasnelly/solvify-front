@@ -303,7 +303,7 @@ export class CreateQuestionComponent implements OnInit {
       this.loading = true;
 
       const formData: ProblemFormData = {
-        userId: this.authService.user.id,
+        userId: this.authService.userId,
         userName: this.authService.user.name,
         statement: this.questionForm.value.statement!,
         subjectId: this.questionForm.value.subject!,

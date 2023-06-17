@@ -30,7 +30,6 @@ import { MultiSelectTypeComponent } from './Pages/create-question/multi-select-t
 import { AvatarModule } from 'primeng/avatar';
 import { ProblemService } from './Services/question.service';
 import { HttpClientModule } from '@angular/common/http';
-import { LogService } from './Services/log.service';
 import { AnswerQuestionComponent } from './Pages/answer-question/answer-question.component';
 import { SubjectService } from './Services/subject.service';
 import { ToastModule } from 'primeng/toast';
@@ -94,7 +93,6 @@ import {CarouselModule} from "primeng/carousel";
       } as SocialAuthServiceConfig,
     },
     ProblemService,
-    LogService,
     SubjectService,
     MessageService,
   ],
