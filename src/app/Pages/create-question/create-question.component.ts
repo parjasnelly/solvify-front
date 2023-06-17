@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 import { ProblemService } from 'src/app/Services/question.service';
 import { SubjectService } from 'src/app/Services/subject.service';
 import { ProblemFormData, ProblemType } from 'src/app/Types/Problem';
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/Services/auth.service';
 import { MessageService } from 'primeng/api';
 import { delay } from 'src/app/Utils/delay';
 

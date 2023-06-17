@@ -35,7 +35,7 @@ import { SubjectService } from './Services/subject.service';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { DialogModule } from 'primeng/dialog';
-import {CarouselModule} from "primeng/carousel";
+import { ProfileComponent } from './Pages/profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +50,7 @@ import {CarouselModule} from "primeng/carousel";
     MultiChoiceTypeComponent,
     MultiSelectTypeComponent,
     AnswerQuestionComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,
@@ -69,7 +70,6 @@ import {CarouselModule} from "primeng/carousel";
     HttpClientModule,
     ToastModule,
     DialogModule,
-    CarouselModule,
   ],
   providers: [
     {

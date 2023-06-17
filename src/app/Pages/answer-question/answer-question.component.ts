@@ -12,7 +12,7 @@ import {
   ProblemType,
 } from 'src/app/Types/Problem';
 import { delay } from 'src/app/Utils/delay';
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/Services/auth.service';
 
 interface SelectOptions {
   name: string;
@@ -219,11 +219,7 @@ export class AnswerQuestionComponent {
     this.sendingReport = true;
 
     this.problemService
-      .reportProblem(
-        this.question.id,
-        this.authService.userId,
-        this.reportText
-      )
+      .reportProblem(this.question.id, this.authService.userId, this.reportText)
       .subscribe({
         next: () => {
           this.sendingReport = false;

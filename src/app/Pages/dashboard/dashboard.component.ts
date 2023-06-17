@@ -11,7 +11,11 @@ import { Subject } from 'src/app/Types/Subject';
   styleUrls: ['./dashboard.component.sass'],
 })
 export class DashboardComponent {
-  constructor(private problemService: ProblemService, private router: Router, private subjectService: SubjectService ) {}
+  constructor(
+    private problemService: ProblemService,
+    private router: Router,
+    private subjectService: SubjectService
+  ) {}
 
   subject: Subject[] = [];
   questions: Problem[] = [];
@@ -30,41 +34,42 @@ export class DashboardComponent {
         this.currentQuestionPage++;
       });
 
-      this.subject = this.subjectService.getSubjects();
+    this.subject = this.subjectService.getSubjects();
   }
 
   getFilteredQuestions(id: string) {
     this.questions = [];
     this.currentQuestionPage = 1;
 
-    this.problemService.getProblems(this.currentQuestionPage, 20, { subject_id: id })
-    .subscribe((data) => {
-      data.forEach((question) => {
-        const questionData =
-          this.problemService.convertProblemResponseToProblem(question);
-        this.questions.push(questionData);
-      });
+    this.problemService
+      .getProblems(this.currentQuestionPage, 20, { subject_id: id })
+      .subscribe((data) => {
+        data.forEach((question) => {
+          const questionData =
+            this.problemService.convertProblemResponseToProblem(question);
+          this.questions.push(questionData);
+        });
 
-      this.currentQuestionPage++;
-    });
+        this.currentQuestionPage++;
+      });
   }
 
   getAllQuestions() {
     this.questions = [];
     this.currentQuestionPage = 1;
 
-    this.problemService.getProblems(this.currentQuestionPage, 20)
-    .subscribe((data) => {
-      data.forEach((question) => {
-        const questionData =
-          this.problemService.convertProblemResponseToProblem(question);
-        this.questions.push(questionData);
+    this.problemService
+      .getProblems(this.currentQuestionPage, 20)
+      .subscribe((data) => {
+        data.forEach((question) => {
+          const questionData =
+            this.problemService.convertProblemResponseToProblem(question);
+          this.questions.push(questionData);
+        });
+
+        this.currentQuestionPage++;
       });
-
-      this.currentQuestionPage++;
-    });
   }
-
 
   goToQuestion(question: Problem) {
     this.router.navigateByUrl(`/question/${question.id}`, {
