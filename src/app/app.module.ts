@@ -36,6 +36,7 @@ import { SubjectService } from './Services/subject.service';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { DialogModule } from 'primeng/dialog';
+import {CarouselModule} from "primeng/carousel";
 
 @NgModule({
   declarations: [
@@ -69,6 +70,7 @@ import { DialogModule } from 'primeng/dialog';
     HttpClientModule,
     ToastModule,
     DialogModule,
+    CarouselModule,
   ],
   providers: [
     {

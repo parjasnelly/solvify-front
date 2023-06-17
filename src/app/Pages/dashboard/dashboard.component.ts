@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProblemService } from 'src/app/Services/question.service';
+import { SubjectService } from 'src/app/Services/subject.service';
 import { Problem } from 'src/app/Types/Problem';
+import { Subject } from 'src/app/Types/Subject';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,8 +11,9 @@ import { Problem } from 'src/app/Types/Problem';
   styleUrls: ['./dashboard.component.sass'],
 })
 export class DashboardComponent {
-  constructor(private problemService: ProblemService, private router: Router) {}
+  constructor(private problemService: ProblemService, private router: Router, private subjectService: SubjectService ) {}
 
+  subject!: Subject[];
   questions: Problem[] = [];
   currentQuestionPage = 1;
 
@@ -26,6 +29,19 @@ export class DashboardComponent {
 
         this.currentQuestionPage++;
       });
+
+      this.subject = this.subjectService.getSubjects();
+  }
+
+  goToQuestion(question: Problem) {
+    this.router.navigateByUrl(`/question/${question.id}`, {
+      state: question,
+    });
+  }
+
+  getSubjectName(id: string) {
+    if (this.subject === undefined) return 'Loading...';
+    return this.subject.find((subject) => subject.id === id)?.name;
   }
 
   getMoreQuestions() {
@@ -40,11 +56,5 @@ export class DashboardComponent {
 
         this.currentQuestionPage++;
       });
-  }
-
-  goToQuestion(question: Problem) {
-    this.router.navigateByUrl(`/question/${question.id}`, {
-      state: question,
-    });
   }
 }
