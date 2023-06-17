@@ -9,10 +9,10 @@
     <form [formGroup]="questionForm">
       <div class="question-data-container">
         <div class="question-title-container">
-          <h4>Titulo:</h4>
+          <h4>Título:</h4>
           <input
             type="text"
-            placeholder="Titulo da Questão"
+            placeholder="Título da Questão"
             pInputText
             formControlName="title"
           />
@@ -51,7 +51,7 @@
           </select> -->
           <select formControlName="levelOfEducation">
             <option value="" disabled selected>
-              Selecione um nivel de educação
+              Selecione um nível de educação
             </option>
             <option
               *ngFor="let option of levelOfEducationOptions"
@@ -74,7 +74,7 @@
               {{
                 getSelectedSubject() === ""
                   ? "Selecione uma Disciplina Primeiro"
-                  : "Selecione um Topico (opcional)"
+                  : "Selecione um Tópico"
               }}
             </option>
             <option *ngFor="let option of topicOptions" [value]="option.value">

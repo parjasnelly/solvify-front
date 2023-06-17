@@ -55,11 +55,11 @@ export class CreateQuestionComponent implements OnInit {
   ];
 
   questionTypeOptions: SelectOptions[] = [
-    { name: 'Escolha Unica', value: ProblemType.MULTICHOICE },
-    { name: 'Escolha Multipla', value: ProblemType.MULTISELECT },
-    { name: 'Verdadeiro e Falso', value: ProblemType.TRUEFALSE },
+    { name: 'Múltipla Escolha', value: ProblemType.MULTICHOICE },
+    { name: 'Múltipla Seleção', value: ProblemType.MULTISELECT },
+    { name: 'Verdadeiro ou Falso', value: ProblemType.TRUEFALSE },
     {
-      name: 'Verdadeiro e Falso Multiplo',
+      name: 'Verdadeiro ou Falso Múltiplo',
       value: ProblemType.MULTITRUEFALSE,
     },
   ];
@@ -351,7 +351,7 @@ export class CreateQuestionComponent implements OnInit {
       }
       this.messageService.add({
         severity: 'warn',
-        summary: 'Campos Invalidos',
+        summary: 'Campos Inválidos',
         detail:
           'Verifique se todos os campos estão preenchidos apropriadamente.',
       });
