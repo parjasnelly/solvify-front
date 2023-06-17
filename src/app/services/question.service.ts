@@ -16,6 +16,17 @@ import {
 } from '../Types/Problem';
 import { LogService } from './log.service';
 
+interface ProblemFilterArgs {
+  orderBy?: string;
+  desceding?: boolean;
+  subject_id?: string;
+  topic_id?: string;
+  subtopic_id?: string;
+  level_of_education?: string;
+  language?: string;
+  authorId?: string;
+}
+
 const STANDARD_URL = 'http://localhost:8080/api';
 
 @Injectable()
@@ -25,22 +36,17 @@ export class ProblemService {
   getProblems(
     pageNumber: number,
     pageSize: number,
-    orderBy?: string,
-    desceding?: boolean,
-    subject_id?: string,
-    topic_id?: string,
-    subtopic_id?: string,
-    level_of_education?: string,
-    language?: string
+    filter?: ProblemFilterArgs
   ): Observable<ProblemRequestResponseObject[]> {
     const params = {
-      order_by: orderBy || 'created_at',
-      desceding: desceding || true,
-      subject_id: subject_id || '',
-      topic_id: topic_id || '',
-      subtopic_id: subtopic_id || '',
-      level_of_education: level_of_education || '',
-      language: language || 'pt',
+      order_by: filter?.orderBy || 'created_at',
+      desceding: filter?.desceding || true,
+      subject_id: filter?.subject_id || '',
+      topic_id: filter?.topic_id || '',
+      subtopic_id: filter?.subtopic_id || '',
+      level_of_education: filter?.level_of_education || '',
+      language: filter?.language || 'pt',
+      creator_id: filter?.authorId || '',
     };
 
     return this.http
