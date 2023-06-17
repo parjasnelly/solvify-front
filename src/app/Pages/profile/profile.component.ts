@@ -44,7 +44,7 @@ export class ProfileComponent {
 
   ngOnInit(): void {
     this.problemService
-      .getProblems(1, 30, { authorId: this.user.id })
+      .getProblems(1, 30, { authorId: this.authService.userId })
       .subscribe((problems) => {
         this.userProblems = problems.map((problem) =>
           this.problemService.convertProblemResponseToProblem(problem)
@@ -52,7 +52,7 @@ export class ProfileComponent {
       });
 
     this.problemService
-      .getAttemptsFromUser(this.user.id, 30, 1)
+      .getAttemptsFromUser(this.authService.userId, 30, 1)
       .subscribe((attempts) => {
         this.userAttempts = attempts.map((attempt) => ({
           subject: attempt.subject,
