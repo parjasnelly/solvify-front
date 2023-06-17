@@ -15,16 +15,27 @@ export class SubjectService {
     this.http
       .get<SubjectResponseObject[]>(`${STANDARD_URL}/subjects`)
       .subscribe((data) => {
-        this.subjects = data.map((subject) => ({
+        const result = data.map((subject) => ({
           id: subject._id,
           name: subject.name,
           language: subject.language,
         }));
+        this.subjects = result;
+        this.saveSubjectsToLocalstorage(result);
       });
   }
 
   getSubjects(): Subject[] {
+    if (this.subjects.length === 0) {
+      const subjects = localStorage.getItem('subjects');
+
+      this.subjects = JSON.parse(subjects!);
+    }
     return this.subjects;
+  }
+
+  private saveSubjectsToLocalstorage(subjects: Subject[]): void {
+    localStorage.setItem('subjects', JSON.stringify(subjects));
   }
 
   getSubjectTopics(subjectId: string): Observable<Topic[]> {

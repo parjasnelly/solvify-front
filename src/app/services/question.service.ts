@@ -14,7 +14,10 @@ import {
   ProblemRequestResponseObject,
   ProblemType,
 } from '../Types/Problem';
-import {LogService} from "./log.service";
+import { LogService } from './log.service';
+import { AttemptResponseObject } from '../Types/Attempt';
+
+const STANDARD_URL = 'http://localhost:8080/api';
 
 interface ProblemFilterArgs {
   orderBy?: string;
@@ -26,8 +29,6 @@ interface ProblemFilterArgs {
   language?: string;
   authorId?: string;
 }
-
-const STANDARD_URL = 'http://localhost:8080/api';
 
 @Injectable()
 export class ProblemService {
@@ -256,6 +257,16 @@ export class ProblemService {
     // Return an observable with a user-facing error message.
     return throwError(
       () => new Error('Something bad happened; please try again later.')
+    );
+  }
+
+  getAttemptsFromUser(
+    userId: string,
+    pageSize: number,
+    pageId: number
+  ): Observable<AttemptResponseObject[]> {
+    return this.http.get<AttemptResponseObject[]>(
+      `${STANDARD_URL}/problem-attempt/${userId}?page_size=${pageSize}&page_id=${pageId}`
     );
   }
 

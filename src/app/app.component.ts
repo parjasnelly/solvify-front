@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import { AuthService } from './services/auth.service';
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from './Services/auth.service';
 import { Router } from '@angular/router';
 import { SubjectService } from './Services/subject.service';
 
@@ -8,7 +8,7 @@ import { SubjectService } from './Services/subject.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.sass'],
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
   subjectService!: SubjectService;
   constructor(
     authService: AuthService,

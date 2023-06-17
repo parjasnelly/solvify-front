@@ -1,0 +1,141 @@
+<app-header></app-header>
+<div
+  style="display: flex; flex-direction: column; padding: 20px 66px; gap: 25px"
+>
+  <div style="display: flex; width: 100%; justify-content: flex-start">
+    <button routerLink="/" class="back-button">
+      <i class="pi pi-chevron-left back-icon"></i> Voltar
+    </button>
+  </div>
+
+  <div class="user-details-container">
+    <div class="avatar-container">
+      <img [src]="user.photoUrl" alt="Avatar" class="avatar" />
+    </div>
+    <div class="user-details">
+      <div class="user-name">{{ user.name }}</div>
+      <div class="user-email"><strong>Email:</strong> {{ user.email }}</div>
+    </div>
+
+    <div class="user-stats">
+      <div class="user-val-container">
+        <span>{{ userProblems.length }}</span>
+        <h6>Questões Criadas</h6>
+      </div>
+
+      <div class="user-val-container">
+        <span>{{ userAttempts.length }}</span>
+        <h6>Questões Tentadas</h6>
+      </div>
+
+      <div class="user-val-container">
+        <span class="correct-val">{{ getCorrectAttempts() }}</span>
+        <h6>Questões Acertadas</h6>
+      </div>
+
+      <div class="user-val-container">
+        <span class="incorrect-val">{{ getIncorrectAttempts() }}</span>
+        <h6>Questões Erradas</h6>
+      </div>
+    </div>
+
+    <div style="width: 20%">
+      <button
+        pButton
+        label="Editar Perfil"
+        icon="pi pi-user-edit"
+        class="p-button-primary"
+        (click)="onEditButtonClick()"
+      ></button>
+    </div>
+  </div>
+
+  <div class="tab-container">
+    <button
+      label="Minhas Questões"
+      class="tab-button"
+      style="border-radius: 6px 0px 0px 6px"
+      [ngClass]="{ 'tab-button-active': activeTab === 'questions' }"
+      (click)="activeTab = 'questions'"
+    >
+      Minhas Questões
+    </button>
+    <button
+      class="tab-button"
+      style="border-radius: 0px 6px 6px 0px"
+      [ngClass]="{ 'tab-button-active': activeTab === 'attempts' }"
+      (click)="activeTab = 'attempts'"
+    >
+      Minhas Tentativas
+    </button>
+  </div>
+
+  <div class="list-container">
+    <div *ngIf="activeTab === 'questions'" style="width: 100%">
+      <div class="list-header">
+        <span> Disciplina </span>
+        <span> Tipo </span>
+        <span style="width: 40%"> Enunciado </span>
+        <span> Tentativas </span>
+        <span> Precisão </span>
+        <span style="width: 5%">
+          <i class="pi pi-thumbs-up" style="color: #13ce66"></i>
+        </span>
+        <span style="border-right: none; width: 5%">
+          <i class="pi pi-thumbs-down" style="color: #f95f62"></i>
+        </span>
+      </div>
+
+      <div *ngIf="userProblems.length === 0" class="list-item">
+        <span style="width: 100%; border-right: none">
+          Você ainda não criou nenhuma questão
+        </span>
+      </div>
+      <div *ngFor="let problem of userProblems" class="list-item">
+        <span> {{ getSubjectName(problem.subjectId) }} </span>
+        <span> {{ getProblemTypeName(problem.problemType) }} </span>
+        <span style="width: 40%"> {{ problem.statement }} </span>
+        <span> {{ problem.attempts }} </span>
+        <span> {{ (problem.accuracy * 100).toFixed(2) }} % </span>
+        <span style="width: 5%">
+          {{ problem.upvotes }}
+        </span>
+        <span style="border-right: none; width: 5%">
+          {{ problem.downvotes }}
+        </span>
+      </div>
+    </div>
+
+    <div *ngIf="activeTab === 'attempts'" style="width: 100%">
+      <div class="attempt-header">
+        <span> Disciplina </span>
+        <span style="width: 50%"> Enunciado </span>
+        <span> Data </span>
+        <span style="border-right: none"> Resultado </span>
+      </div>
+
+      <div *ngIf="userAttempts.length === 0" class="attempt-item">
+        <span style="width: 100%; border-right: none">
+          Você ainda não tem nenhuma tentativa
+        </span>
+      </div>
+
+      <div *ngFor="let attempt of userAttempts" class="attempt-item">
+        <span> {{ attempt.subject }} </span>
+        <span style="width: 50%"> {{ attempt.statement }} </span>
+        <span> {{ getDateValue(attempt.attemptedAt) }} </span>
+        <span
+          [ngClass]="{
+            'correct-item': attempt.solutionAccuracy === resultType.CORRECT,
+            'half-item': attempt.solutionAccuracy === resultType.HALF,
+            'incorrect-item': attempt.solutionAccuracy === resultType.INCORRECT
+          }"
+          style="border-right: none"
+        >
+          {{ getResultTypeName(attempt.solutionAccuracy) }}
+        </span>
+      </div>
+    </div>
+  </div>
+  <p-toast position="bottom-center"></p-toast>
+</div>
