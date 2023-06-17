@@ -5,6 +5,7 @@ import {
   FormControl,
   FormArray,
   Validators,
+  ValidatorFn,
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ProblemService } from 'src/app/Services/question.service';
@@ -162,11 +163,10 @@ export class CreateQuestionComponent implements OnInit {
     // Create and add new FormArray controls based on the selected type
     if (type === ProblemType.TRUEFALSE) {
       this.questionForm.patchValue({
-        statement:
-          this.questionForm.get('statement') !== null
-            ? this.questionForm.get('statement')!.value
-            : '',
+        statement: '',
       });
+      this.questionForm.get('statement')?.clearValidators();
+      this.questionForm.get('statement')?.updateValueAndValidity();
 
       const trueFalseFields = this.builder.array([
         this.builder.group({
@@ -185,6 +185,13 @@ export class CreateQuestionComponent implements OnInit {
             ? this.questionForm.get('statement')!.value
             : '',
       });
+      this.questionForm
+        .get('statement')
+        ?.addValidators([
+          Validators.required,
+          Validators.pattern(VALID_TEXT_PATTERN),
+        ]);
+      this.questionForm.get('statement')?.updateValueAndValidity();
 
       const trueFalseFields = this.builder.array([
         this.builder.group({
@@ -218,6 +225,13 @@ export class CreateQuestionComponent implements OnInit {
             ? this.questionForm.get('statement')!.value
             : '',
       });
+      this.questionForm
+        .get('statement')
+        ?.addValidators([
+          Validators.required,
+          Validators.pattern(VALID_TEXT_PATTERN),
+        ]);
+      this.questionForm.get('statement')?.updateValueAndValidity();
 
       const multiChoiceFields = this.builder.array([
         this.builder.group({
@@ -251,6 +265,13 @@ export class CreateQuestionComponent implements OnInit {
             ? this.questionForm.get('statement')!.value
             : '',
       });
+      this.questionForm
+        .get('statement')
+        ?.addValidators([
+          Validators.required,
+          Validators.pattern(VALID_TEXT_PATTERN),
+        ]);
+      this.questionForm.get('statement')?.updateValueAndValidity();
 
       const multiSelectFields = this.builder.array([
         this.builder.group({
