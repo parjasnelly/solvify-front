@@ -8,51 +8,53 @@
 
         <div class="left-top-separator"></div>
 
-        <div class="subjects-container">
-            <!--Buttons for subjects-->
-            
-                <div class="subject-card">
+        <div class="subjects-container"   *ngIf="subject.length>0">
+            <div *ngFor="let subject of subject">
+                <!--Buttons for subjects-->
+
+                <div class="subject-card" *ngIf="subject.name == 'História'" (click)="getFilteredQuestion(subject.id)">
                     <div class="subject-icon" style="background: #FCFAA3">
                         <i class="pi pi-hourglass header-icon"></i>
                     </div>
                     <div class="subject-label">História</div>
                 </div>
-
-                <div class="subject-card">
+            
+                <div class="subject-card" *ngIf="subject.name == 'Matemática'" (click)="getFilteredQuestion(subject.id)">
                     <div class="subject-icon" style="background: #F27A7D">
                         <i class="pi pi-percentage header-icon"></i>
                     </div>
                     <div class="subject-label">Matemática</div>
                 </div>
-
-                <div class="subject-card">
+            
+                <div class="subject-card" *ngIf="subject.name == 'Química'" (click)="getFilteredQuestion(subject.id)">
                     <div class="subject-icon" style="background: #D4B7F0">
                         <span class="material-symbols-outlined">science</span>
                     </div>
                     <div class="subject-label">Química</div>
                 </div>
-
-                <div class="subject-card">
+            
+                <div class="subject-card" *ngIf="subject.name == 'Geografia'" (click)="getFilteredQuestion(subject.id)">
                     <div class="subject-icon" style="background: #9CDCFF">
                         <i class="pi pi-globe header-icon"></i>
                     </div>
                     <div class="subject-label">Geografia</div>
                 </div>
-
-                <div class="subject-card">
+            
+                <div class="subject-card" *ngIf="subject.name == 'Física'" (click)="getFilteredQuestion(subject.id)">
                     <div class="subject-icon" style="background: #FCC67C">
                         <span class="material-symbols-outlined">thermostat</span>
                     </div>
                     <div class="subject-label">Física</div>
                 </div>
-
-                <div class="subject-card">
+            
+                <div class="subject-card" *ngIf="subject.name == 'Biologia'" (click)="getFilteredQuestion(subject.id)">
                     <div class="subject-icon" style="background: #B4E76A">
                         <span class="material-symbols-outlined">genetics</span>
                     </div>
                     <div class="subject-label">Biologia</div>
                 </div>
- 
+
+            </div>
         </div>
 
     </div>
@@ -64,18 +66,35 @@
 
         <div class="right-col-label">Questões</div>
 
-        <div class="question-grid-container"  *ngIf="questions.length>0" >
+        <div class="question-grid-container"  *ngIf="questions.length>0">
             <div *ngFor="let question of questions" class="grid-item">
                 <div class="question-card" (click)="goToQuestion(question)">
                     <div class="question-card-header">
-                        <div class="math-icon-mini"></div>
+                        <div class="subject-icon-mini" style="background: #FCFAA3" *ngIf="getSubjectName(question.subjectId) == 'História'">
+                            <i class="pi pi-hourglass header-icon"></i>
+                        </div>
+                        <div class="subject-icon-mini" style="background: #9CDCFF" *ngIf="getSubjectName(question.subjectId) == 'Geografia'">
+                            <i class="pi pi-globe header-icon"></i>
+                        </div>
+                        <div class="subject-icon-mini" style="background: #F27A7D" *ngIf="getSubjectName(question.subjectId) == 'Matemática'">
+                            <i class="pi pi-percentage header-icon"></i>
+                        </div>
+                        <div class="subject-icon-mini" style="background: #FCC67C" *ngIf="getSubjectName(question.subjectId) == 'Física'">
+                            <span class="material-symbols-outlined">thermostat</span>
+                        </div>
+                        <div class="subject-icon-mini" style="background: #D4B7F0" *ngIf="getSubjectName(question.subjectId) == 'Química'">
+                            <span class="material-symbols-outlined">science</span>
+                        </div>
+                        <div class="subject-icon-mini" style="background: #B4E76A" *ngIf="getSubjectName(question.subjectId) == 'Biologia'">
+                            <span class="material-symbols-outlined">genetics</span>
+                        </div>
                         {{ getSubjectName(question.subjectId) }}
                     </div>
                     <div class="question-card-content">
                         {{ question.statement }}
                     </div>
                     <div class="question-card-footer">
-                       Autor: {{ question.creatorUsername }}
+                        Autor: {{ question.creatorUsername }}
                     </div>
                 </div>
             </div>

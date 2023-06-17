@@ -15,58 +15,10 @@ $biology: #B4E76A
 $search: #BCC3CE
 $font: #4F5965
 
-
-
-
-.history-icon-mini
-    height: 24px
-    width: 24px
-    border-radius: 12px
-    background: $history
-    margin-right: 10px
-
-
-
-.geography-icon-mini
-    height: 24px
-    width: 24px
-    border-radius: 12px
-    background: $geography
-    margin-right: 10px
-
-.math-icon-mini
-    height: 24px
-    width: 24px
-    border-radius: 12px
-    background: $math
-    margin-right: 10px
-
-.physics-icon-mini
-    height: 24px
-    width: 24px
-    border-radius: 12px
-    background: $physics
-    margin-right: 10px
-
-.chemestry-icon-mini
-    height: 24px
-    width: 24px
-    border-radius: 12px
-    background: $chemestry
-    margin-right: 10px
-
-.biology-icon-mini
-    height: 24px
-    width: 24px
-    border-radius: 12px
-    background: $biology
-    margin-right: 10px
-
-
 .main-wrapper
     display: flex
     width: 100%
-    height: 100%
+    height: 85vh
     .left-col
         padding-left: 70px
         width: 18%
@@ -83,7 +35,6 @@ $font: #4F5965
             width: 90%
             margin: 10px 0px 5px 0px
         .subjects-container
-            height: 550px
             .subject-card
                 width: 80%
                 display: flex
@@ -98,7 +49,7 @@ $font: #4F5965
                     .pi
                         height: auto
                         margin: 0 auto
-                        padding: 10px
+                        padding: 12px
                         position: relative
                     .material-symbols-outlined
                         height: auto
@@ -131,6 +82,9 @@ $font: #4F5965
             display: grid
             grid-template-columns: auto auto auto
             padding: 10px
+            height: 80vh
+            overflow-y: scroll
+            overflow-x: hidden 
             .grid-item
                 padding: 10px 5px 10px 5px
                 font-size: 30px
@@ -150,6 +104,21 @@ $font: #4F5965
                         font-size: 20px
                         font-family: $standard-font-family
                         color: $font
+                        .subject-icon-mini
+                            height: 30px
+                            width: 30px
+                            border-radius: 4px
+                            margin-right: 10px
+                            .pi
+                                height: auto
+                                margin: 0 auto
+                                padding: 2px
+                                position: relative
+                            .material-symbols-outlined
+                                height: auto
+                                margin: 0 auto
+                                padding: 2px
+                                position: relative
                     .question-card-content
                         height: 54%
                         margin-top: 2%
@@ -165,12 +134,12 @@ $font: #4F5965
 
 
     .add-question-button
-                height: 140px
-                width: 140px
-                border-radius: 70px
+                height: 110px
+                width: 110px
+                border-radius: 65px
                 background: $font
                 text-align: center
-                line-height: 140px
+                line-height: 110px
                 font-size: 100px
                 font-family: $standard-font-family
                 user-select: none

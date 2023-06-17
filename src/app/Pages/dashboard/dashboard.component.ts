@@ -13,7 +13,7 @@ import { Subject } from 'src/app/Types/Subject';
 export class DashboardComponent {
   constructor(private problemService: ProblemService, private router: Router, private subjectService: SubjectService ) {}
 
-  subject!: Subject[];
+  subject: Subject[] = [];
   questions: Problem[] = [];
   currentQuestionPage = 1;
 
@@ -31,6 +31,12 @@ export class DashboardComponent {
       });
 
       this.subject = this.subjectService.getSubjects();
+  }
+
+  getFilteredQuestion(id: string) {
+    console.log(this.subject.find((subject) => subject.id === id)?.name);
+    
+    
   }
 
   goToQuestion(question: Problem) {
