@@ -33,11 +33,38 @@ export class DashboardComponent {
       this.subject = this.subjectService.getSubjects();
   }
 
-  getFilteredQuestion(id: string) {
-    console.log(this.subject.find((subject) => subject.id === id)?.name);
-    
-    
+  getFilteredQuestions(id: string) {
+    this.questions = [];
+    this.currentQuestionPage = 1;
+
+    this.problemService.getProblems(this.currentQuestionPage, 20, { subject_id: id })
+    .subscribe((data) => {
+      data.forEach((question) => {
+        const questionData =
+          this.problemService.convertProblemResponseToProblem(question);
+        this.questions.push(questionData);
+      });
+
+      this.currentQuestionPage++;
+    });
   }
+
+  getAllQuestions() {
+    this.questions = [];
+    this.currentQuestionPage = 1;
+
+    this.problemService.getProblems(this.currentQuestionPage, 20)
+    .subscribe((data) => {
+      data.forEach((question) => {
+        const questionData =
+          this.problemService.convertProblemResponseToProblem(question);
+        this.questions.push(questionData);
+      });
+
+      this.currentQuestionPage++;
+    });
+  }
+
 
   goToQuestion(question: Problem) {
     this.router.navigateByUrl(`/question/${question.id}`, {

@@ -9,49 +9,77 @@
         <div class="left-top-separator"></div>
 
         <div class="subjects-container"   *ngIf="subject.length>0">
+            <div class="subject-card" (click)="getAllQuestions()">
+                <div class="subject-icon" style="background: #42D885">
+                    <i class="pi pi-hourglass header-icon"></i>
+                </div>
+                <div class="subject-label">Todas</div>
+            </div>
+
             <div *ngFor="let subject of subject">
                 <!--Buttons for subjects-->
 
-                <div class="subject-card" *ngIf="subject.name == 'História'" (click)="getFilteredQuestion(subject.id)">
+                <div class="subject-card" *ngIf="subject.name == 'História'" (click)="getFilteredQuestions(subject.id)">
                     <div class="subject-icon" style="background: #FCFAA3">
                         <i class="pi pi-hourglass header-icon"></i>
                     </div>
                     <div class="subject-label">História</div>
                 </div>
             
-                <div class="subject-card" *ngIf="subject.name == 'Matemática'" (click)="getFilteredQuestion(subject.id)">
+                <div class="subject-card" *ngIf="subject.name == 'Matemática'" (click)="getFilteredQuestions(subject.id)">
                     <div class="subject-icon" style="background: #F27A7D">
                         <i class="pi pi-percentage header-icon"></i>
                     </div>
                     <div class="subject-label">Matemática</div>
                 </div>
             
-                <div class="subject-card" *ngIf="subject.name == 'Química'" (click)="getFilteredQuestion(subject.id)">
+                <div class="subject-card" *ngIf="subject.name == 'Química'" (click)="getFilteredQuestions(subject.id)">
                     <div class="subject-icon" style="background: #D4B7F0">
                         <span class="material-symbols-outlined">science</span>
                     </div>
                     <div class="subject-label">Química</div>
                 </div>
             
-                <div class="subject-card" *ngIf="subject.name == 'Geografia'" (click)="getFilteredQuestion(subject.id)">
+                <div class="subject-card" *ngIf="subject.name == 'Geografia'" (click)="getFilteredQuestions(subject.id)">
                     <div class="subject-icon" style="background: #9CDCFF">
                         <i class="pi pi-globe header-icon"></i>
                     </div>
                     <div class="subject-label">Geografia</div>
                 </div>
             
-                <div class="subject-card" *ngIf="subject.name == 'Física'" (click)="getFilteredQuestion(subject.id)">
+                <div class="subject-card" *ngIf="subject.name == 'Física'" (click)="getFilteredQuestions(subject.id)">
                     <div class="subject-icon" style="background: #FCC67C">
                         <span class="material-symbols-outlined">thermostat</span>
                     </div>
                     <div class="subject-label">Física</div>
                 </div>
             
-                <div class="subject-card" *ngIf="subject.name == 'Biologia'" (click)="getFilteredQuestion(subject.id)">
+                <div class="subject-card" *ngIf="subject.name == 'Biologia'" (click)="getFilteredQuestions(subject.id)">
                     <div class="subject-icon" style="background: #B4E76A">
                         <span class="material-symbols-outlined">genetics</span>
                     </div>
                     <div class="subject-label">Biologia</div>
+                </div>
+
+                <div class="subject-card" *ngIf="subject.name == 'Português'" (click)="getFilteredQuestions(subject.id)">
+                    <div class="subject-icon" style="background: #f7cae4">
+                        <div class="languages">PT</div>
+                    </div>
+                    <div class="subject-label">Português</div>
+                </div>
+
+                <div class="subject-card" *ngIf="subject.name == 'Inglês'" (click)="getFilteredQuestions(subject.id)">
+                    <div class="subject-icon" style="background: #77dd77">
+                        <div class="languages">EN</div>
+                    </div>
+                    <div class="subject-label">Inglês</div>
+                </div>
+
+                <div class="subject-card" *ngIf="subject.name == 'Espanhol'" (click)="getFilteredQuestions(subject.id)">
+                    <div class="subject-icon" style="background: #95b8f6">
+                        <div class="languages">ES</div>
+                    </div>
+                    <div class="subject-label">Espanhol</div>
                 </div>
 
             </div>
