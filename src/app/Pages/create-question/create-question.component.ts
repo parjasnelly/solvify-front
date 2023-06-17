@@ -41,9 +41,9 @@ export class CreateQuestionComponent implements OnInit {
   topicOptions: SelectOptions[] = [];
 
   levelOfEducationOptions: SelectOptions[] = [
-    { name: 'Ensino Fundamental', value: 'primary school' },
-    { name: 'Ensino Médio', value: 'high school' },
-    { name: 'Ensino Superior', value: 'college' },
+    { name: 'Ensino Fundamental', value: 'primary' },
+    { name: 'Ensino Médio', value: 'secondary' },
+    { name: 'Ensino Superior', value: 'higher' },
   ];
 
   languageOptions: SelectOptions[] = [
