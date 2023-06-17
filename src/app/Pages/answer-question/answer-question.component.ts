@@ -88,6 +88,27 @@ export class AnswerQuestionComponent {
     this.isReportModalVisible = true;
   }
 
+  onVoteClick(upvote: boolean) {
+    this.problemService
+      .voteProblem(this.authService.user.id, this.question.id, upvote)
+      .subscribe({
+        next: () => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Sua Opinião foi registrada!',
+            detail: 'Obrigado por nos ajudar a melhorar!',
+          });
+        },
+        error: (err) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erro ao registrar sua opinião',
+            detail: 'Tente novamente mais tarde!',
+          });
+        },
+      });
+  }
+
   getSubjectName(id: string) {
     if (this.Subjects === undefined) return 'Loading...';
     return this.Subjects.find((subject) => subject.value === id)?.name;

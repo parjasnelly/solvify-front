@@ -221,19 +221,18 @@ export class ProblemService {
     return this.http.post<ProblemAttemptResponseObject>(url, attempt);
   }
 
-  voteProblem(userId: string, problemId: string, isUpvote: boolean): boolean {
-    let success = false;
+  voteProblem(
+    userId: string,
+    problemId: string,
+    isUpvote: boolean
+  ): Observable<Object> {
     const vote = {
       user_id: userId,
       problem_id: problemId,
       vote_status: isUpvote ? 2 : 0,
     };
 
-    this.http.post(`${STANDARD_URL}/problems/vote`, vote).subscribe((data) => {
-      success = true;
-    });
-
-    return success;
+    return this.http.post(`${STANDARD_URL}/problems/vote`, vote);
   }
 
   private handleError(error: HttpErrorResponse) {
@@ -263,6 +262,7 @@ export class ProblemService {
       attempts: problemResponse.attempts,
       correctAnswers: problemResponse.correct_answers,
       creatorId: problemResponse.creator_id,
+      creatorUsername: problemResponse.creator_username,
       downvotes: problemResponse.downvotes,
       feedback: problemResponse.feedback,
       language: problemResponse.language,

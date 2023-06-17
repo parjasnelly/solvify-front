@@ -1,24 +1,40 @@
 <app-header></app-header>
 <div class="main-page-container">
   <div class="header-container">
-    <div style="display: flex; align-items: center">
-      <i
-        *ngIf="question.subjectId === getSubjectIdByName('Matemática')"
-        class="pi pi-percentage header-icon"
-      ></i>
-      <i
-        *ngIf="question.subjectId === getSubjectIdByName('Geografia')"
-        class="pi pi-hourglass header-icon"
-      ></i>
-      <i *ngIf="question.subjectId === '4'" class="pi pi-globe header-icon"></i>
-      <span
-        *ngIf="question.subjectId === getSubjectIdByName('Química')"
-        class="material-symbols-outlined"
-      >
-        science
-      </span>
-      <h4 class="subject-title">{{ getSubjectName(question.subjectId) }}</h4>
+    <div
+      style="
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 12px;
+      "
+    >
+      <button routerLink="/" class="back-button">
+        <i class="pi pi-chevron-left back-icon"></i>
+      </button>
+      <div style="display: flex; align-items: center">
+        <i
+          *ngIf="question.subjectId === getSubjectIdByName('Matemática')"
+          class="pi pi-percentage header-icon"
+        ></i>
+        <i
+          *ngIf="question.subjectId === getSubjectIdByName('Geografia')"
+          class="pi pi-hourglass header-icon"
+        ></i>
+        <i
+          *ngIf="question.subjectId === '4'"
+          class="pi pi-globe header-icon"
+        ></i>
+        <span
+          *ngIf="question.subjectId === getSubjectIdByName('Química')"
+          class="material-symbols-outlined"
+        >
+          science
+        </span>
+        <h4 class="subject-title">{{ getSubjectName(question.subjectId) }}</h4>
+      </div>
     </div>
+
     <button
       pButton
       label="Reportar Problema"
@@ -164,6 +180,20 @@
     </div>
 
     <div class="question-footer">
+      <button
+        pButton
+        label="Upvote"
+        icon="pi pi-thumbs-up"
+        class="p-button-outlined p-button-success"
+        (click)="onVoteClick(true)"
+      ></button>
+      <button
+        pButton
+        label="Downvote"
+        icon="pi pi-thumbs-down"
+        class="p-button-outlined p-button-danger"
+        (click)="onVoteClick(false)"
+      ></button>
       <button
         *ngIf="!isSubmitted"
         pButton

@@ -161,7 +161,12 @@ export class CreateQuestionComponent implements OnInit {
 
     // Create and add new FormArray controls based on the selected type
     if (type === ProblemType.TRUEFALSE) {
-      this.questionForm.controls.statement = new FormControl('');
+      this.questionForm.patchValue({
+        statement:
+          this.questionForm.get('statement') !== null
+            ? this.questionForm.get('statement')!.value
+            : '',
+      });
 
       const trueFalseFields = this.builder.array([
         this.builder.group({
@@ -174,10 +179,12 @@ export class CreateQuestionComponent implements OnInit {
       ]);
       this.questionForm.controls.optionFields = trueFalseFields;
     } else if (type === ProblemType.MULTITRUEFALSE) {
-      this.questionForm.controls.statement = new FormControl('', [
-        Validators.required,
-        Validators.pattern(VALID_TEXT_PATTERN),
-      ]);
+      this.questionForm.patchValue({
+        statement:
+          this.questionForm.get('statement') !== null
+            ? this.questionForm.get('statement')!.value
+            : '',
+      });
 
       const trueFalseFields = this.builder.array([
         this.builder.group({
@@ -205,10 +212,12 @@ export class CreateQuestionComponent implements OnInit {
 
       this.questionForm.controls.optionFields = trueFalseFields;
     } else if (type === ProblemType.MULTICHOICE) {
-      this.questionForm.controls.statement = new FormControl('', [
-        Validators.required,
-        Validators.pattern(VALID_TEXT_PATTERN),
-      ]);
+      this.questionForm.patchValue({
+        statement:
+          this.questionForm.get('statement') !== null
+            ? this.questionForm.get('statement')!.value
+            : '',
+      });
 
       const multiChoiceFields = this.builder.array([
         this.builder.group({
@@ -236,9 +245,12 @@ export class CreateQuestionComponent implements OnInit {
 
       this.questionForm.controls.optionFields = multiChoiceFields;
     } else if (type === ProblemType.MULTISELECT) {
-      this.questionForm.controls.statement = new FormControl('', [
-        Validators.required,
-      ]);
+      this.questionForm.patchValue({
+        statement:
+          this.questionForm.get('statement') !== null
+            ? this.questionForm.get('statement')!.value
+            : '',
+      });
 
       const multiSelectFields = this.builder.array([
         this.builder.group({

@@ -21,6 +21,7 @@ export interface ProblemRequestResponseObject {
   language: string;
   statement: string;
   creator_id: string;
+  creator_username: string;
   bool_answer?: boolean;
   items?: Array<string>;
   bool_answers?: Array<boolean>;
@@ -44,6 +45,7 @@ export interface Problem {
   language: string;
   statement: string;
   creatorId: string;
+  creatorUsername: string;
   boolAnswer?: boolean;
   items?: Array<string>;
   boolAnswers?: Array<boolean>;
