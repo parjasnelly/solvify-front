@@ -71,7 +71,7 @@
   font-family: $standard-font-family
   font-size: 20px
   font-weight: 400
-  color: map-get($primary-color, "green-100")
+  color: map-get($main-color, "main-100")
 
 .switchfls
   font-family: $standard-font-family
@@ -112,7 +112,7 @@
       background-color: map-get($dark-color, "dark-30")
 
   input:checked ~ .checkmark
-    background-color: map-get($primary-color, "green-100")
+    background-color: map-get($main-color, "main-100")
 
   input:checked ~ .checkmark:after
     display: block
@@ -157,7 +157,7 @@
   font-family: $standard-font-family
   font-size: 22px
   color: map-get($light-color, "light-100")
-  background-color: map-get($primary-color, "green-100")
+  background-color: map-get($main-color, "main-100")
   width: 150px
   height: 46px
   border-radius: 6px
@@ -168,7 +168,7 @@
     cursor: not-allowed
 
   &:hover:not(:disabled)
-    background-color: map-get($green-color, "green-75")
+    background-color: map-get($main-color, "main-75")
 
 .explanation-container-unanswered
   display: flex
@@ -212,7 +212,7 @@
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48
 
 .answer-correct
-  background-color: map-get($primary-color, "green-20")
+  background-color: map-get($main-color, "main-20")
 
 .answer-incorrect
   background-color: map-get($system-color, "error-20")

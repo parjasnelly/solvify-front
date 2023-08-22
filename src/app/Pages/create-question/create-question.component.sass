@@ -18,7 +18,7 @@ form
   margin: 0px
 
 .question-data-container
-  @include bordered-row-div($border-color: map-get($primary-color, "green-100"))
+  @include bordered-row-div($border-color: map-get($primary-color, "main-100"))
   width: 100%
   height: fit-content
   justify-content: space-between
@@ -58,10 +58,10 @@ select
 
   &:focus-visible
     outline: 0
-    border-color: map-get($primary-color, "green-100")
+    border-color: map-get($main-color, "main-100")
 
   &:focus
-    border-color: map-get($primary-color, "green-100")
+    border-color: map-get($main-color, "main-100")
 
 .question-info
   display: flex
@@ -82,7 +82,7 @@ select
   font-family: $standard-font-family
   font-size: 16px
   font-weight: 500
-  color: map-get($primary-color, "green-100")
+  color: map-get($main-color, "main-100")
 
   &:hover
     cursor: pointer
