@@ -1,21 +1,37 @@
 @import "../../../styles.sass"
 @import "primeicons/primeicons.css"
 
+.main-container
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: center
+  padding: 20px 26px 20px 26px
+  background-color: map-get($dark-color, "dark-10")
+  height: 100%
+
 form
   width: 100%
+  display: flex
+  flex-direction: column
+  justify-content: center
+  align-items: center
 
 .header-div
   display: flex
   flex-direction: column
-  width: 100%
+  width: 50%
   align-items: flex-start
   justify-content: flex-start
-  padding: 8px 16px
-  gap: 20px
+  padding: 8px 16px 25px 16px
+  border-radius: 6px
+  background-color: map-get($light-color, "light-100")
+  border-top: 10px solid map-get($main-color, "main-100")
 
 .section-title
   @include title-text($font-size: 28px)
   margin: 0px
+  margin-bottom: 20px
 
 .question-data-container
   @include bordered-row-div($border-color: map-get($primary-color, "main-100"))
@@ -30,10 +46,9 @@ form
     margin: 0px
     margin-right: 10px
 
-  h5
-    @include title-text($font-size: 18px)
-    margin: 0px
-    margin-right: 10px
+.field-label
+  @include title-text($font-size: 18px)
+  margin: 0px
 
 .question-type-container
   width: 35%
@@ -50,11 +65,16 @@ form
   padding: 12px
 
 select
-  width: 65%
+  width: 100%
   height: 42px
   border-radius: 6px
   border-color: rgba(0, 0, 0, 0.38)
   font-family: Roboto, Helvetica Neue Light, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif
+  transition: 0.2s ease-in-out border-color
+
+  &:hover
+    cursor: pointer
+    border-color: map-get($main-color, "main-100")
 
   &:focus-visible
     outline: 0
@@ -89,3 +109,11 @@ select
 
 .p-button
   width: 200px
+
+.question-content
+  padding: 8px 16px
+  width: 50%
+  background-color: white
+  border-radius: 6px
+  margin-top: 20px
+  border-left: 10px solid map-get($main-color, "main-100")
