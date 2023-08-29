@@ -16,8 +16,9 @@ import {
 } from '../Types/Problem';
 import { LogService } from './log.service';
 import { AttemptResponseObject } from '../Types/Attempt';
+import { environment } from './../../environments/environment';
 
-const STANDARD_URL = 'http://localhost:8080/api';
+const STANDARD_URL = environment.apiUrl;
 
 interface ProblemFilterArgs {
   orderBy?: string;

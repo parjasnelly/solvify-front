@@ -4,7 +4,9 @@ import { LogService } from './log.service';
 import { Subject, SubjectResponseObject } from '../Types/Subject';
 import { AddTopicObject, Topic, TopicResponseObject } from '../Types/Topic';
 import { Observable, map } from 'rxjs';
-const STANDARD_URL = 'http://localhost:8080/api';
+import { environment } from './../../environments/environment';
+
+const STANDARD_URL = environment.apiUrl;
 
 @Injectable()
 export class SubjectService {
