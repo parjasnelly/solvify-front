@@ -1,26 +1,36 @@
 <app-header></app-header>
-<div
-  style="display: flex; flex-direction: column; padding: 20px 26px 20px 26px"
->
+<div class="main-container">
   <p-toast position="bottom-center"></p-toast>
-  <div class="header-div">
-    <h2 class="section-title">Nova Questão</h2>
+  <form [formGroup]="questionForm">
+    <div class="header-div">
+      <h2 class="section-title">Nova Questão</h2>
 
-    <form [formGroup]="questionForm">
-      <div class="question-data-container">
-        <div class="question-title-container">
-          <h4>Título:</h4>
-          <input
-            type="text"
-            placeholder="Título da Questão"
-            pInputText
-            formControlName="title"
-          />
-        </div>
-        <div class="question-type-container">
-          <h5>Tipo da Questão:</h5>
+      <input
+        *ngIf="getSelectedQuestionType() !== questionTypeOptions[2].value"
+        id="quest"
+        type="text"
+        pInputText
+        formControlName="statement"
+        placeholder="Pergunta"
+      />
+
+      <div
+        style="
+          display: flex;
+          flex-direction: row;
+          gap: 2%;
+          align-items: center;
+          justify-content: space-between;
+          margin-top: 25px;
+          width: 100%;
+        "
+      >
+        <div
+          style="display: flex; flex-direction: column; gap: 5px; width: 100%"
+        >
+          <h5 class="field-label">Tipo da Questão:</h5>
           <select formControlName="type">
-            <option value="" disabled selected>Selecione um tipo</option>
+            <option [value]="" disabled selected>Selecione um tipo</option>
             <option
               *ngFor="let option of questionTypeOptions"
               [value]="option.value"
@@ -29,30 +39,13 @@
             </option>
           </select>
         </div>
-      </div>
 
-      <app-no-question-type
-        *ngIf="questionForm.controls.type.value === null"
-      ></app-no-question-type>
-
-      <div
-        class="question-info"
-        *ngIf="questionForm.controls.type.value !== null"
-      >
-        <div style="display: flex; align-items: center; gap: 10px; width: 100%">
-          <!-- <select formControlName="language">
-            <option value="" disabled selected>Selecione uma Linguagem</option>
-            <option
-              *ngFor="let option of languageOptions"
-              [value]="option.value"
-            >
-              {{ option.name }}
-            </option>
-          </select> -->
+        <div
+          style="display: flex; flex-direction: column; gap: 5px; width: 100%"
+        >
+          <h5 class="field-label">Nivel de Ensino:</h5>
           <select formControlName="levelOfEducation">
-            <option value="" disabled selected>
-              Selecione um nível de educação
-            </option>
+            <option value="" disabled selected>Selecione um nível</option>
             <option
               *ngFor="let option of levelOfEducationOptions"
               [value]="option.value"
@@ -60,53 +53,58 @@
               {{ option.name }}
             </option>
           </select>
-          <select formControlName="subject">
-            <option value="" disabled selected>Selecione uma Disciplina</option>
-            <option
-              *ngFor="let option of subjectOptions"
-              [value]="option.value"
-            >
-              {{ option.name }}
-            </option>
-          </select>
-          <select *ngIf="getSelectedSubject() !== ''" formControlName="topic">
-            <option value="" disabled selected>
-              {{
-                getSelectedSubject() === ""
-                  ? "Selecione uma Disciplina Primeiro"
-                  : "Selecione um Tópico"
-              }}
-            </option>
-            <option *ngFor="let option of topicOptions" [value]="option.value">
-              {{ option.name }}
-            </option>
-          </select>
         </div>
-
-        <label
-          *ngIf="getSelectedQuestionType() !== questionTypeOptions[2].value"
-          for="quest"
-          ><b>Pergunta:</b></label
-        >
-        <input
-          *ngIf="getSelectedQuestionType() !== questionTypeOptions[2].value"
-          id="quest"
-          type="text"
-          pInputText
-          formControlName="statement"
-        />
       </div>
 
       <div
         style="
           display: flex;
-          flex-direction: row;
-          justify-content: space-between;
-          gap: 15px;
-          margin-top: 20px;
+          flex-direction: column;
+          gap: 5px;
+          width: 100%;
+          margin-top: 15px;
         "
-        *ngIf="questionForm.controls.type.value !== null"
       >
+        <h5 class="field-label">Disciplina:</h5>
+        <select formControlName="subject">
+          <option value="" disabled selected>Selecione uma Disciplina</option>
+          <option *ngFor="let option of subjectOptions" [value]="option.value">
+            {{ option.name }}
+          </option>
+        </select>
+      </div>
+
+      <div
+        style="
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+          width: 100%;
+          margin-top: 15px;
+        "
+      >
+        <h5 class="field-label">Tópico:</h5>
+        <select formControlName="topic">
+          <option value="" disabled selected>
+            {{
+              getSelectedSubject() === ""
+                ? "Selecione uma Disciplina Primeiro"
+                : "Selecione um Tópico"
+            }}
+          </option>
+          <option *ngFor="let option of topicOptions" [value]="option.value">
+            {{ option.name }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="question-content">
+      <app-no-question-type
+        *ngIf="questionForm.controls.type.value === null"
+      ></app-no-question-type>
+
+      <div *ngIf="questionForm.controls.type.value !== null">
         <app-true-false-type
           *ngIf="getSelectedQuestionType() === questionTypeOptions[2].value"
           (onFieldsUpdate)="onOptionFieldsEdited($event)"
@@ -129,7 +127,7 @@
         ></app-multi-select-type>
 
         <div
-          style="display: flex; width: 50%; flex-direction: column; gap: 10px"
+          style="display: flex; width: 100%; flex-direction: column; gap: 10px"
         >
           <label for="exp" class="explanation-label"><b>Explicação:</b></label>
           <textarea
@@ -171,6 +169,6 @@
           </div>
         </div>
       </div>
-    </form>
-  </div>
+    </div>
+  </form>
 </div>

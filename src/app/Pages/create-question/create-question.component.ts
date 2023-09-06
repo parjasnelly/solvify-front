@@ -66,7 +66,6 @@ export class CreateQuestionComponent implements OnInit {
   ];
 
   questionForm = this.builder.group({
-    title: ['', [Validators.required, Validators.pattern(VALID_TEXT_PATTERN)]],
     type: new FormControl<ProblemType | undefined>(undefined),
     statement: [
       '',
@@ -90,8 +89,6 @@ export class CreateQuestionComponent implements OnInit {
       this.updateFormOnTypeChange();
     });
 
-    console.log(this.subjectService.getSubjects());
-
     this.subjectOptions = this.subjectService.getSubjects().map((subject) => ({
       name: subject.name,
       value: subject.id,
@@ -109,6 +106,7 @@ export class CreateQuestionComponent implements OnInit {
   }
 
   getSelectedQuestionType() {
+    if (this.questionForm.get('type')!.value === null) return undefined;
     return parseInt(this.questionForm.get('type')!.value!.toString());
   }
 
@@ -135,7 +133,6 @@ export class CreateQuestionComponent implements OnInit {
   onOptionFieldsEdited(optionFields: any[]) {
     this.questionForm.setValue(
       {
-        title: this.questionForm.get('title')!.value,
         feedback: this.questionForm.get('feedback')!.value,
         levelOfEducation: this.questionForm.get('levelOfEducation')!.value,
         topic: this.questionForm.get('topic')!.value,
@@ -162,16 +159,19 @@ export class CreateQuestionComponent implements OnInit {
 
     // Create and add new FormArray controls based on the selected type
     if (type === ProblemType.TRUEFALSE) {
+      const statementSave = this.questionForm.get('statement')?.value;
       this.questionForm.patchValue({
         statement: '',
       });
       this.questionForm.get('statement')?.clearValidators();
       this.questionForm.get('statement')?.updateValueAndValidity();
 
+      console.log(statementSave);
+
       const trueFalseFields = this.builder.array([
         this.builder.group({
           statement: [
-            '',
+            statementSave,
             [Validators.required, Validators.pattern(VALID_TEXT_PATTERN)],
           ],
           answer: new FormControl<boolean>(false),
@@ -334,7 +334,6 @@ export class CreateQuestionComponent implements OnInit {
         language: this.questionForm.value.language!,
         levelOfEducation: this.questionForm.value.levelOfEducation!,
         optionFields: this.questionForm.value.optionFields!,
-        title: this.questionForm.value.title!,
       };
 
       switch (parseInt(this.questionForm.value.type!.toString())) {

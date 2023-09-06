@@ -84,7 +84,6 @@ export interface ProblemFormData {
   subtopicId: string;
   levelOfEducation: string;
   optionFields: Array<any>;
-  title: string;
   statement?: string;
   feedback: string;
   language: string;
