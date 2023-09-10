@@ -35,14 +35,61 @@
       </div>
     </div>
 
-    <button
+    <div style="position: relative">
+      <div>
+        <p-button
+          icon="pi pi-ellipsis-v"
+          iconPos="left"
+          label="Opçoes"
+          styleClass="p-button-primary p-button-text"
+          (click)="toggle()"
+        ></p-button>
+        <p-overlay [(visible)]="overlayVisible">
+          <div
+            style="
+              margin-top: 4px;
+              width: 200%;
+              background-color: white;
+              border-radius: 6px;
+              padding: 3px 0px 0px 0px;
+              right: 100%;
+              position: relative;
+              overflow: hidden;
+              box-shadow: 0 0 3px #ccc;
+            "
+          >
+            <button
+              *ngIf="isAuthor"
+              pButton
+              icon="pi pi-pencil"
+              class="dropdown-button"
+              iconPos="left"
+              routerLink="/edit-question/{{ question.id }}"
+            >
+              Editar Questão
+            </button>
+            <button
+              pButton
+              icon="pi pi-exclamation-circle"
+              class="dropdown-button"
+              iconPos="left"
+              (click)="onReportButtonClick()"
+            >
+              Reportar Problema
+            </button>
+          </div>
+        </p-overlay>
+      </div>
+    </div>
+
+    <!-- <button
       pButton
       label="Reportar Problema"
       icon="pi pi-exclamation-circle"
       class="report-button"
       iconPos="left"
       (click)="onReportButtonClick()"
-    ></button>
+    ></button> -->
   </div>
 
   <div
@@ -181,6 +228,7 @@
 
     <div class="question-footer">
       <button
+        *ngIf="isSubmitted"
         pButton
         label="Upvote"
         icon="pi pi-thumbs-up"
@@ -188,6 +236,7 @@
         (click)="onVoteClick(true)"
       ></button>
       <button
+        *ngIf="isSubmitted"
         pButton
         label="Downvote"
         icon="pi pi-thumbs-down"

@@ -7,6 +7,7 @@ import {
   CreateMultiSelectionProblemEntity,
   CreateMultiTrueFalseProblemEntity,
   CreateTrueFalseProblemEntity,
+  EditProblemEntity,
   Problem,
   ProblemAttempt,
   ProblemAttemptResponseObject,
@@ -34,6 +35,21 @@ interface ProblemFilterArgs {
 @Injectable()
 export class ProblemService {
   constructor(private http: HttpClient, private logService: LogService) {}
+
+  getProblem(id: string): Observable<ProblemRequestResponseObject> {
+    return this.http
+      .get<ProblemRequestResponseObject>(`${STANDARD_URL}/problems/${id}`)
+      .pipe(
+        tap({
+          next: (data) => {
+            this.logService.writeLog('Problem fetched succesfully');
+          },
+          error: (error) => {
+            this.handleError(error);
+          },
+        })
+      );
+  }
 
   getProblems(
     pageNumber: number,
@@ -187,6 +203,30 @@ export class ProblemService {
       );
   }
 
+  editProblem(id: string, problemData: ProblemFormData) {
+    const editInformation: EditProblemEntity = {
+      feedback: problemData.feedback,
+      subject_id: problemData.subjectId,
+      topic_id: problemData.topicId,
+      subtopic_id: problemData.subtopicId,
+      level_of_education: problemData.levelOfEducation,
+      language: problemData.language,
+    };
+
+    return this.http
+      .post(`${STANDARD_URL}/problems/${id}`, editInformation)
+      .pipe(
+        tap({
+          next: (data) => {
+            this.logService.writeLog('Problem edited succesfully');
+          },
+          error: (error) => {
+            this.handleError(error);
+          },
+        })
+      );
+  }
+
   reportProblem(
     problemId: string,
     userId: string,
@@ -223,8 +263,6 @@ export class ProblemService {
       default:
         break;
     }
-
-    console.log(attempt);
 
     return this.http.post<ProblemAttemptResponseObject>(url, attempt);
   }

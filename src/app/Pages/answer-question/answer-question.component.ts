@@ -40,6 +40,8 @@ export class AnswerQuestionComponent {
   sendingReport = false;
   isReportModalVisible = false;
   reportText = '';
+  overlayVisible = false;
+  isAuthor!: boolean;
 
   get problemType(): typeof ProblemType {
     return ProblemType;
@@ -60,6 +62,9 @@ export class AnswerQuestionComponent {
 
   ngOnInit() {
     this.question = history.state;
+
+    this.isAuthor = this.authService.userId === this.question.creatorId;
+
     this.Subjects = this.subjectService
       .getSubjects()
       .map((subject) => ({ name: subject.name, value: subject.id }));
@@ -82,6 +87,10 @@ export class AnswerQuestionComponent {
 
   get answerFormGroup() {
     return this.answer as FormGroup;
+  }
+
+  toggle() {
+    this.overlayVisible = !this.overlayVisible;
   }
 
   onReportButtonClick() {

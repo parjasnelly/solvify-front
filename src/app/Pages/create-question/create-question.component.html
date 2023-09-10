@@ -3,7 +3,9 @@
   <p-toast position="bottom-center"></p-toast>
   <form [formGroup]="questionForm">
     <div class="header-div">
-      <h2 class="section-title">Nova Questão</h2>
+      <h2 class="section-title">
+        {{ isEdit ? "Editar Questão" : "Nova Questão" }}
+      </h2>
 
       <input
         *ngIf="getSelectedQuestionType() !== questionTypeOptions[2].value"
@@ -27,6 +29,7 @@
       >
         <div
           style="display: flex; flex-direction: column; gap: 5px; width: 100%"
+          *ngIf="!isEdit"
         >
           <h5 class="field-label">Tipo da Questão:</h5>
           <select formControlName="type">
@@ -114,20 +117,29 @@
           *ngIf="getSelectedQuestionType() === questionTypeOptions[3].value"
           (onFieldsUpdate)="onOptionFieldsEdited($event)"
           [parentForm]="questionForm"
+          [isEdit]="isEdit"
         ></app-multi-true-false-type>
         <app-multi-choice-type
           *ngIf="getSelectedQuestionType() === questionTypeOptions[0].value"
           (onFieldsUpdate)="onOptionFieldsEdited($event)"
           [parentForm]="questionForm"
+          [isEdit]="isEdit"
         ></app-multi-choice-type>
         <app-multi-select-type
           *ngIf="getSelectedQuestionType() === questionTypeOptions[1].value"
           (onFieldsUpdate)="onOptionFieldsEdited($event)"
           [parentForm]="questionForm"
+          [isEdit]="isEdit"
         ></app-multi-select-type>
 
         <div
-          style="display: flex; width: 100%; flex-direction: column; gap: 10px"
+          style="
+            display: flex;
+            width: 100%;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+          "
         >
           <label for="exp" class="explanation-label"><b>Explicação:</b></label>
           <textarea
@@ -157,14 +169,21 @@
             multiple
           /> -->
 
-          <div style="display: flex; justify-content: end; width: 100%">
+          <div
+            style="
+              display: flex;
+              justify-content: end;
+              width: 100%;
+              margin-top: 10px;
+            "
+          >
             <p-button
-              label="Enviar"
+              [label]="isEdit ? 'Salvar Mudanças' : 'Enviar'"
               [icon]="loading ? '' : 'pi pi-check'"
               [loading]="loading"
               styleClass="p-button p-button-raised"
               [disabled]="!questionForm.valid"
-              (click)="onSubmit()"
+              (click)="isEdit ? onEditSubmit() : onCreateSubmit()"
             ></p-button>
           </div>
         </div>
