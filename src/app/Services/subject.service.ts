@@ -4,7 +4,7 @@ import { LogService } from './log.service';
 import { Subject, SubjectResponseObject } from '../Types/Subject';
 import { AddTopicObject, Topic, TopicResponseObject } from '../Types/Topic';
 import { Observable, map } from 'rxjs';
-import { environment } from './../../environments/environment';
+import { environment } from '../../environments/environment';
 
 const STANDARD_URL = environment.apiUrl;
 

@@ -25,6 +25,7 @@ export class AuthService{
   constructor(private authService: SocialAuthService, private router: Router, private logService: LogService, private http: HttpClient,) {
     this.user = JSON.parse(localStorage.getItem('userObject') || '{}');
     if(this.user!=null){
+      console.log(this.user)
       this.getUserbyEmail(this.user.email).subscribe((data)=>{
         this.userId = data._id;
       })

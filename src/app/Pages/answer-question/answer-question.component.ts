@@ -13,6 +13,8 @@ import {
 } from 'src/app/Types/Problem';
 import { delay } from 'src/app/Utils/delay';
 import { AuthService } from 'src/app/Services/auth.service';
+import {ListService} from "../../Services/list.service";
+import {ProblemList} from "../../Types/ProblemList";
 
 interface SelectOptions {
   name: string;
@@ -39,7 +41,12 @@ export class AnswerQuestionComponent {
   isSubmitted = false;
   sendingReport = false;
   isReportModalVisible = false;
+  isSaveToListModalVisible = false;
   reportText = '';
+  lists!: ProblemList[];
+  selectedLists!: ProblemList[];
+  createList: boolean = false;
+  ListDescription!: string;
 
   get problemType(): typeof ProblemType {
     return ProblemType;
@@ -55,7 +62,8 @@ export class AnswerQuestionComponent {
     private problemService: ProblemService,
     private authService: AuthService,
     private subjectService: SubjectService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private listService: ListService
   ) {}
 
   ngOnInit() {
@@ -78,6 +86,7 @@ export class AnswerQuestionComponent {
     } else {
       this.answer = '-1';
     }
+    this.listService.getLists(1,30).subscribe((lists) => { this.lists = this.listService.filterListsByCreatorId(lists, this.authService.userId) });
   }
 
   get answerFormGroup() {
@@ -245,5 +254,56 @@ export class AnswerQuestionComponent {
           });
         },
       });
+  }
+
+  onSaveButtonClick() {
+    this.createList = false;
+    this.isSaveToListModalVisible = true;
+  }
+
+  onCreateListButtonClick() {
+    this.createList = true
+  }
+
+  onSubmitListButtonClick() {
+    let newList: ProblemList = {
+      creatorId: this.authService.userId,
+      problemIds: [this.question.id],
+      description: this.ListDescription,
+    }
+    this.listService.createList(newList).subscribe((list) => {
+      this.isSaveToListModalVisible = false;
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Lista criada com sucesso',
+        detail: `A questão foi adicionada em ${this.ListDescription}`,
+      });
+      this.listService.getLists(1,30).subscribe((lists) => { this.lists = this.listService.filterListsByCreatorId(lists, this.authService.userId) });
+    })
+  }
+
+  onDeleteButtonClick(list: any) {
+    this.listService.deleteList(list.id).subscribe((list) => {
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Lista deletada com sucesso',
+        detail: `A lista foi deletada`,
+      });
+      this.listService.getLists(1,30).subscribe((lists) => { this.lists = this.listService.filterListsByCreatorId(lists, this.authService.userId) });
+    })
+  }
+
+  onAddToListButtonClick() {
+    for (const list of this.lists) {
+      list.problemIds.push(this.question.id)
+      this.listService.editList(list).subscribe((list) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Questão adicionada com sucesso',
+          detail: `A questão foi adicionada em ${list.description}`,
+        });
+      })
+    }
+
   }
 }

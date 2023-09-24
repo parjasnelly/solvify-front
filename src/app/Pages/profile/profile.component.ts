@@ -6,6 +6,8 @@ import { Attempt } from 'src/app/Types/Attempt';
 import { Problem, ProblemType } from 'src/app/Types/Problem';
 import { Subject } from 'src/app/Types/Subject';
 import { AuthService } from 'src/app/Services/auth.service';
+import {ListService} from "../../Services/list.service";
+import {ProblemList} from "../../Types/ProblemList";
 
 enum ResultType {
   INCORRECT = 0,
@@ -23,13 +25,14 @@ export class ProfileComponent {
     private authService: AuthService,
     private problemService: ProblemService,
     private messageService: MessageService,
-    private subjectService: SubjectService
+    private subjectService: SubjectService,
+    private listService: ListService
   ) {}
-
+  lists!: ProblemList[];
   userProblems!: Problem[];
   userAttempts!: Attempt[];
   subjects!: Subject[];
-  activeTab: 'questions' | 'attempts' = 'questions';
+  activeTab: 'questions' | 'attempts' | 'lists' = 'questions';
   get user() {
     return this.authService.user;
   }
@@ -64,6 +67,7 @@ export class ProfileComponent {
       });
 
     this.subjects = this.subjectService.getSubjects();
+    this.listService.getLists(1,30).subscribe((lists) => { this.lists = this.listService.filterListsByCreatorId(lists, this.authService.userId) });
   }
 
   getCorrectAttempts() {
