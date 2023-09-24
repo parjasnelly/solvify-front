@@ -19,12 +19,12 @@
 
     <div class="user-stats">
       <div class="user-val-container">
-        <span>{{ userProblems.length }}</span>
+        <span>{{ userProblems?.length }}</span>
         <h6>Questões Criadas</h6>
       </div>
 
       <div class="user-val-container">
-        <span>{{ userAttempts.length }}</span>
+        <span>{{ userAttempts?.length }}</span>
         <h6>Questões Tentadas</h6>
       </div>
 
@@ -62,11 +62,18 @@
     </button>
     <button
       class="tab-button"
-      style="border-radius: 0px 6px 6px 0px"
       [ngClass]="{ 'tab-button-active': activeTab === 'attempts' }"
       (click)="activeTab = 'attempts'"
     >
       Minhas Tentativas
+    </button>
+    <button
+      class="tab-button"
+      style="border-radius: 0px 6px 6px 0px"
+      [ngClass]="{ 'tab-button-active': activeTab === 'lists' }"
+      (click)="activeTab = 'lists'"
+    >
+      Minhas Listas
     </button>
   </div>
 
@@ -134,6 +141,24 @@
         >
           {{ getResultTypeName(attempt.solutionAccuracy) }}
         </span>
+      </div>
+    </div>
+
+    <div *ngIf="activeTab === 'lists'" style="width: 100%">
+      <div class="attempt-header">
+        <span style="width: 80%"> Descrição </span>
+        <span style="width: 20%; border-right: none"> Qtd. Questões </span>
+      </div>
+
+      <div *ngIf="lists.length === 0" class="attempt-item">
+        <span style="width: 100%; border-right: none">
+          Lista teste
+        </span>
+      </div>
+
+      <div *ngFor="let list of lists" class="list-item">
+        <span style="width: 80%"> {{ list.description }} </span>
+        <span style="width: 20%; border-right: none"> {{ list.problemIds.length }} </span>
       </div>
     </div>
   </div>

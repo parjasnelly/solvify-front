@@ -70,6 +70,14 @@
             </button>
             <button
               pButton
+              label="Salvar a uma lista"
+              icon="pi pi-bookmark"
+              class="p-button-outlined"
+              iconPos="left"
+              (click)="onSaveButtonClick()"
+            ></button>
+            <button
+              pButton
               icon="pi pi-exclamation-circle"
               class="dropdown-button"
               iconPos="left"
@@ -323,4 +331,66 @@
       ></p-button>
     </ng-template>
   </p-dialog>
+
+<p-dialog
+  header="Salvar a uma lista"
+  [(visible)]="isSaveToListModalVisible"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+  [draggable]="false"
+  [resizable]="false">
+  <p-table [value]="lists" [(selection)]="selectedLists">
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 4rem">
+          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+        </th>
+        <th style="width: 60rem">Descrição</th>
+        <th style="width: 5rem">Qtd. Questões</th>
+        <th style="width: 4rem">
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-list>
+      <tr>
+        <td>
+          <p-tableCheckbox [value]="list"></p-tableCheckbox>
+        </td>
+        <td>{{ list.description }}</td>
+        <td>{{ list.problemIds.length }}</td>
+        <td>
+          <button
+          pButton
+          icon="pi pi-trash"
+          class="p-button-text p-button-danger"
+          iconPos="left"
+          (click)="onDeleteButtonClick(list)"
+        ></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <button
+    pButton
+    label="Criar uma nova lista"
+    icon="pi pi-plus"
+    class="p-button-text"
+    iconPos="left"
+    (click)="onCreateListButtonClick()"
+  ></button>
+  <div *ngIf="createList">
+    <input type="text" pInputText [(ngModel)]="ListDescription" style="width: 50rem; margin-top: 2rem" placeholder="Insira a descrição da lista"  />
+    <button
+      pButton
+      icon="pi pi-save"
+      class="p-button-text p-button-success"
+      iconPos="left"
+      (click)="onSubmitListButtonClick()"
+    ></button>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <p-button icon="pi pi-check" (click)="onAddToListButtonClick()" label="Confirma" styleClass="p-button-text p-button-success"></p-button>
+  </ng-template>
+</p-dialog>
 </div>
