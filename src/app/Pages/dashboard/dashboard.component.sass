@@ -1,18 +1,12 @@
 @import "../../../styles.sass"
 
 /* colors */
-$primary: #42D885
-$secondary: #BEAAF9
-$terciary: #EDEEF0
-
-$history: #FCFAA3
-$geography: #9CDCFF
-$math: #F27A7D
-$physics: #FCC67C
-$chemestry: #D4B7F0
-$biology: #B4E76A
+$primary: #212529
+$secondary: #EDEEF0
 
 $font: #4F5965
+
+$white: #ffffff
 
 .main-wrapper
     display: flex
@@ -20,7 +14,7 @@ $font: #4F5965
     height: 85vh
     .left-col
         padding-left: 70px
-        width: 18%
+        width: 18vw
         .left-col-label-cat
             font-size: 20px
             font-weight: bold
@@ -28,12 +22,16 @@ $font: #4F5965
             color: $font
             margin-left: 20px
             margin-top: 20px
+        .subject-search
         .left-top-separator
-            background: $terciary
+            background: $secondary
             height: 1px
             width: 90%
             margin: 10px 0px 10px 0px
         .subjects-container
+            overflow-y: scroll
+            overflow-x: hidden
+            height: 86.9%
             .subject-card
                 width: 80%
                 display: flex
@@ -44,7 +42,6 @@ $font: #4F5965
                     width: 40px
                     margin-top: 9px
                     margin-left: 20px
-                    border-radius: 10px
                     .pi
                         height: auto
                         margin: 0 auto
@@ -73,43 +70,48 @@ $font: #4F5965
                     color: $font
 
 
-    .col-separator
-        background: $secondary
-        width: 1px
-
-
     .right-col
-        width: 77%
-        padding: 10px 70px 0px 0px
-        .right-col-label
+        width: 77vw
+        padding: 10px 70px 0px 13vw
+        border-left: 1px solid $primary
+        height: 85vh
+        .right-col-header
+            display: flex
+            align-items: center
             font-size: 30px
             font-family: $standard-font-family
             color: $font
-            margin-left: 40px
+            width: 40vw
+            .questions-selector
+                text-align: center
+                width: 50%
+                cursor: pointer
+            .lists-selector
+                text-align: center
+                width: 50%
+                cursor: pointer
         .question-grid-container
-            display: grid
-            grid-template-columns: auto auto auto
-            padding: 10px
-            height: 80vh
+            height: 76vh
+            width: fit-content
             overflow-y: scroll
             overflow-x: hidden 
             .grid-item
-                padding: 10px 5px 10px 5px
                 font-size: 30px
                 text-align: center
+                padding: 1vh 0vh 1vh 0vh
                 .question-card
                     cursor: pointer
-                    display: inline-block
-                    width: 330px
-                    height: 190px
-                    background: $terciary
+                    width: 40vw
+                    height: fit-content
+                    background: $secondary
                     padding: 10px 10px 0px 10px
                     margin-right: 10px
-                    border-radius: 16px
+                    border-radius: 0px
                     .question-card-header
                         display: flex
                         height: 20%
                         font-size: 20px
+                        font-weight: bold
                         font-family: $standard-font-family
                         color: $font
                         .subject-icon-mini
@@ -117,6 +119,7 @@ $font: #4F5965
                             width: 30px 
                             border-radius: 4px
                             margin-right: 10px
+                            background: $white
                             .pi
                                 height: auto
                                 margin: 0 auto
@@ -128,17 +131,21 @@ $font: #4F5965
                                 padding: 2px
                                 position: relative
                     .question-card-content
-                        border-top: 1px solid $font
+                        display: flex
+                        border-top: 1px
                         height: 54%
-                        margin-top: 2%
+                        margin-top: 3%
+                        margin-left: 6%
                         font-size: 18px
                         font-family: $standard-font-family
                         color: $font
                     .question-card-footer
-                        border-top: 1px solid $font
+                        display: flex
+                        border-top: 1px
                         height: 15%
-                        margin-top: 2%
-                        font-size: 17px
+                        margin-top: 3%
+                        margin-left: 6%
+                        font-size: 14px
                         font-family: $standard-font-family
                         color: $font
 
