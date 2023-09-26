@@ -89,6 +89,15 @@ export interface ProblemFormData {
   language: string;
 }
 
+export interface EditProblemEntity {
+  feedback: string;
+  subject_id: string;
+  topic_id: string;
+  subtopic_id: string;
+  level_of_education: string;
+  language: string;
+}
+
 export interface CreateTrueFalseProblemEntity {
   creator_id: string;
   creator_username: string;

@@ -7,7 +7,7 @@ import {
   Validators,
   ValidatorFn,
 } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProblemService } from 'src/app/Services/question.service';
 import { SubjectService } from 'src/app/Services/subject.service';
 import { ProblemFormData, ProblemType } from 'src/app/Types/Problem';
@@ -34,12 +34,14 @@ export class CreateQuestionComponent implements OnInit {
     private problemService: ProblemService,
     private subjectService: SubjectService,
     private router: Router,
+    private activatedRoute: ActivatedRoute,
     private messageService: MessageService
   ) {}
 
   loading: boolean = false;
   subjectOptions: SelectOptions[] = [];
   topicOptions: SelectOptions[] = [];
+  isEdit: boolean = false;
 
   levelOfEducationOptions: SelectOptions[] = [
     { name: 'Ensino Fundamental', value: 'primary' },
@@ -68,7 +70,7 @@ export class CreateQuestionComponent implements OnInit {
   questionForm = this.builder.group({
     type: new FormControl<ProblemType | undefined>(undefined),
     statement: [
-      '',
+      { value: '', disabled: false },
       [Validators.required, Validators.pattern(VALID_TEXT_PATTERN)],
     ],
     optionFields: this.builder.array<FormGroup<any>>([]),
@@ -103,6 +105,129 @@ export class CreateQuestionComponent implements OnInit {
           })))
       );
     });
+
+    if (this.router.url.includes('edit')) {
+      this.isEdit = true;
+      this.questionForm.get('statement')?.disable();
+
+      this.problemService
+        .getProblem(this.activatedRoute.snapshot.paramMap.get('id')!)
+        .subscribe((data) => {
+          const problemToEdit =
+            this.problemService.convertProblemResponseToProblem(data);
+
+          this.questionForm.patchValue({
+            type: problemToEdit.problemType,
+            statement: problemToEdit.statement,
+            feedback: problemToEdit.feedback,
+            levelOfEducation: problemToEdit.levelOfEducation,
+            topic: problemToEdit.topicId,
+            subtopic: problemToEdit.subtopicId,
+            subject: problemToEdit.subjectId,
+            language: problemToEdit.language,
+          });
+
+          if (problemToEdit.problemType === ProblemType.TRUEFALSE) {
+            const statementSave = this.questionForm.get('statement')?.value;
+            this.questionForm.patchValue({
+              statement: '',
+            });
+            this.questionForm.get('statement')?.clearValidators();
+            this.questionForm.get('statement')?.updateValueAndValidity();
+
+            const trueFalseFields = this.builder.array([
+              this.builder.group({
+                statement: [
+                  { value: statementSave, disabled: true },
+                  [Validators.required, Validators.pattern(VALID_TEXT_PATTERN)],
+                ],
+                answer: new FormControl<boolean>({
+                  value: problemToEdit.boolAnswer!,
+                  disabled: true,
+                }),
+              }),
+            ]);
+            this.questionForm.controls.optionFields = trueFalseFields;
+          } else if (problemToEdit.problemType === ProblemType.MULTITRUEFALSE) {
+            this.fixStatementOnTypeChange();
+
+            const builderArrayInfo = problemToEdit.items!.map((item, index) => {
+              return this.builder.group({
+                statement: [
+                  { value: item, disabled: true },
+                  [Validators.required, Validators.pattern(VALID_TEXT_PATTERN)],
+                ],
+                answer: new FormControl<boolean>({
+                  value: problemToEdit.boolAnswers![index]!,
+                  disabled: true,
+                }),
+              });
+            });
+
+            const trueFalseFields = this.builder.array(builderArrayInfo);
+
+            this.questionForm.controls.optionFields = trueFalseFields;
+          } else if (problemToEdit.problemType === ProblemType.MULTICHOICE) {
+            this.fixStatementOnTypeChange();
+
+            const builderArrayInfo = problemToEdit.items!.map((item, index) => {
+              return this.builder.group({
+                label: [
+                  { value: item, disabled: true },
+                  [
+                    (Validators.required,
+                    Validators.pattern(VALID_TEXT_PATTERN)),
+                  ],
+                ],
+                isCorrect: new FormControl<boolean>({
+                  value: problemToEdit.correctItem! === index,
+                  disabled: true,
+                }),
+              });
+            });
+
+            const multiChoiceFields = this.builder.array(builderArrayInfo);
+
+            this.questionForm.controls.optionFields = multiChoiceFields;
+          } else if (problemToEdit.problemType === ProblemType.MULTISELECT) {
+            this.fixStatementOnTypeChange();
+
+            const builderArrayInfo = problemToEdit.items!.map((item, index) => {
+              return this.builder.group({
+                label: [
+                  { value: item, disabled: true },
+                  [Validators.required, Validators.pattern(VALID_TEXT_PATTERN)],
+                ],
+                isCorrect: new FormControl<boolean>({
+                  value: problemToEdit.correctItems![index]!,
+                  disabled: true,
+                }),
+              });
+            });
+
+            const multiSelectFields = this.builder.array(builderArrayInfo);
+
+            this.questionForm.controls.optionFields = multiSelectFields;
+          }
+        });
+    }
+  }
+
+  fixStatementOnTypeChange() {
+    this.questionForm.patchValue({
+      statement:
+        this.questionForm.get('statement') !== null
+          ? this.questionForm.get('statement')!.value
+          : '',
+    });
+    this.questionForm
+      .get('statement')
+      ?.addValidators([
+        Validators.required,
+        Validators.pattern(VALID_TEXT_PATTERN),
+      ]);
+
+    this.questionForm.get('statement')?.updateValueAndValidity();
   }
 
   getSelectedQuestionType() {
@@ -166,8 +291,6 @@ export class CreateQuestionComponent implements OnInit {
       this.questionForm.get('statement')?.clearValidators();
       this.questionForm.get('statement')?.updateValueAndValidity();
 
-      console.log(statementSave);
-
       const trueFalseFields = this.builder.array([
         this.builder.group({
           statement: [
@@ -179,19 +302,7 @@ export class CreateQuestionComponent implements OnInit {
       ]);
       this.questionForm.controls.optionFields = trueFalseFields;
     } else if (type === ProblemType.MULTITRUEFALSE) {
-      this.questionForm.patchValue({
-        statement:
-          this.questionForm.get('statement') !== null
-            ? this.questionForm.get('statement')!.value
-            : '',
-      });
-      this.questionForm
-        .get('statement')
-        ?.addValidators([
-          Validators.required,
-          Validators.pattern(VALID_TEXT_PATTERN),
-        ]);
-      this.questionForm.get('statement')?.updateValueAndValidity();
+      this.fixStatementOnTypeChange();
 
       const trueFalseFields = this.builder.array([
         this.builder.group({
@@ -219,19 +330,7 @@ export class CreateQuestionComponent implements OnInit {
 
       this.questionForm.controls.optionFields = trueFalseFields;
     } else if (type === ProblemType.MULTICHOICE) {
-      this.questionForm.patchValue({
-        statement:
-          this.questionForm.get('statement') !== null
-            ? this.questionForm.get('statement')!.value
-            : '',
-      });
-      this.questionForm
-        .get('statement')
-        ?.addValidators([
-          Validators.required,
-          Validators.pattern(VALID_TEXT_PATTERN),
-        ]);
-      this.questionForm.get('statement')?.updateValueAndValidity();
+      this.fixStatementOnTypeChange();
 
       const multiChoiceFields = this.builder.array([
         this.builder.group({
@@ -259,19 +358,7 @@ export class CreateQuestionComponent implements OnInit {
 
       this.questionForm.controls.optionFields = multiChoiceFields;
     } else if (type === ProblemType.MULTISELECT) {
-      this.questionForm.patchValue({
-        statement:
-          this.questionForm.get('statement') !== null
-            ? this.questionForm.get('statement')!.value
-            : '',
-      });
-      this.questionForm
-        .get('statement')
-        ?.addValidators([
-          Validators.required,
-          Validators.pattern(VALID_TEXT_PATTERN),
-        ]);
-      this.questionForm.get('statement')?.updateValueAndValidity();
+      this.fixStatementOnTypeChange();
 
       const multiSelectFields = this.builder.array([
         this.builder.group({
@@ -312,14 +399,15 @@ export class CreateQuestionComponent implements OnInit {
     this.messageService.add({
       severity: 'success',
       summary: 'Sucesso',
-      detail: 'Questão Adicionada.',
+      detail: this.isEdit ? 'Questão Editada' : 'Questão Adicionada.',
     });
     await delay(1000);
     this.loading = false;
+
     this.router.navigate(['/']);
   };
 
-  onSubmit() {
+  onCreateSubmit() {
     if (this.questionForm.valid) {
       this.loading = true;
 
@@ -369,6 +457,38 @@ export class CreateQuestionComponent implements OnInit {
           console.log(el);
         }
       }
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Campos Inválidos',
+        detail:
+          'Verifique se todos os campos estão preenchidos apropriadamente.',
+      });
+    }
+  }
+
+  onEditSubmit() {
+    if (this.questionForm.valid) {
+      this.loading = true;
+
+      const editData: ProblemFormData = {
+        userId: this.authService.userId,
+        userName: this.authService.user.name,
+        statement: this.questionForm.value.statement!,
+        subjectId: this.questionForm.value.subject!,
+        topicId: this.questionForm.value.topic!,
+        subtopicId: '',
+        feedback: this.questionForm.value.feedback!,
+        language: this.questionForm.value.language!,
+        levelOfEducation: this.questionForm.value.levelOfEducation!,
+        optionFields: this.questionForm.value.optionFields!,
+      };
+
+      this.problemService
+        .editProblem(this.activatedRoute.snapshot.paramMap.get('id')!, editData)
+        .subscribe(() => {
+          this.onSubmitSuccess();
+        });
+    } else {
       this.messageService.add({
         severity: 'warn',
         summary: 'Campos Inválidos',

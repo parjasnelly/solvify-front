@@ -35,6 +35,7 @@ import { SubjectService } from './Services/subject.service';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { DialogModule } from 'primeng/dialog';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ProfileComponent } from './Pages/profile/profile.component';
 
 @NgModule({
@@ -70,6 +71,7 @@ import { ProfileComponent } from './Pages/profile/profile.component';
     HttpClientModule,
     ToastModule,
     DialogModule,
+    OverlayPanelModule,
   ],
   providers: [
     {

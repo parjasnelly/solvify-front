@@ -18,6 +18,7 @@ export class MultiSelectTypeComponent {
   constructor(private builder: FormBuilder) {}
 
   @Input() parentForm!: FormGroup;
+  @Input() isEdit!: boolean;
   @Output() onFieldsUpdate = new EventEmitter<any[]>();
 
   get optionFields() {
@@ -25,7 +26,6 @@ export class MultiSelectTypeComponent {
   }
 
   onOptionFieldsEdit = () => {
-    console.log(this.optionFields.value);
     this.onFieldsUpdate.emit(this.optionFields.value);
   };
 

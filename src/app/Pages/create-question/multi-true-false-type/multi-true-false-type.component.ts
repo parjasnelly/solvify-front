@@ -18,6 +18,7 @@ export class MultiTrueFalseTypeComponent {
   constructor(private builder: FormBuilder) {}
 
   @Input() parentForm!: FormGroup;
+  @Input() isEdit!: boolean;
   @Output() onFieldsUpdate = new EventEmitter<any[]>();
 
   get optionFields() {
