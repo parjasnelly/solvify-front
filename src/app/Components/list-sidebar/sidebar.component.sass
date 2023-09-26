@@ -1,0 +1,150 @@
+@import "../../../styles.sass"
+@import "primeicons/primeicons.css"
+
+.sidebar
+  position: relative
+  left: 0
+  top: 0
+  height: 100%
+  transition: 0.3s
+  width: 100px
+
+  &.expanded
+    width: 100%
+
+    color: map-get($light-color, "light-100")
+    .header
+      background: map-get($main-color, "main-90")
+      h1
+        font-size: 20px
+        margin-left: 0px
+      i
+        transform: rotate(180deg)
+
+    .content
+      .question-item
+        display: flex
+        flex-direction: row
+        align-items: center
+        justify-content: flex-start
+        padding: 15px 20px
+        width: 100%
+        background-color: map-get($main-color, "dark-10")
+
+        .title
+          margin: 0
+          color: map-get($main-color, "main-80")
+          font-size: 16px
+          margin-left: 5px
+          flex: 1
+          // overflow: hidden
+          // text-overflow: ellipsis
+          // white-space: nowrap
+
+        &:hover
+          cursor: pointer
+          background-color: map-get($main-color, "main-20")
+
+        .question-icon
+          font-size: 26px
+          color: $font-dark
+
+        .correct-icon
+          font-size: 26px
+          color: map-get($system-color, "success")
+
+        .incorrect-icon
+          font-size: 26px
+          color: map-get($system-color, "error")
+
+        .warning-icon
+          font-size: 26px
+          color: #ee8203
+
+
+  .header
+    display: flex
+    align-items: center
+    justify-content: center
+    padding: 20px 20px 20px 10px
+    background: map-get($main-color, "main-90")
+    border-top-right-radius: 6px
+    transition: 0.3s
+
+    &:hover
+      background-color: map-get($main-color, "main-80")
+      cursor: pointer
+
+    i
+      color: map-get($light-color, "light-100")
+      font-size: 20px
+      transition: 0.3s
+
+    h1
+      font-size: 1px
+      color: map-get($light-color, "light-100")
+      margin: 0
+      flex: 1
+      transition: 0.3s
+
+      margin-left: -100px
+
+  .content
+    border-radius: 0px 0px 6px 0px
+    overflow: hidden
+
+    .question-item
+      display: flex
+      flex-direction: row
+      align-items: center
+      justify-content: center
+      gap: 5px
+      background-color: map-get($main-color, "main-10")
+      transition: 0.3s
+      padding: 5px 15px 10px 15px
+
+      .title
+        font-size: 0px
+        // overflow: hidden
+        // text-overflow: ellipsis
+        // white-space: nowrap
+        transition: 0.5s
+
+      i
+        margin-right: 5px
+
+      .question-number
+        font-size: 22px
+        margin: 0px
+        font-family: $standard-font-family
+        color: map-get($light-color, "light-100")
+
+      .question-icon
+        font-size: 24px
+        font-weight: 300
+        color: $font-dark
+
+      .correct-icon
+        font-size: 24px
+        color: map-get($system-color, "success")
+
+      .incorrect-icon
+        font-size: 24px
+        color: map-get($system-color, "error")
+
+      .warning-icon
+        font-size: 24px
+        color: #ee8203
+
+      &.active
+        background-color: map-get($main-color, "main-50")
+
+        &:hover
+          cursor: default
+          background-color: map-get($main-color, "main-50")
+
+      &:hover
+        cursor: pointer
+        background-color: map-get($main-color, "main-20")
+
+

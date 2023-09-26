@@ -1,3 +1,8 @@
+export enum ResultType {
+  INCORRECT = 0,
+  HALF = 1,
+  CORRECT = 2,
+}
 export interface AttemptResponseObject {
   subject: string;
   statement: string;

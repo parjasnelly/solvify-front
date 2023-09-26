@@ -1,0 +1,260 @@
+<app-header></app-header>
+<div class="header-container">
+  <div
+    style="
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding-bottom: 20px;
+      gap: 12px;
+    "
+  >
+    <button routerLink="/" class="back-button">
+      <i class="pi pi-chevron-left back-icon"></i>
+      Voltar
+    </button>
+  </div>
+
+  <p-toast position="bottom-center"></p-toast>
+</div>
+
+<div class="loading-container" *ngIf="loading">
+  <i style="font-size: 70px" class="pi pi-spinner pi-spin"></i>
+  <p>Preparando Ambiente...</p>
+</div>
+
+<div
+  style="
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+  "
+  *ngIf="!loading"
+>
+  <app-sidebar
+    [list]="list"
+    [questions]="questions"
+    [activeQuestion]="activeQuestionId"
+    [isExpanded]="sidebarExpanded"
+    (toggleSidebar)="sidebarExpanded = !sidebarExpanded"
+    (changeQuestion)="updateActiveQuestion($event)"
+    style="width: 25%"
+  ></app-sidebar>
+  <div style="display: flex; width: 100%; height: 100%">
+    <div class="main-page-container">
+      <div
+        class="main-question-container"
+        [ngClass]="{
+          'answer-correct': activeQuestion
+            ? activeQuestion.status === answerResultType.CORRECT
+            : false,
+          'answer-warning': activeQuestion
+            ? activeQuestion.status === answerResultType.HALF
+            : false,
+          'answer-incorrect': activeQuestion
+            ? activeQuestion.status === answerResultType.INCORRECT
+            : false
+        }"
+      >
+        <div class="question-header">
+          <i
+            *ngIf="activeQuestion.status === undefined"
+            class="pi pi-question-circle question-icon"
+          ></i>
+          <i
+            *ngIf="activeQuestion.status === answerResultType.CORRECT"
+            class="pi pi-check-circle correct-icon"
+          ></i>
+          <i
+            *ngIf="activeQuestion.status === answerResultType.INCORRECT"
+            class="pi pi-times-circle incorrect-icon"
+          ></i>
+          <i
+            *ngIf="activeQuestion.status === answerResultType.HALF"
+            class="pi pi-exclamation-triangle warning-icon"
+          ></i>
+          <h5>{{ activeQuestion.data.statement }}</h5>
+        </div>
+
+        <div class="question-options">
+          <div
+            *ngIf="activeQuestion.data.problemType === problemType.TRUEFALSE"
+          >
+            <div
+              style="
+                display: flex;
+                flex-direction: row;
+                gap: 17px;
+                align-items: center;
+                padding-left: 45px;
+              "
+            >
+              <p-inputSwitch [(ngModel)]="activeAnswer"></p-inputSwitch>
+              <label
+                style="margin-bottom: 7px"
+                [ngClass]="{
+                  switchtr: activeAnswer === true,
+                  switchfls: activeAnswer === false
+                }"
+                >{{ activeAnswer ? "Verdadeiro" : "Falso" }}</label
+              >
+            </div>
+          </div>
+
+          <div
+            *ngIf="activeQuestion.data.problemType === problemType.MULTICHOICE"
+          >
+            <div
+              style="
+                display: flex;
+                flex-direction: column;
+                gap: 17px;
+                align-items: flex-start;
+                justify-content: center;
+                padding-left: 45px;
+              "
+            >
+              <div
+                style="
+                  display: flex;
+                  flex-direction: row;
+                  align-items: center;
+                  gap: 15px;
+                "
+                *ngFor="let item of activeQuestion.data.items; let idx = index"
+              >
+                <p-radioButton
+                  [value]="idx"
+                  [(ngModel)]="activeAnswer"
+                  [inputId]="item + '-' + idx"
+                ></p-radioButton>
+                <label [for]="item + '-' + idx" class="option-label">{{
+                  item
+                }}</label>
+              </div>
+            </div>
+          </div>
+
+          <div
+            *ngIf="
+              activeQuestion.data.problemType === problemType.MULTISELECT ||
+              activeQuestion.data.problemType === problemType.MULTITRUEFALSE
+            "
+          >
+            <div
+              style="
+                display: flex;
+                flex-direction: column;
+                gap: 17px;
+                align-items: flex-start;
+                padding-left: 45px;
+              "
+              [formGroup]="answerFormGroup"
+            >
+              <div
+                style="
+                  display: flex;
+                  flex-direction: row;
+                  align-items: center;
+                  gap: 15px;
+                "
+                *ngFor="let item of activeQuestion.data.items; let idx = index"
+              >
+                <label class="item-container"
+                  >{{ item }}
+                  <input
+                    type="checkbox"
+                    formArrayName="itemAnswers"
+                    [value]="idx"
+                    (change)="onCheckboxChange($event, idx)"
+                  />
+                  <span class="checkmark"></span>
+                </label>
+                <!-- <input
+              type="checkbox"
+              formArrayName="itemAnswers"
+              [value]="idx"
+              (change)="onCheckboxChange($event, idx)"
+              class="checkbox-input"
+              [id]="item + '-' + idx"
+            />
+            <label [for]="item + '-' + idx" class="option-label">{{
+              item
+            }}</label> -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="question-footer">
+          <button
+            pButton
+            label="Upvote"
+            icon="pi pi-thumbs-up"
+            class="p-button-outlined p-button-success"
+            (click)="onVoteClick(true)"
+          ></button>
+          <button
+            pButton
+            label="Downvote"
+            icon="pi pi-thumbs-down"
+            class="p-button-outlined p-button-danger"
+            (click)="onVoteClick(false)"
+          ></button>
+          <button
+            *ngIf="!this.activeQuestion.status"
+            pButton
+            label="Avaliar"
+            [icon]="
+              isSubmissionLoading ? 'pi pi-spin pi-spinner' : 'pi pi-check'
+            "
+            class="submit-button"
+            [disabled]="isSubmitEnabled() || isSubmissionLoading"
+            (click)="onSubmit()"
+          ></button>
+          <button
+            *ngIf="this.activeQuestion.status"
+            pButton
+            [label]="this.isListCompleted ? 'Voltar' : 'Proxima'"
+            [icon]="'pi pi-chevron-right'"
+            class="submit-button"
+            (click)="this.isListCompleted ? goToHome() : nextQuestion()"
+            iconPos="right"
+          ></button>
+        </div>
+      </div>
+      <div
+        style="
+          display: flex;
+          flex-direction: row;
+          width: 100%;
+          justify-content: space-between;
+        "
+      >
+        <div
+          [ngClass]="{
+            'explanation-container-answered':
+              activeQuestion.status !== undefined,
+            'explanation-container-unanswered':
+              activeQuestion.status === undefined
+          }"
+        >
+          <i
+            *ngIf="activeQuestion.status === undefined"
+            class="pi pi-lock"
+            style="font-size: 36px; color: #47525e"
+          ></i>
+          <h5 *ngIf="activeQuestion.status === undefined">
+            Avalie sua resposta para acessar a explicação
+          </h5>
+
+          <p *ngIf="activeQuestion.status !== undefined">
+            {{ activeQuestion.data.feedback }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

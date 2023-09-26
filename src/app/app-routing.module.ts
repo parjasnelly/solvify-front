@@ -5,6 +5,7 @@ import { CreateQuestionComponent } from './Pages/create-question/create-question
 import { DashboardComponent } from './Pages/dashboard/dashboard.component';
 import { AnswerQuestionComponent } from './Pages/answer-question/answer-question.component';
 import { ProfileComponent } from './Pages/profile/profile.component';
+import { AnswerListComponent } from './Pages/answer-list/answer-list.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: 'question/:id', component: AnswerQuestionComponent },
   { path: 'profile', component: ProfileComponent },
   { path: 'edit-question/:id', component: CreateQuestionComponent },
+  { path: 'list/:id/play', component: AnswerListComponent },
 ];
 
 @NgModule({
