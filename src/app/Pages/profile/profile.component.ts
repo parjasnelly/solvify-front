@@ -1,13 +1,13 @@
-import { Component } from '@angular/core';
-import { MessageService } from 'primeng/api';
-import { ProblemService } from 'src/app/Services/question.service';
-import { SubjectService } from 'src/app/Services/subject.service';
-import { Attempt } from 'src/app/Types/Attempt';
-import { Problem, ProblemType } from 'src/app/Types/Problem';
-import { Subject } from 'src/app/Types/Subject';
-import { AuthService } from 'src/app/Services/auth.service';
-import {ListService} from "../../Services/list.service";
+import {Component} from '@angular/core';
+import {ConfirmationService, MessageService} from 'primeng/api';
+import {ProblemService} from 'src/app/Services/question.service';
+import {SubjectService} from 'src/app/Services/subject.service';
+import {Attempt} from 'src/app/Types/Attempt';
+import {Problem, ProblemType} from 'src/app/Types/Problem';
+import {Subject} from 'src/app/Types/Subject';
+import {AuthService} from 'src/app/Services/auth.service';
 import {ProblemList} from "../../Types/ProblemList";
+import {ListService} from "../../Services/list.service";
 
 enum ResultType {
   INCORRECT = 0,
@@ -19,20 +19,25 @@ enum ResultType {
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.sass'],
+  providers: [ConfirmationService, MessageService]
 })
 export class ProfileComponent {
+  lists: ProblemList[] = [];
+  userProblems: Problem[] = [];
+  userAttempts: Attempt[] = []
+  subjects: Subject[] = [];
+  activeTab: 'questions' | 'attempts' | 'lists' = 'questions';
+
   constructor(
     private authService: AuthService,
     private problemService: ProblemService,
     private messageService: MessageService,
     private subjectService: SubjectService,
-    private listService: ListService
-  ) {}
-  lists!: ProblemList[];
-  userProblems!: Problem[];
-  userAttempts!: Attempt[];
-  subjects!: Subject[];
-  activeTab: 'questions' | 'attempts' | 'lists' = 'questions';
+    private listService: ListService,
+    private confirmationService: ConfirmationService
+  ) {
+  }
+
   get user() {
     return this.authService.user;
   }
@@ -47,7 +52,7 @@ export class ProfileComponent {
 
   ngOnInit(): void {
     this.problemService
-      .getProblems(1, 30, { authorId: this.authService.userId })
+      .getProblems(1, 30, {authorId: this.authService.userId})
       .subscribe((problems) => {
         this.userProblems = problems.map((problem) =>
           this.problemService.convertProblemResponseToProblem(problem)
@@ -67,7 +72,9 @@ export class ProfileComponent {
       });
 
     this.subjects = this.subjectService.getSubjects();
-    this.listService.getLists(1,30).subscribe((lists) => { this.lists = this.listService.filterListsByCreatorId(lists, this.authService.userId) });
+    this.listService.getLists(1, 30).subscribe((lists) => {
+      this.lists = this.listService.filterListsByCreatorId(lists, this.authService.userId)
+    });
   }
 
   getCorrectAttempts() {
@@ -126,5 +133,25 @@ export class ProfileComponent {
       default:
         return 'Desconhecido';
     }
+  }
+
+  onDeleteButtonClick(list: ProblemList) {
+    this.confirmationService.confirm({
+      message: `Deseja realmente excluir a lista ${list.description}?`,
+      header: 'Confirmar Exclusão',
+      icon: 'pi pi-info-circle',
+      accept: () => {
+        this.listService.deleteList(list.id!).subscribe(() => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Lista excluida com sucesso',
+            detail: `A lista foi deletada`,
+          });
+          this.listService.getLists(1, 30).subscribe((lists) => {
+            this.lists = this.listService.filterListsByCreatorId(lists, this.authService.userId)
+          });
+        })
+      }
+    });
   }
 }

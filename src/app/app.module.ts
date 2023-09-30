@@ -38,6 +38,7 @@ import { DialogModule } from 'primeng/dialog';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ProfileComponent } from './Pages/profile/profile.component';
 import {TableModule} from "primeng/table";
+import {ConfirmDialogModule} from "primeng/confirmdialog";
 
 @NgModule({
   declarations: [
@@ -74,6 +75,7 @@ import {TableModule} from "primeng/table";
     DialogModule,
     TableModule,
     OverlayPanelModule,
+    ConfirmDialogModule,
   ],
   providers: [
     {

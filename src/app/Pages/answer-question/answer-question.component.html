@@ -70,12 +70,13 @@
             </button>
             <button
               pButton
-              label="Salvar a uma lista"
               icon="pi pi-bookmark"
-              class="p-button-outlined"
+              class="dropdown-button"
               iconPos="left"
               (click)="onSaveButtonClick()"
-            ></button>
+            >
+              Salvar a uma lista
+            </button>
             <button
               pButton
               icon="pi pi-exclamation-circle"
@@ -343,7 +344,6 @@
     <ng-template pTemplate="header">
       <tr>
         <th style="width: 4rem">
-          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
         </th>
         <th style="width: 60rem">Descrição</th>
         <th style="width: 5rem">Qtd. Questões</th>
@@ -354,7 +354,7 @@
     <ng-template pTemplate="body" let-list>
       <tr>
         <td>
-          <p-tableCheckbox [value]="list"></p-tableCheckbox>
+          <p-tableCheckbox [value]="list" (click)="onCheckListChange(e.checked, list)" #e></p-tableCheckbox>
         </td>
         <td>{{ list.description }}</td>
         <td>{{ list.problemIds.length }}</td>
@@ -379,7 +379,7 @@
     (click)="onCreateListButtonClick()"
   ></button>
   <div *ngIf="createList">
-    <input type="text" pInputText [(ngModel)]="ListDescription" style="width: 50rem; margin-top: 2rem" placeholder="Insira a descrição da lista"  />
+    <input type="text" pInputText [(ngModel)]="ListDescription" style="width: 85%; margin-top: 2%; margin-right: 5%" placeholder="Insira a descrição da lista"  />
     <button
       pButton
       icon="pi pi-save"
@@ -393,4 +393,11 @@
     <p-button icon="pi pi-check" (click)="onAddToListButtonClick()" label="Confirma" styleClass="p-button-text p-button-success"></p-button>
   </ng-template>
 </p-dialog>
+
+  <p-confirmDialog #cd [style]="{width: '50vw'}">
+    <ng-template pTemplate="footer">
+      <button type="button" pButton icon="pi pi-times" label="Não" (click)="cd.reject()"></button>
+      <button type="button" pButton icon="pi pi-check" label="Sim" (click)="cd.accept()"></button>
+    </ng-template>
+  </p-confirmDialog>
 </div>

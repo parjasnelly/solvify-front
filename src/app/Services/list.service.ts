@@ -3,8 +3,6 @@ import {environment} from '../../environments/environment';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {LogService} from "./log.service";
 import {map, Observable, throwError} from "rxjs";
-import {ProblemRequestResponseObject} from "../Types/Problem";
-import {tap} from "rxjs/operators";
 import {ListRequestResponseObject, ProblemList} from "../Types/ProblemList";
 import {AuthService} from "./auth.service";
 
@@ -93,7 +91,7 @@ export class ListService {
 
   editList(list: ProblemList): Observable<ProblemList> {
     return this.http
-      .put<ListRequestResponseObject>(
+      .post<ListRequestResponseObject>(
         `${STANDARD_URL}/problemlists/${list.id}`,
         {
           creator_id: list.creatorId,

@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
-import { tap } from 'rxjs';
+import {ConfirmationService, MessageService} from 'primeng/api';
 import { ProblemService } from 'src/app/Services/question.service';
 import { SubjectService } from 'src/app/Services/subject.service';
 import {
@@ -31,9 +30,10 @@ enum ResultType {
   selector: 'app-answer-question',
   templateUrl: './answer-question.component.html',
   styleUrls: ['./answer-question.component.sass'],
+  providers: [ConfirmationService, MessageService]
 })
 export class AnswerQuestionComponent {
-  Subjects!: SelectOptions[];
+  Subjects: SelectOptions[] = [];
   question!: Problem;
   answer!: boolean | FormGroup | string;
   answerResult: ResultType | null = null;
@@ -45,8 +45,8 @@ export class AnswerQuestionComponent {
   reportText = '';
   overlayVisible = false;
   isAuthor!: boolean;
-  lists!: ProblemList[];
-  selectedLists!: ProblemList[];
+  lists: ProblemList[] = [];
+  selectedLists: ProblemList[] = [];
   createList: boolean = false;
   ListDescription!: string;
 
@@ -65,7 +65,8 @@ export class AnswerQuestionComponent {
     private authService: AuthService,
     private subjectService: SubjectService,
     private messageService: MessageService,
-    private listService: ListService
+    private listService: ListService,
+    private confirmationService: ConfirmationService
   ) {}
 
   ngOnInit() {
@@ -91,11 +92,22 @@ export class AnswerQuestionComponent {
     } else {
       this.answer = '-1';
     }
-    this.listService.getLists(1,30).subscribe((lists) => { this.lists = this.listService.filterListsByCreatorId(lists, this.authService.userId) });
+    this.listService.getLists(1,30).subscribe((lists) => {
+      this.lists = this.listService.filterListsByCreatorId(lists, this.authService.userId)
+      this.updateSelectedLists()
+    });
   }
 
   get answerFormGroup() {
     return this.answer as FormGroup;
+  }
+
+  updateSelectedLists() {
+    for (const list of this.lists) {
+      if (list.problemIds.includes(this.question.id)) {
+        this.selectedLists.push(list)
+      }
+    }
   }
 
   toggle() {
@@ -291,28 +303,54 @@ export class AnswerQuestionComponent {
     })
   }
 
-  onDeleteButtonClick(list: any) {
-    this.listService.deleteList(list.id).subscribe((list) => {
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Lista deletada com sucesso',
-        detail: `A lista foi deletada`,
-      });
-      this.listService.getLists(1,30).subscribe((lists) => { this.lists = this.listService.filterListsByCreatorId(lists, this.authService.userId) });
-    })
+  onDeleteButtonClick(list: ProblemList) {
+    this.confirmationService.confirm({
+      message: `Deseja realmente excluir a lista ${list.description}?`,
+      header: 'Confirmar Exclusão',
+      icon: 'pi pi-info-circle',
+      accept: () => {
+        this.listService.deleteList(list.id!).subscribe(() => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Lista excluida com sucesso',
+            detail: `A lista foi deletada`,
+          });
+          this.listService.getLists(1, 30).subscribe((lists) => {
+            this.lists = this.listService.filterListsByCreatorId(lists, this.authService.userId)
+          });
+        })
+      }
+    });
   }
 
   onAddToListButtonClick() {
     for (const list of this.lists) {
-      list.problemIds.push(this.question.id)
       this.listService.editList(list).subscribe((list) => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Questão adicionada com sucesso',
-          detail: `A questão foi adicionada em ${list.description}`,
-        });
+        if(list.problemIds.includes(this.question.id)) {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Questão adicionada com sucesso',
+            detail: `A questão foi adicionada em ${list.description}`,
+          });
+        }else {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Questão removida com sucesso',
+            detail: `A questão foi removida de ${list.description}`,
+          });
+        }
+        this.isSaveToListModalVisible = false;
       })
     }
 
+  }
+
+  onCheckListChange(checked: boolean, list:ProblemList) {
+    if (checked) {
+      list.problemIds.push(this.question.id)
+    } else {
+      list.problemIds = list.problemIds.filter((id) => id !== this.question.id)
+    }
+    console.log(list)
   }
 }
