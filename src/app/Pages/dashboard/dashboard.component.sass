@@ -1,7 +1,7 @@
 @import "../../../styles.sass"
 
 /* colors */
-$primary: #212529
+$primary: map-get($main-color, "main-100")
 $secondary: #EDEEF0
 
 $font: #4F5965
@@ -13,15 +13,17 @@ $white: #ffffff
     width: 100%
     height: 85vh
     .left-col
-        padding-left: 70px
-        width: 18vw
+        padding: 0px 3px 0px 5vw
+        width: 20vw
+        height: 100%
         .left-col-label-cat
             font-size: 20px
             font-weight: bold
             font-family: $standard-font-family
             color: $font
-            margin-left: 20px
-            margin-top: 20px
+            text-align: center
+            margin-top: 5vh
+            overflow-x: hidden
         .subject-search
         .left-top-separator
             background: $secondary
@@ -29,9 +31,9 @@ $white: #ffffff
             width: 90%
             margin: 10px 0px 10px 0px
         .subjects-container
+            height: 85%
             overflow-y: scroll
             overflow-x: hidden
-            height: 86.9%
             .subject-card
                 width: 80%
                 display: flex
@@ -69,30 +71,30 @@ $white: #ffffff
                     font-family: $standard-font-family
                     color: $font
 
-
-    .right-col
-        width: 77vw
-        padding: 10px 70px 0px 13vw
+    .center-col
+        width: 55vw
+        padding: 10px 5px 0px 10px
         border-left: 1px solid $primary
-        height: 85vh
+        height: 100%
+        align-items: center
         .right-col-header
             display: flex
             align-items: center
             font-size: 30px
             font-family: $standard-font-family
             color: $font
-            width: 40vw
             .questions-selector
                 text-align: center
                 width: 50%
                 cursor: pointer
+                border-bottom: 3px solid $primary
             .lists-selector
                 text-align: center
                 width: 50%
                 cursor: pointer
+                border-bottom: 3px solid $primary
         .question-grid-container
             height: 76vh
-            width: fit-content
             overflow-y: scroll
             overflow-x: hidden 
             .grid-item
@@ -101,7 +103,6 @@ $white: #ffffff
                 padding: 1vh 0vh 1vh 0vh
                 .question-card
                     cursor: pointer
-                    width: 40vw
                     height: fit-content
                     background: $secondary
                     padding: 10px 10px 0px 10px
@@ -150,18 +151,43 @@ $white: #ffffff
                         color: $font
 
 
+    .right-col
+        height: 100%
+        width: 25vw
+                        
     .add-question-button
-                height: 110px
-                width: 110px
-                border-radius: 65px
-                background: $font
-                text-align: center
-                line-height: 110px
-                font-size: 100px
-                font-family: $standard-font-family
-                user-select: none
-                color: white
-                cursor: pointer
-                position: fixed
-                bottom: 30px
-                right: 30px
+        height: 100px
+        width: 100px
+        border-radius: 50%
+        background: $font
+        color: white
+        cursor: pointer
+        position: fixed
+        bottom: 30px
+        right: 30px
+        .pi
+            font-size: 75px
+
+#subject-scrollbar::-webkit-scrollbar-track
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3)
+    border-radius: 10px
+    background-color: #F5F5F5
+#subject-scrollbar::-webkit-scrollbar
+    width: 6px
+    background-color: #F5F5F5
+#subject-scrollbar::-webkit-scrollbar-thumb
+    border-radius: 10px
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3)
+    background-color: #afafaf
+
+#question-scrollbar::-webkit-scrollbar-track
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3)
+    border-radius: 10px
+    background-color: #F5F5F5
+#question-scrollbar::-webkit-scrollbar
+    width: 10px
+    background-color: #F5F5F5
+#question-scrollbar::-webkit-scrollbar-thumb
+    border-radius: 10px
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3)
+    background-color: #afafaf

@@ -10,7 +10,7 @@
 
         <div class="left-top-separator"></div>
 
-        <div class="subjects-container"   *ngIf="subject.length>0">
+        <div class="subjects-container" id="subject-scrollbar"  *ngIf="subject.length>0">
             <div class="subject-card" (click)="getAllQuestions()">
                 <div class="subject-icon">
                     <i class="pi pi-question-circle question-icon"></i>
@@ -86,11 +86,10 @@
 
             </div>
         </div>
-
     </div>
 
-    <div class="right-col">
-        <!--right column-->
+    <div class="center-col">
+        <!--center column-->
 
         <div class="right-col-header">
             <div class="questions-selector">
@@ -103,7 +102,7 @@
 
         <div class="subject-search">search-placeholder</div>
 
-        <div class="question-grid-container"  *ngIf="questions.length>0">
+        <div class="question-grid-container" id="question-scrollbar" *ngIf="questions.length>0">
             <div *ngFor="let question of questions" class="grid-item">
                 <div class="question-card" (click)="goToQuestion(question)">
                     <div class="question-card-header">
@@ -140,7 +139,7 @@
                         {{ question.statement }}
                     </div>
                     <div class="question-card-footer">
-                        Autor: {{ question.creatorUsername }}
+                        
                     </div>
                 </div>
             </div>
@@ -148,6 +147,8 @@
 
     </div>
 
-    <div class="add-question-button" routerLink="/create-question">+</div>
+    <div class="right-col"></div>
+
+    <button class="add-question-button" routerLink="/create-question"><i class="pi pi-plus"></i></button>
 
 </div>
