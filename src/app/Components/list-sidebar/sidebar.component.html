@@ -1,0 +1,40 @@
+<div class="sidebar" [ngClass]="{ expanded: isExpanded }">
+  <div class="header" (click)="handleSidebarToggle()">
+    <h1 class="title">{{ this.list ? this.list.description : "" }}</h1>
+    <i
+      class="pi pi-chevron-right chevron"
+      [ngClass]="{ activeChevron: isExpanded }"
+    ></i>
+  </div>
+
+  <div class="content">
+    <div
+      *ngFor="let question of questions; index as i"
+      class="question-item"
+      [ngClass]="{ active: question.data.id === activeQuestion }"
+      (click)="handleQuestionSelect(question.data.id)"
+    >
+      <i
+        class="pi pi-check-circle correct-icon"
+        *ngIf="question.status == answerResultType.CORRECT"
+      ></i>
+      <i
+        class="pi pi-times-circle incorrect-icon"
+        *ngIf="question.status === answerResultType.INCORRECT"
+      ></i>
+      <i
+        class="pi pi-exclamation-triangle warning-icon"
+        *ngIf="question.status === answerResultType.HALF"
+      ></i>
+      <i
+        class="pi pi-question-circle question-icon"
+        *ngIf="question.status === undefined"
+      ></i>
+      <p class="question-number">
+        <strong>{{ i + 1 }}.</strong>
+      </p>
+      <p class="title">{{ question.data.statement }}</p>
+    </div>
+  </div>
+  <div class="footer"></div>
+</div>

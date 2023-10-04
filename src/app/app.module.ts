@@ -37,9 +37,10 @@ import { MessageService } from 'primeng/api';
 import { DialogModule } from 'primeng/dialog';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ProfileComponent } from './Pages/profile/profile.component';
-import {TableModule} from "primeng/table";
-import {ConfirmDialogModule} from "primeng/confirmdialog";
-
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { TableModule } from 'primeng/table';
+import { AnswerListComponent } from './Pages/answer-list/answer-list.component';
+import { SidebarComponent } from './Components/list-sidebar/sidebar.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -54,6 +55,8 @@ import {ConfirmDialogModule} from "primeng/confirmdialog";
     MultiSelectTypeComponent,
     AnswerQuestionComponent,
     ProfileComponent,
+    AnswerListComponent,
+    SidebarComponent,
   ],
   imports: [
     BrowserModule,

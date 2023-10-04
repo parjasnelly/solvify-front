@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { ListService } from 'src/app/Services/list.service';
 import { ProblemService } from 'src/app/Services/question.service';
 import { SubjectService } from 'src/app/Services/subject.service';
 import { Problem } from 'src/app/Types/Problem';
+import { ProblemList } from 'src/app/Types/ProblemList';
 import { Subject } from 'src/app/Types/Subject';
 
 @Component({
@@ -13,13 +15,16 @@ import { Subject } from 'src/app/Types/Subject';
 export class DashboardComponent {
   constructor(
     private problemService: ProblemService,
+    private listService: ListService,
     private router: Router,
     private subjectService: SubjectService
   ) {}
 
   subject: Subject[] = [];
   questions: Problem[] = [];
+  lists: ProblemList[] = [];
   currentQuestionPage = 1;
+  currentListPage = 1;
 
   ngOnInit() {
     this.problemService
@@ -33,6 +38,14 @@ export class DashboardComponent {
 
         this.currentQuestionPage++;
       });
+
+    this.listService.getLists(this.currentListPage, 20).subscribe((data) => {
+      data.forEach((list) => {
+        this.lists.push(list);
+      });
+
+      this.currentListPage++;
+    });
 
     this.subject = this.subjectService.getSubjects();
   }
@@ -75,6 +88,11 @@ export class DashboardComponent {
     this.router.navigateByUrl(`/question/${question.id}`, {
       state: question,
     });
+  }
+
+  goToList() {
+    console.log('here');
+    this.router.navigateByUrl(`/list/${this.lists[2].id}/play`);
   }
 
   getSubjectName(id: string) {
