@@ -91,7 +91,10 @@
                 padding-left: 45px;
               "
             >
-              <p-inputSwitch [(ngModel)]="activeAnswer"></p-inputSwitch>
+              <p-inputSwitch
+                [disabled]="this.activeQuestion.status != undefined"
+                [(ngModel)]="activeAnswer"
+              ></p-inputSwitch>
               <label
                 style="margin-bottom: 7px"
                 [ngClass]="{
@@ -129,6 +132,7 @@
                   [value]="idx"
                   [(ngModel)]="activeAnswer"
                   [inputId]="item + '-' + idx"
+                  [disabled]="this.activeQuestion.status != undefined"
                 ></p-radioButton>
                 <label [for]="item + '-' + idx" class="option-label">{{
                   item
@@ -162,13 +166,24 @@
                 "
                 *ngFor="let item of activeQuestion.data.items; let idx = index"
               >
-                <label class="item-container"
+                <label
+                  class="item-container"
+                  [ngClass]="{
+                    'disabled-container':
+                      this.activeQuestion.status != undefined
+                  }"
                   >{{ item }}
                   <input
                     type="checkbox"
                     formArrayName="itemAnswers"
                     [value]="idx"
-                    (change)="onCheckboxChange($event, idx)"
+                    [checked]="getActiveAnswer(idx)"
+                    (change)="
+                      this.activeQuestion.status == undefined
+                        ? onCheckboxChange($event, idx)
+                        : null
+                    "
+                    [disabled]="this.activeQuestion.status != undefined"
                   />
                   <span class="checkmark"></span>
                 </label>
@@ -195,6 +210,7 @@
             icon="pi pi-thumbs-up"
             class="p-button-outlined p-button-success"
             (click)="onVoteClick(true)"
+            *ngIf="this.activeQuestion.status != undefined"
           ></button>
           <button
             pButton
@@ -202,9 +218,10 @@
             icon="pi pi-thumbs-down"
             class="p-button-outlined p-button-danger"
             (click)="onVoteClick(false)"
+            *ngIf="this.activeQuestion.status != undefined"
           ></button>
           <button
-            *ngIf="!this.activeQuestion.status"
+            *ngIf="this.activeQuestion.status == undefined"
             pButton
             label="Avaliar"
             [icon]="
@@ -215,7 +232,7 @@
             (click)="onSubmit()"
           ></button>
           <button
-            *ngIf="this.activeQuestion.status"
+            *ngIf="this.activeQuestion.status != undefined"
             pButton
             [label]="this.isListCompleted ? 'Voltar' : 'Proxima'"
             [icon]="'pi pi-chevron-right'"

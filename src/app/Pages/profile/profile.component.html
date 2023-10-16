@@ -10,7 +10,7 @@
 
   <div class="user-details-container">
     <div class="avatar-container">
-      <img [src]="user.photoUrl" alt="Avatar" class="avatar"/>
+      <img [src]="user.photoUrl" alt="Avatar" class="avatar" />
     </div>
     <div class="user-details">
       <div class="user-name">{{ user.name }}</div>
@@ -57,23 +57,29 @@
       style="border-radius: 6px 0px 0px 6px"
       [ngClass]="{ 'tab-button-active': activeTab === 'questions' }"
       (click)="activeTab = 'questions'"
+      [disabled]="userProblemsLoading"
     >
-      Minhas Questões
+      <i class="pi pi-spinner pi-spin" *ngIf="userProblemsLoading"></i>
+      {{ !userProblemsLoading ? "Minhas Questões" : "" }}
     </button>
     <button
       class="tab-button"
       [ngClass]="{ 'tab-button-active': activeTab === 'attempts' }"
       (click)="activeTab = 'attempts'"
+      [disabled]="attemptsLoading"
     >
-      Minhas Tentativas
+      <i class="pi pi-spinner pi-spin" *ngIf="attemptsLoading"></i>
+      {{ !attemptsLoading ? "Minhas Tentativas" : "" }}
     </button>
     <button
       class="tab-button"
       style="border-radius: 0px 6px 6px 0px"
       [ngClass]="{ 'tab-button-active': activeTab === 'lists' }"
       (click)="activeTab = 'lists'"
+      [disabled]="listsLoading"
     >
-      Minhas Listas
+      <i class="pi pi-spinner pi-spin" *ngIf="listsLoading"></i>
+      {{ !listsLoading ? "Minhas Listas" : "" }}
     </button>
   </div>
 
@@ -174,15 +180,26 @@
             (click)="onDeleteButtonClick(list)"
           ></button>
         </span>
-
       </div>
     </div>
   </div>
   <p-toast position="bottom-center"></p-toast>
-  <p-confirmDialog #cd [style]="{width: '50vw'}">
+  <p-confirmDialog #cd [style]="{ width: '50vw' }">
     <ng-template pTemplate="footer">
-      <button type="button" pButton icon="pi pi-times" label="Não" (click)="cd.reject()"></button>
-      <button type="button" pButton icon="pi pi-check" label="Sim" (click)="cd.accept()"></button>
+      <button
+        type="button"
+        pButton
+        icon="pi pi-times"
+        label="Não"
+        (click)="cd.reject()"
+      ></button>
+      <button
+        type="button"
+        pButton
+        icon="pi pi-check"
+        label="Sim"
+        (click)="cd.accept()"
+      ></button>
     </ng-template>
   </p-confirmDialog>
 </div>

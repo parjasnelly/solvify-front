@@ -10,7 +10,6 @@
         styleClass="mr-2"
         size="large"
         shape="circle"
-        (onImageError)="authService.signOut()"
       ></p-avatar>
       <button p-button-text iconPos="right" icon="pi pi-chevron-down">
         Olá, {{ this.authService.user.firstName }}
