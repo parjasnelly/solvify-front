@@ -57,14 +57,14 @@ export class ProblemService {
     filter?: ProblemFilterArgs
   ): Observable<ProblemRequestResponseObject[]> {
     const params = {
-      order_by: filter?.orderBy || 'created_at',
-      desceding: filter?.desceding || true,
-      subject_id: filter?.subject_id || '',
-      topic_id: filter?.topic_id || '',
-      subtopic_id: filter?.subtopic_id || '',
-      level_of_education: filter?.level_of_education || '',
-      language: filter?.language || 'pt',
-      creator_id: filter?.authorId || '',
+      order_by: filter?.orderBy ?? 'created_at',
+      desceding: filter?.desceding ?? true,
+      subject_id: filter?.subject_id ?? '',
+      topic_id: filter?.topic_id ?? '',
+      subtopic_id: filter?.subtopic_id ?? '',
+      level_of_education: filter?.level_of_education ?? '',
+      language: filter?.language ?? 'pt',
+      creator_id: filter?.authorId ?? '',
     };
 
     return this.http

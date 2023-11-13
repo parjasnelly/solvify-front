@@ -147,6 +147,9 @@
     height: 0
     width: 0
 
+  input:disabled
+    cursor: default
+
   &:hover
     .checkmark
       background-color: map-get($dark-color, "dark-30")
@@ -167,6 +170,16 @@
     -webkit-transform: rotate(45deg)
     -ms-transform: rotate(45deg)
     transform: rotate(45deg)
+
+.disabled-container
+    cursor: default !important
+
+    &:hover
+      .checkmark
+        background-color: map-get($dark-color, "dark-20")
+
+    input:checked ~ .checkmark
+      background-color: map-get($main-color, "main-75") !important
 
 .checkmark
   position: absolute

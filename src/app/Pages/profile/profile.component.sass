@@ -122,7 +122,11 @@
   background-color: transparent
   font-weight: 600
 
-  &:hover
+  &:disabled
+    color: map-get($dark-color, "dark-30")
+    transition: 0.2s ease-in-out  0.1s background-color, 0.2s ease-in-out  0.1s color
+
+  &:not([disabled]):hover
     background-color: map-get($main-color, "main-50")
     color: map-get($light-color, "light-100")
     transition: 0.2s ease-in-out  0.1s background-color, 0.2s ease-in-out  0.1s color
@@ -132,8 +136,8 @@
   color: map-get($light-color, "light-100")
 
   &:hover
-    background-color: map-get($main-color, "main-100")
-    color: map-get($light-color, "light-100")
+    background-color: map-get($main-color, "main-100") !important
+    color: map-get($light-color, "light-100") !important
     cursor: default
 
 .list-container

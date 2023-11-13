@@ -1,13 +1,13 @@
-import {Component} from '@angular/core';
-import {ConfirmationService, MessageService} from 'primeng/api';
-import {ProblemService} from 'src/app/Services/question.service';
-import {SubjectService} from 'src/app/Services/subject.service';
-import {Attempt} from 'src/app/Types/Attempt';
-import {Problem, ProblemType} from 'src/app/Types/Problem';
-import {Subject} from 'src/app/Types/Subject';
-import {AuthService} from 'src/app/Services/auth.service';
-import {ProblemList} from "../../Types/ProblemList";
-import {ListService} from "../../Services/list.service";
+import { Component } from '@angular/core';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ProblemService } from 'src/app/Services/question.service';
+import { SubjectService } from 'src/app/Services/subject.service';
+import { Attempt } from 'src/app/Types/Attempt';
+import { Problem, ProblemType } from 'src/app/Types/Problem';
+import { Subject } from 'src/app/Types/Subject';
+import { AuthService } from 'src/app/Services/auth.service';
+import { ProblemList } from '../../Types/ProblemList';
+import { ListService } from '../../Services/list.service';
 
 enum ResultType {
   INCORRECT = 0,
@@ -19,13 +19,17 @@ enum ResultType {
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.sass'],
-  providers: [ConfirmationService, MessageService]
+  providers: [ConfirmationService, MessageService],
 })
 export class ProfileComponent {
   lists: ProblemList[] = [];
   userProblems: Problem[] = [];
-  userAttempts: Attempt[] = []
+  userAttempts: Attempt[] = [];
   subjects: Subject[] = [];
+  listsLoading = false;
+  userProblemsLoading = false;
+  attemptsLoading = false;
+
   activeTab: 'questions' | 'attempts' | 'lists' = 'questions';
 
   constructor(
@@ -35,8 +39,7 @@ export class ProfileComponent {
     private subjectService: SubjectService,
     private listService: ListService,
     private confirmationService: ConfirmationService
-  ) {
-  }
+  ) {}
 
   get user() {
     return this.authService.user;
@@ -51,12 +54,18 @@ export class ProfileComponent {
   }
 
   ngOnInit(): void {
+    this.attemptsLoading = true;
+    this.userProblemsLoading = true;
+    this.listsLoading = true;
+
     this.problemService
-      .getProblems(1, 30, {authorId: this.authService.userId})
+      .getProblems(1, 30, { authorId: this.authService.userId })
       .subscribe((problems) => {
         this.userProblems = problems.map((problem) =>
           this.problemService.convertProblemResponseToProblem(problem)
         );
+
+        this.userProblemsLoading = false;
       });
 
     this.problemService
@@ -69,11 +78,18 @@ export class ProfileComponent {
           attemptedAt: attempt.attempted_at,
           solutionAccuracy: attempt.solution_accuracy,
         }));
+
+        this.attemptsLoading = false;
       });
 
     this.subjects = this.subjectService.getSubjects();
     this.listService.getLists(1, 30).subscribe((lists) => {
-      this.lists = this.listService.filterListsByCreatorId(lists, this.authService.userId)
+      this.lists = this.listService.filterListsByCreatorId(
+        lists,
+        this.authService.userId
+      );
+
+      this.listsLoading = false;
     });
   }
 
@@ -148,10 +164,13 @@ export class ProfileComponent {
             detail: `A lista foi deletada`,
           });
           this.listService.getLists(1, 30).subscribe((lists) => {
-            this.lists = this.listService.filterListsByCreatorId(lists, this.authService.userId)
+            this.lists = this.listService.filterListsByCreatorId(
+              lists,
+              this.authService.userId
+            );
           });
-        })
-      }
+        });
+      },
     });
   }
 }

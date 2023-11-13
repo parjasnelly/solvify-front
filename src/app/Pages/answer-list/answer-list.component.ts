@@ -17,6 +17,7 @@ import { ProblemList } from 'src/app/Types/ProblemList';
 
 interface ListProblem {
   data: Problem;
+  savedAnswer: boolean | boolean[] | string | undefined;
   status: ResultType | undefined;
 }
 
@@ -53,6 +54,7 @@ export class AnswerListComponent {
         this.problemService.getProblem(id).subscribe((data) => {
           this.questions.push({
             data: this.problemService.convertProblemResponseToProblem(data),
+            savedAnswer: undefined,
             status: undefined,
           });
         });
@@ -68,20 +70,29 @@ export class AnswerListComponent {
       )!;
 
       if (foucusedQuestion.data.problemType === ProblemType.TRUEFALSE) {
-        this.activeAnswer = false;
+        this.activeAnswer = foucusedQuestion.savedAnswer
+          ? (foucusedQuestion.savedAnswer as boolean)
+          : false;
       } else if (
         foucusedQuestion.data.problemType === ProblemType.MULTITRUEFALSE ||
         foucusedQuestion.data.problemType === ProblemType.MULTISELECT
       ) {
+        const savedAnswer = foucusedQuestion.savedAnswer as boolean[];
         this.activeAnswer = new FormGroup({
           itemAnswers: new FormArray(
-            foucusedQuestion.data.items!.map(
-              () => new FormControl<boolean>(false)
-            )
+            savedAnswer
+              ? savedAnswer.map((value) => {
+                  return new FormControl<boolean>(value);
+                })
+              : foucusedQuestion.data.items!.map(
+                  () => new FormControl<boolean>(false)
+                )
           ),
         });
       } else {
-        this.activeAnswer = '-1';
+        this.activeAnswer = foucusedQuestion.savedAnswer
+          ? (foucusedQuestion.savedAnswer as string)
+          : '-1';
       }
     });
   }
@@ -94,6 +105,14 @@ export class AnswerListComponent {
     return this.questions.find(
       (question) => question.data.id == this.activeQuestionId
     )!;
+  }
+
+  getActiveAnswer(idx: number) {
+    const answer = this.activeAnswer as FormGroup<{
+      itemAnswers: FormArray<FormControl<boolean>>;
+    }>;
+
+    return answer.controls.itemAnswers.controls[idx].value;
   }
 
   get isListCompleted() {
@@ -124,7 +143,6 @@ export class AnswerListComponent {
 
   onCheckboxChange(event: Event, index: number) {
     const element = event.target as HTMLInputElement;
-
     const selectedAnswers = this.answerFormGroup.controls[
       'itemAnswers'
     ] as FormArray;
@@ -229,6 +247,16 @@ export class AnswerListComponent {
       case ProblemType.TRUEFALSE:
         submissionAttempt.bool_response = this.activeAnswer as boolean;
         submissionAttempt.bool_answer = this.activeQuestion.data.boolAnswer;
+        this.questions = this.questions.map((question) => {
+          if (question.data.id === this.activeQuestionId) {
+            return {
+              ...question,
+              savedAnswer: submissionAttempt.bool_response,
+            };
+          }
+          return question;
+        });
+
         this.problemService
           .answerProblem(
             submissionAttempt,
@@ -243,6 +271,16 @@ export class AnswerListComponent {
           this.activeAnswer as FormGroup
         ).value.itemAnswers;
         submissionAttempt.bool_answers = this.activeQuestion.data.boolAnswers;
+        this.questions = this.questions.map((question) => {
+          if (question.data.id === this.activeQuestionId) {
+            return {
+              ...question,
+              savedAnswer: submissionAttempt.bool_responses,
+            };
+          }
+          return question;
+        });
+
         this.problemService
           .answerProblem(
             submissionAttempt,
@@ -255,6 +293,16 @@ export class AnswerListComponent {
       case ProblemType.MULTICHOICE:
         submissionAttempt.item_response = parseInt(this.activeAnswer as string);
         submissionAttempt.correct_item = this.activeQuestion.data.correctItem;
+        this.questions = this.questions.map((question) => {
+          if (question.data.id === this.activeQuestionId) {
+            return {
+              ...question,
+              savedAnswer: this.activeAnswer as string,
+            };
+          }
+          return question;
+        });
+
         this.problemService
           .answerProblem(
             submissionAttempt,
@@ -269,6 +317,15 @@ export class AnswerListComponent {
           this.activeAnswer as FormGroup
         ).value.itemAnswers;
         submissionAttempt.correct_items = this.activeQuestion.data.correctItems;
+        this.questions = this.questions.map((question) => {
+          if (question.data.id === this.activeQuestionId) {
+            return {
+              ...question,
+              savedAnswer: submissionAttempt.item_responses,
+            };
+          }
+          return question;
+        });
 
         this.problemService
           .answerProblem(
