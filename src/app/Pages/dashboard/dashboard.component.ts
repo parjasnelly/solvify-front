@@ -47,7 +47,7 @@ export class DashboardComponent {
       this.currentListPage++;
     });
 
-    this.subject = this.subjectService.getSubjects();
+    this.subject = this.subjectService.getSubjects().sort(this.compare);
   }
 
   getFilteredQuestions(id: string) {
@@ -90,8 +90,8 @@ export class DashboardComponent {
     });
   }
 
-  goToList() {
-    this.router.navigateByUrl(`/list/${this.lists[2].id}/play`);
+  goToList(list: ProblemList) {
+    this.router.navigateByUrl(`/list/${list.id}/play`);
   }
 
   getSubjectName(id: string) {
@@ -111,5 +111,28 @@ export class DashboardComponent {
 
         this.currentQuestionPage++;
       });
+  }
+
+  displayLists = false;
+  displayQuestions = true;
+  switchQuestionsLists() { 
+    this.displayLists = !this.displayLists;
+    this.displayQuestions = !this.displayQuestions;
+  }
+
+  truncate(str: string, length: number){
+    if (str.length > length)
+      return str.substring(0,length)+'...';
+    else
+      return str;
+  }
+
+  compare(a: Subject, b: Subject) {
+    if ( a.name < b.name ){
+      return -1;
+    } else if ( a.name > b.name ){
+      return 1;
+    }
+    return 0;
   }
 }

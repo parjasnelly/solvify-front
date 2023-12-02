@@ -16,28 +16,37 @@ $white: #ffffff
         padding: 0px 3px 0px 5vw
         width: 20vw
         height: 100%
+        border-right: 1px solid $primary
         .left-col-label-cat
             font-size: 20px
-            font-weight: bold
             font-family: $standard-font-family
             color: $font
-            text-align: center
+            text-align: left
             margin-top: 5vh
             overflow-x: hidden
+            padding-left: 15px
         .subject-search
+            height: 0px
         .left-top-separator
             background: $secondary
             height: 1px
             width: 90%
             margin: 10px 0px 10px 0px
         .subjects-container
-            height: 85%
-            overflow-y: scroll
+            height: 88%
+            overflow-y: hidden
             overflow-x: hidden
+            &:hover
+                overflow-y: scroll
             .subject-card
                 width: 80%
                 display: flex
                 cursor: pointer
+                transition: 0.2s ease-in-out all
+                border-radius: 8px
+                &:hover
+                    background-color: map-get($main-color, "main-20")
+                    cursor: pointer
                 .subject-icon
                     display: flex
                     height: 40px
@@ -73,11 +82,10 @@ $white: #ffffff
 
     .center-col
         width: 55vw
-        padding: 10px 5px 0px 10px
-        border-left: 1px solid $primary
+        padding: 10px 5px 0px 50px
         height: 100%
         align-items: center
-        .right-col-header
+        .center-col-header
             display: flex
             align-items: center
             font-size: 30px
@@ -87,27 +95,76 @@ $white: #ffffff
                 text-align: center
                 width: 50%
                 cursor: pointer
-                border-bottom: 3px solid $primary
             .lists-selector
                 text-align: center
                 width: 50%
                 cursor: pointer
-                border-bottom: 3px solid $primary
-        .question-grid-container
+            .questions-selected
+                height: 3px
+                background: $primary
+            .lists-selected
+                height: 3px
+                background: $primary
+        .center-search
+            height: 20px
+        .list-grid-container
             height: 76vh
             overflow-y: scroll
             overflow-x: hidden 
-            .grid-item
+            .list-grid-item
                 font-size: 30px
                 text-align: center
                 padding: 1vh 0vh 1vh 0vh
-                .question-card
-                    cursor: pointer
+                .list-card
                     height: fit-content
                     background: $secondary
                     padding: 10px 10px 0px 10px
                     margin-right: 10px
-                    border-radius: 0px
+                    border-radius: 8px
+                    transition: 0.2s ease-in-out all
+                    &:hover
+                        background-color: map-get($dark-color, "dark-10")
+                        cursor: pointer
+                    .list-card-header
+                        display: flex
+                        height: 20%
+                        font-size: 20px
+                        font-weight: bold
+                        font-family: $standard-font-family
+                        color: $font
+                    .list-card-content
+                        border-top: 1px
+                        height: 54%
+                        padding-bottom: 32px
+                        margin-top: 3%
+                        margin-left: 6%
+                        font-size: 18px
+                        font-family: $standard-font-family
+                        color: $font
+                        .question-count
+                            float: left
+                        .rating
+                            float: right
+                            padding-right: 18px
+        .question-grid-container
+            height: 76vh
+            overflow-y: scroll
+            overflow-x: hidden
+            min-width: 100%
+            .question-grid-item
+                font-size: 30px
+                text-align: justify
+                padding: 1vh 0vh 1vh 0vh
+                .question-card
+                    height: fit-content
+                    background: $secondary
+                    padding: 10px 10px 0px 10px
+                    margin-right: 10px
+                    border-radius: 8px
+                    transition: 0.2s ease-in-out all
+                    &:hover
+                        background-color: map-get($dark-color, "dark-10")
+                        cursor: pointer
                     .question-card-header
                         display: flex
                         height: 20%
@@ -135,18 +192,9 @@ $white: #ffffff
                         display: flex
                         border-top: 1px
                         height: 54%
-                        margin-top: 3%
-                        margin-left: 6%
+                        padding-bottom: 16px
+                        margin: 3% 6% 0 6%
                         font-size: 18px
-                        font-family: $standard-font-family
-                        color: $font
-                    .question-card-footer
-                        display: flex
-                        border-top: 1px
-                        height: 15%
-                        margin-top: 3%
-                        margin-left: 6%
-                        font-size: 14px
                         font-family: $standard-font-family
                         color: $font
 
@@ -180,14 +228,26 @@ $white: #ffffff
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3)
     background-color: #afafaf
 
-#question-scrollbar::-webkit-scrollbar-track
+#questions::-webkit-scrollbar-track
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3)
     border-radius: 10px
     background-color: #F5F5F5
-#question-scrollbar::-webkit-scrollbar
+#questions::-webkit-scrollbar
     width: 10px
     background-color: #F5F5F5
-#question-scrollbar::-webkit-scrollbar-thumb
+#questions::-webkit-scrollbar-thumb
+    border-radius: 10px
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3)
+    background-color: #afafaf
+
+#lists::-webkit-scrollbar-track
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3)
+    border-radius: 10px
+    background-color: #F5F5F5
+#lists::-webkit-scrollbar
+    width: 10px
+    background-color: #F5F5F5
+#lists::-webkit-scrollbar-thumb
     border-radius: 10px
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3)
     background-color: #afafaf

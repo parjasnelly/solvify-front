@@ -5,9 +5,7 @@
 
     <div class="left-col-label-cat">Categorias</div>
 
-    <div class="subject-search">search-placeholder</div>
-
-    <button type="button" (click)="goToList()">Lista</button>
+    <div class="subject-search"></div>
 
     <div class="left-top-separator"></div>
 
@@ -57,6 +55,17 @@
             <span class="material-symbols-outlined">science</span>
           </div>
           <div class="subject-label">Química</div>
+        </div>
+
+        <div
+          class="subject-card"
+          *ngIf="subject.name == 'Filosofia'"
+          (click)="getFilteredQuestions(subject.id)"
+        >
+          <div class="subject-icon">
+            <span class="material-symbols-outlined">psychology_alt</span>
+          </div>
+          <div class="subject-label">Filosofia</div>
         </div>
 
         <div
@@ -131,19 +140,54 @@
   <div class="center-col">
     <!--center column-->
 
-    <div class="right-col-header">
-      <div class="questions-selector">Questões</div>
-      <div class="lists-selector">Listas</div>
+    <div class="center-col-header">
+      <div class="questions-selector" (click)="switchQuestionsLists()">
+        Questões
+        <div 
+            class="questions-selected"
+            *ngIf="displayQuestions"
+            ></div>
+      </div>
+      <div class="lists-selector" (click)="switchQuestionsLists()">
+        Listas
+        <div
+            class="lists-selected"
+            *ngIf="displayLists"
+        ></div>
+      </div>
     </div>
 
-    <div class="subject-search">search-placeholder</div>
+    <div class="center-search"></div>
+
+    <div
+      class="list-grid-container"
+      id="lists"
+      *ngIf="lists.length > 0 && displayLists"
+    >
+      <div *ngFor="let list of lists" class="list-grid-item">
+        <div class="list-card" (click)="goToList(list)">
+          <div class="list-card-header">
+            {{ list.description }}
+          </div>
+          <div class="list-card-content">
+            <div class="question-count">
+              {{ list.problemIds.length }} Questões
+            </div>
+            <div class="rating">
+              {{ list.upvotes }} <i class="pi pi-thumbs-up"></i> &nbsp;
+              {{ list.downvotes }} <i class="pi pi-thumbs-down"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <div
       class="question-grid-container"
-      id="question-scrollbar"
-      *ngIf="questions.length > 0"
+      id="questions"
+      *ngIf="questions.length > 0  && displayQuestions"
     >
-      <div *ngFor="let question of questions" class="grid-item">
+      <div *ngFor="let question of questions" class="question-grid-item">
         <div class="question-card" (click)="goToQuestion(question)">
           <div class="question-card-header">
             <div
@@ -178,6 +222,12 @@
             </div>
             <div
               class="subject-icon-mini"
+              *ngIf="getSubjectName(question.subjectId) == 'Filosofia'"
+            >
+              <span class="material-symbols-outlined">psychology_alt</span>
+            </div>
+            <div
+              class="subject-icon-mini"
               *ngIf="getSubjectName(question.subjectId) == 'Biologia'"
             >
               <span class="material-symbols-outlined">genetics</span>
@@ -202,10 +252,9 @@
             </div>
             {{ getSubjectName(question.subjectId) }}
           </div>
-          <div class="question-card-content">
-            {{ question.statement }}
-          </div>
-          <div class="question-card-footer"></div>
+          <p class="question-card-content">
+            {{ truncate(question.statement, 600) }}
+          </p>
         </div>
       </div>
     </div>
