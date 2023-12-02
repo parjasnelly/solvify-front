@@ -154,7 +154,7 @@
   justify-content: flex-start
   align-items: center
 
-  span
+  div
     display: flex
     align-items: center
     justify-content: center
@@ -170,14 +170,18 @@
   align-items: center
   border-top: 1px solid
 
-  span
+  div
     display: flex
     align-items: center
     justify-content: center
     width: 12.5%
     border-right: 1px solid $font-dark
-    overflow: hidden
-    text-overflow: ellipsis
+    span
+      padding-right: 3px
+      padding-left: 3px
+      white-space: nowrap
+      overflow: hidden
+      text-overflow: ellipsis
 
 .attempt-header
   display: flex
@@ -187,12 +191,18 @@
   justify-content: flex-start
   align-items: center
 
-  span
+  div
     display: flex
     align-items: center
     justify-content: center
     width: 16.7%
     border-right: 1px solid $font-dark
+    span
+      padding-right: 3px
+      padding-left: 3px
+      white-space: nowrap
+      overflow: hidden
+      text-overflow: ellipsis
 
 .attempt-item
   display: flex
@@ -203,11 +213,12 @@
   align-items: center
   border-top: 1px solid
 
-  span
+  div
     display: flex
     align-items: center
     justify-content: center
     width: 16.7%
+    padding-left: 4px
     border-right: 1px solid $font-dark
     overflow: hidden
     text-overflow: ellipsis

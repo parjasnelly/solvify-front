@@ -86,17 +86,17 @@
   <div class="list-container">
     <div *ngIf="activeTab === 'questions'" style="width: 100%">
       <div class="list-header">
-        <span> Disciplina </span>
-        <span> Tipo </span>
-        <span style="width: 40%"> Enunciado </span>
-        <span> Tentativas </span>
-        <span> Precisão </span>
-        <span style="width: 5%">
+        <div>Disciplina</div>
+        <div>Tipo</div>
+        <div style="width: 40%">Enunciado</div>
+        <div>Tentativas</div>
+        <div>Precisão</div>
+        <div style="width: 5%">
           <i class="pi pi-thumbs-up" style="color: #13ce66"></i>
-        </span>
-        <span style="border-right: none; width: 5%">
+        </div>
+        <div style="border-right: none; width: 5%">
           <i class="pi pi-thumbs-down" style="color: #f95f62"></i>
-        </span>
+        </div>
       </div>
 
       <div *ngIf="userProblems.length === 0" class="list-item">
@@ -105,39 +105,43 @@
         </span>
       </div>
       <div *ngFor="let problem of userProblems" class="list-item">
-        <span> {{ getSubjectName(problem.subjectId) }} </span>
-        <span> {{ getProblemTypeName(problem.problemType) }} </span>
-        <span style="width: 40%"> {{ problem.statement }} </span>
-        <span> {{ problem.attempts }} </span>
-        <span> {{ (problem.accuracy * 100).toFixed(2) }} % </span>
-        <span style="width: 5%">
+        <div>{{ getSubjectName(problem.subjectId) }}</div>
+        <div>{{ getProblemTypeName(problem.problemType) }}</div>
+        <div style="width: 40%">
+          <span>{{ problem.statement }}</span>
+        </div>
+        <div>{{ problem.attempts }}</div>
+        <div>{{ (problem.accuracy * 100).toFixed(2) }} %</div>
+        <div style="width: 5%">
           {{ problem.upvotes }}
-        </span>
-        <span style="border-right: none; width: 5%">
+        </div>
+        <div style="border-right: none; width: 5%">
           {{ problem.downvotes }}
-        </span>
+        </div>
       </div>
     </div>
 
     <div *ngIf="activeTab === 'attempts'" style="width: 100%">
       <div class="attempt-header">
-        <span> Disciplina </span>
-        <span style="width: 50%"> Enunciado </span>
-        <span> Data </span>
-        <span style="border-right: none"> Resultado </span>
+        <div>Disciplina</div>
+        <div style="width: 50%">Enunciado</div>
+        <div>Data</div>
+        <div style="border-right: none">Resultado</div>
       </div>
 
       <div *ngIf="userAttempts.length === 0" class="attempt-item">
-        <span style="width: 100%; border-right: none">
+        <span style="width: 100%; border-right: none; text-align: center">
           Você ainda não tem nenhuma tentativa
         </span>
       </div>
 
       <div *ngFor="let attempt of userAttempts" class="attempt-item">
-        <span> {{ attempt.subject }} </span>
-        <span style="width: 50%"> {{ attempt.statement }} </span>
-        <span> {{ getDateValue(attempt.attemptedAt) }} </span>
-        <span
+        <div>{{ attempt.subject }}</div>
+        <div style="width: 50%">
+          <span>{{ attempt.statement }}</span>
+        </div>
+        <div>{{ getDateValue(attempt.attemptedAt) }}</div>
+        <div
           [ngClass]="{
             'correct-item': attempt.solutionAccuracy === resultType.CORRECT,
             'half-item': attempt.solutionAccuracy === resultType.HALF,
@@ -146,26 +150,26 @@
           style="border-right: none"
         >
           {{ getResultTypeName(attempt.solutionAccuracy) }}
-        </span>
+        </div>
       </div>
     </div>
 
     <div *ngIf="activeTab === 'lists'" style="width: 100%">
       <div class="attempt-header">
-        <span style="width: 80%"> Descrição </span>
-        <span style="width: 10%"> Qtd. Questões </span>
+        <div style="width: 80%">Descrição</div>
+        <div style="width: 10%">Qtd. Questões</div>
       </div>
 
       <div *ngIf="lists.length === 0" class="attempt-item">
-        <span style="width: 100%; border-right: none">
+        <div style="width: 100%; border-right: none">
           Você ainda não tem nenhuma lista
-        </span>
+        </div>
       </div>
 
       <div *ngFor="let list of lists" class="list-item">
-        <span style="width: 80%"> {{ list.description }} </span>
-        <span style="width: 10%"> {{ list.problemIds.length }} </span>
-        <span style="width: 10%; border-right: none">
+        <div style="width: 80%">{{ list.description }}</div>
+        <div style="width: 10%">{{ list.problemIds.length }}</div>
+        <div style="width: 10%; border-right: none">
           <button
             pButton
             icon="pi pi-play"
@@ -180,7 +184,7 @@
             iconPos="left"
             (click)="onDeleteButtonClick(list)"
           ></button>
-        </span>
+        </div>
       </div>
     </div>
   </div>

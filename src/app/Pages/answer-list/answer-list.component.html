@@ -234,7 +234,7 @@
           <button
             *ngIf="this.activeQuestion.status != undefined"
             pButton
-            [label]="this.isListCompleted ? 'Voltar' : 'Proxima'"
+            [label]="this.isListCompleted ? 'Voltar' : 'Próxima'"
             [icon]="'pi pi-chevron-right'"
             class="submit-button"
             (click)="this.isListCompleted ? goToHome() : nextQuestion()"

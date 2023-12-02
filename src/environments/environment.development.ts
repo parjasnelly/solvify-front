@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://solvify-back.fly.dev/api'
+  apiUrl: 'https://http://localhost:8080/',
 };
