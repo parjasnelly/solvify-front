@@ -8,6 +8,7 @@ import { Subject } from 'src/app/Types/Subject';
 import { AuthService } from 'src/app/Services/auth.service';
 import { ProblemList } from '../../Types/ProblemList';
 import { ListService } from '../../Services/list.service';
+import { Router } from '@angular/router';
 
 enum ResultType {
   INCORRECT = 0,
@@ -34,6 +35,7 @@ export class ProfileComponent {
 
   constructor(
     private authService: AuthService,
+    private router: Router,
     private problemService: ProblemService,
     private messageService: MessageService,
     private subjectService: SubjectService,
@@ -172,5 +174,10 @@ export class ProfileComponent {
         });
       },
     });
+  }
+
+  goToList(listId: string | undefined) {
+    if (!listId) return;
+    this.router.navigateByUrl(`/list/${listId}/play`);
   }
 }

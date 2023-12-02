@@ -91,7 +91,6 @@ export class DashboardComponent {
   }
 
   goToList() {
-    console.log('here');
     this.router.navigateByUrl(`/list/${this.lists[2].id}/play`);
   }
 
