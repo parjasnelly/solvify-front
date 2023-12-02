@@ -143,9 +143,6 @@ $white: #ffffff
                         color: $font
                         .question-count
                             float: left
-                        .rating
-                            float: right
-                            padding-right: 18px
         .question-grid-container
             height: 76vh
             overflow-y: scroll
@@ -189,7 +186,6 @@ $white: #ffffff
                                 padding: 2px
                                 position: relative
                     .question-card-content
-                        display: flex
                         border-top: 1px
                         height: 54%
                         padding-bottom: 16px
@@ -197,6 +193,15 @@ $white: #ffffff
                         font-size: 18px
                         font-family: $standard-font-family
                         color: $font
+                    .question-card-footer
+                        height: 32px
+                        .rating
+                            float: right
+                            padding-right: 18px
+                            font-size: 18px
+                            font-family: $standard-font-family
+                            color: $font
+
 
 
     .right-col

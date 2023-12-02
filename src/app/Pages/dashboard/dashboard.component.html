@@ -173,10 +173,6 @@
             <div class="question-count">
               {{ list.problemIds.length }} Questões
             </div>
-            <div class="rating">
-              {{ list.upvotes }} <i class="pi pi-thumbs-up"></i> &nbsp;
-              {{ list.downvotes }} <i class="pi pi-thumbs-down"></i>
-            </div>
           </div>
         </div>
       </div>
@@ -252,9 +248,15 @@
             </div>
             {{ getSubjectName(question.subjectId) }}
           </div>
-          <p class="question-card-content">
+          <div class="question-card-content">
             {{ truncate(question.statement, 600) }}
-          </p>
+          </div>
+          <div class="question-card-footer">
+            <div class="rating">
+              {{ question.upvotes }} <i class="pi pi-thumbs-up"></i> &nbsp;
+              {{ question.downvotes }} <i class="pi pi-thumbs-down"></i>
+            </div>
+          </div>
         </div>
       </div>
     </div>
