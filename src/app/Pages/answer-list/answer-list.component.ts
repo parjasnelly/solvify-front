@@ -19,6 +19,7 @@ interface ListProblem {
   data: Problem;
   savedAnswer: boolean | boolean[] | string | undefined;
   status: ResultType | undefined;
+  index: number;
 }
 
 @Component({
@@ -50,17 +51,19 @@ export class AnswerListComponent {
     this.listService.getListById(listId!).subscribe((data) => {
       this.list = data;
 
-      data.problemIds.forEach((id) => {
+      data.problemIds.forEach((id, idx) => {
         this.problemService.getProblem(id).subscribe((data) => {
           this.questions.push({
             data: this.problemService.convertProblemResponseToProblem(data),
             savedAnswer: undefined,
             status: undefined,
+            index: idx,
           });
         });
       });
 
       this._activeQuestionId.next(data.problemIds[0]);
+      this.questions.sort((a, b) => a.index - b.index);
       this.loading = false;
     });
 
